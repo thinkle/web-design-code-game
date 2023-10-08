@@ -11,8 +11,7 @@
     if (!iframe || !iframe.contentWindow) {
       console.log('No iframe?');
       return;
-    }
-    console.log('Update iFrame with:',html,css,js)
+    }    
     const doc = iframe.contentWindow.document;
 
     doc.open();
