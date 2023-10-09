@@ -1,7 +1,8 @@
 import type { ChallengeDefinition } from "../../types/challenge";
 import type { ValidationItem } from "../../types/validation";
 import instructions from "./markdown/padding-1.md?raw";
-
+import maincss from "./css/main.css?raw";
+import catcss from "./css/cat.css?raw";
 const CAT_WIDTH = 30;
 const CAT_HEIGHT = 30;
 const PADDING = 20;
@@ -10,33 +11,13 @@ const threshhold = 5;
 
 export var paddingChallenge: ChallengeDefinition = {
   language: "css",
+  height: 90,
   instructions,
   html: '\n<div class="box">\n  <div class="cat"></div>\n</div>',
-  hiddenCSSBefore: `
-    .cat {
-      background-color: orange;
-      position: relative;
-    }
-    .cat::before {
-      position: absolute;
-      top : -12px;
-      left  : 0;
-      content : "▲";
-      color: orange;
-      font-size: 12px;
-    }
-    .cat::after {
-      position: absolute;
-      top : -12px;
-      right  : 0;
-      content : "▲";
-      color: orange;
-      font-size: 12px;
-    }
-    .box {
-      background-color: beige;
-    }
+  hiddenHTMLBefore: "<main>",
+  hiddenHTMLAfter: `</main>
   `,
+  hiddenCSSBefore: maincss+'\n'+catcss,
   css: `
   WORK
 
@@ -71,7 +52,6 @@ export var paddingChallenge: ChallengeDefinition = {
     let items: ValidationItem[] = [];
     let isSolved = true;
     let catRect = catElement.getBoundingClientRect();
-
     if (catRect.width !== CAT_WIDTH || catRect.height !== CAT_HEIGHT) {
       items.push({
         name: "Cat left alone",
@@ -99,27 +79,24 @@ export var paddingChallenge: ChallengeDefinition = {
     ];
     const sides = ["left", "top", "right", "bottom"];
     offsets.forEach((offset, index) => {
-      if (Math.abs(offset - PADDING) > threshhold) {
+      if (offset < PADDING - threshhold) {
         items.push({
           name: `Space on ${sides[index]}`,
           isValid: false,
-          message: `Needs correct padding on the ${sides[index]}!`,
+          message: `Kitty needs room on the ${sides[index]}!`,
         });
         isSolved = false;
       } else {
         items.push({
           name: `Space on ${sides[index]}`,
           isValid: true,
-          message: `Has correct padding on the ${sides[index]}!`,
+          message: `Kitty has space on the ${sides[index]}!`,
         });
       }
     });
 
     // Validate Box Size
-    if (
-      boxRect.width !== BOX_SIZE + 2 * PADDING ||
-      boxRect.height !== BOX_SIZE + 2 * PADDING
-    ) {
+    if (boxRect.width !== BOX_SIZE || boxRect.height !== BOX_SIZE) {
       items.push({
         name: "Box size",
         isValid: false,
@@ -137,14 +114,13 @@ export var paddingChallenge: ChallengeDefinition = {
       });
       isSolved = false;
     }
-
+    debugger;
     // Validate Positioning of .cat
     if (catStyle.position !== "static" || catStyle.display !== "block") {
       items.push({
-        name: "Cat Positioning",
+        name: "Use the box!",
         isValid: false,
-        message:
-          "Ensure the cat is using the box model (position: static, display: block)!",
+        message: "Only use the box model to move the kitty!",
       });
       isSolved = false;
     }

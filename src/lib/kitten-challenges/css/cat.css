@@ -1,0 +1,65 @@
+
+
+   .cat {
+     transition: padding, margin, width, height 300ms;
+   }
+
+   .cat::after {
+     content: "😿";
+     font-size: 30px;
+     text-align: center;
+   }
+
+   .solved .cat::after {
+     content: "😺";
+   }
+
+   .solved .cat::after {
+     display: inline-block;
+     animation: bounce 2s ease infinite;
+   }
+
+   .solved.model .cat::after {
+     animation: none;
+   }
+
+   .box {
+     background-color: beige;
+     border-radius: 4px;
+   }
+
+   @keyframes bounce {
+
+     0%,
+     100% {
+       transform: translateY(0) rotate(0);
+     }
+
+     5% {
+       transform: translateY(-5px) rotate(0);
+     }
+
+     10% {
+       transform: translateY(0) rotate(0);
+     }
+
+     15% {
+       transform: translateY(-5px) rotate(-10deg);
+     }
+
+     20% {
+       transform: translateY(0) rotate(10deg);
+     }
+
+     25% {
+       transform: translateY(0) rotate(-10deg);
+     }
+
+     30% {
+       transform: translateY(0) rotate(10deg);
+     }
+
+     35% {
+       transform: translateY(0) rotate(0);
+     }
+   }
