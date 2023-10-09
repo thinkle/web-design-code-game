@@ -23,6 +23,8 @@
     "@codemirror/lang-html": "^6.4.6",
     "@codemirror/lang-javascript": "^6.2.1",
     "highlightjs": "^9.16.2",
+    "markdown-it": "^13.0.2",
+    "markdown-it-highlightjs": "^4.0.1",
     "prettier": "^3.0.3",
     "svelte-codemirror-editor": "^1.1.0",
     "svelte-highlight": "^7.3.0"
