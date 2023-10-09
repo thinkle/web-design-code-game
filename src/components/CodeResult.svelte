@@ -1,12 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';      
-
+  export let onWindowLoaded : ((w : Window)=>void)|null;
   // ... [Rest of the Code]
-
-  const dispatch = (name, detail) => {
-    console.log('Fire away!',name,detail);
-    iframe.dispatchEvent(new CustomEvent(name, { detail }));
-  };
+ 
 
   export let js = '';
   export let css = '';
@@ -50,10 +46,9 @@
 
   onMount(()=>{
     updateIframe();
-    iframe.addEventListener('load',
-    ()=>{
-      dispatch('loaded',iframe.contentWindow);
-    })
+    if (onWindowLoaded) {
+      onWindowLoaded(iframe.contentWindow)
+    }          
   });
   
 </script>

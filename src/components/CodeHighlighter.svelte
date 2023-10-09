@@ -7,6 +7,7 @@
 
   export let template = "<div>Hello WORK World</div>";
   export let insertion = "<b>Bold</b>";
+  export let lang = 'html'
   let transformed = "";
   let start = "◆◆start◆◆";
   let end = "▲▲end▲▲";
@@ -40,16 +41,34 @@
     transformed = temp;
   }
 </script>
-
+<div class="code-block">
+  <div class="code-label">
+    {lang}
+  </div>
 <code>
   <pre>
   
     {@html transformed}
   </pre>
 </code>
-
+</div>
 <style>
   code :global(.my-code-segment) {
     background-color: yellow;
+  }
+  .code-block {
+    width: 90%;
+    margin: 5%;
+    box-shadow: 3px 3px #3337;
+    border: 1px inset #eee;
+    padding: 1em;
+    position: relative;
+  }
+  .code-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px;
+    font-size: small;
   }
 </style>

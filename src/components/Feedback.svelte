@@ -14,7 +14,7 @@
     {#each result.items as { name, isValid, message } (name)}
       <li class:valid={isValid} class:invalid={!isValid}>
         {#if isValid}
-          ✔️ {name}: {message}
+          ✔️ {name}
         {:else}
           ❌ {name}: {message}
         {/if}

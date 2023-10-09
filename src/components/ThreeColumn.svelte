@@ -60,12 +60,13 @@ const handleMouseMove = (e) => {
 <style>
   #container {
     display: flex;
-    height: 100vh;
+    height: calc(100vh - var(--header-height,0));
   }
   .column {
     position: relative;
     padding: 20px;
     box-sizing: border-box;
+    overflow-y: auto;
   }
   .resizer {
     cursor: ew-resize;
