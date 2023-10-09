@@ -1,8 +1,10 @@
 import type { ChallengeDefinition } from "../../types/challenge";
 import type { ValidationItem } from "../../types/validation";
+
 import instructions from "./markdown/padding-1.md?raw";
 import maincss from "./css/main.css?raw";
 import catcss from "./css/cat.css?raw";
+import { isUsingBoxModel } from "../validation";
 const CAT_WIDTH = 30;
 const CAT_HEIGHT = 30;
 const PADDING = 20;
@@ -96,11 +98,11 @@ export var paddingChallenge: ChallengeDefinition = {
     });
 
     // Validate Box Size
-    if (boxRect.width !== BOX_SIZE || boxRect.height !== BOX_SIZE) {
+    if (boxRect.width < BOX_SIZE || boxRect.height < BOX_SIZE) {
       items.push({
         name: "Box size",
         isValid: false,
-        message: "The box size is incorrect!",
+        message: "Don't shrink the box!",
       });
       isSolved = false;
     }
@@ -113,10 +115,9 @@ export var paddingChallenge: ChallengeDefinition = {
         message: "The box-sizing should be border-box!",
       });
       isSolved = false;
-    }
-    debugger;
+    }    
     // Validate Positioning of .cat
-    if (catStyle.position !== "static" || catStyle.display !== "block") {
+    if (!isUsingBoxModel(catElement,contentWindow)) {
       items.push({
         name: "Use the box!",
         isValid: false,
@@ -126,12 +127,12 @@ export var paddingChallenge: ChallengeDefinition = {
     }
 
     // Validate Positioning of .box
-    if (boxStyle.position !== "static" || boxStyle.display !== "block") {
+    if (!isUsingBoxModel(boxElement,contentWindow)) {
       items.push({
         name: "Box Positioning",
         isValid: false,
         message:
-          "Ensure the box is using the box model (position: static, display: block)!",
+          "Ensure the box is using the box model!"
       });
       isSolved = false;
     }

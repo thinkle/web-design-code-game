@@ -5,9 +5,9 @@
 
 <section>
   {#if result.isSolved}
-    <h2>🎉 Great job! You solved the challenge! 🎉</h2>
+    <h2>🎉 Great job! 🎉</h2>
   {:else}
-    <h2>🤔 It looks like something is not quite right... 🤔</h2>
+    <h2>Something is off... 🤔</h2>
   {/if}
 
   <ul>

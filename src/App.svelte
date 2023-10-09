@@ -1,12 +1,31 @@
 <script>
   import Challenge from "./components/Challenge.svelte";
   import {challenges} from './lib/challenges';
+  let theChallenge = challenges[0];
+  let idx = 0;
+  function nextChallenge () {
+    idx++;
+    theChallenge = challenges[idx];
+  }
+  function lastChallenge () {
+    idx--;
+    theChallenge = challenges[idx]
+  }
+
 </script>
 <main>
 <header>
+  <div>
+    {#if theChallenge != challenges[0]}
+      <button on:click={lastChallenge}>Back</button>
+    {/if}
+  </div>
   <h1>Cats in Boxes</h1>
+  <div>
+
+  </div>
 </header>
-<Challenge challenge={challenges[0]}/>
+<Challenge challenge={theChallenge} onNext={nextChallenge}/>
 </main>
 
 <style>
@@ -18,7 +37,7 @@
     height: 64px;
     font-size: 18px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
   }
   h1 {
     margin: 0;

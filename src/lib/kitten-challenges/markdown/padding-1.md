@@ -5,15 +5,13 @@ so she can stretch her paws.
 
 ## Box Model Basics
 
-Remember, in the box model, the *size* of the box is determined by
-`width` and `height` elements. The *walls* of the box are determined
-by the `border` elements. And the space between the *contents* of the
-box and the "walls" are determined by *padding*.
+Remember, in the box model, you can put space between the edge of 
+an element and its contents by using the `padding` property.
+
+For example:
 
 ```css
-selector {
-  margin: 16px; /*Put space between elements */
-  border: 10px solid black; /* Define border */
+selector {    
   padding: 8px; /* Space between border and content*/
 }
 ```

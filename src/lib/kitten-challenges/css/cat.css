@@ -24,9 +24,16 @@
    }
 
    .box {
-     background-color: beige;
-     border-radius: 4px;
+     background-color: beige;     
    }
+
+  .dog::after {
+    content: "🐶";
+    position: absolute;
+    font-size: 30px;
+    line-height: 30px;
+    text-align: center;    
+  } 
 
    @keyframes bounce {
 

@@ -46,8 +46,7 @@
     {lang}
   </div>
 <code>
-  <pre>
-  
+  <pre>  
     {@html transformed}
   </pre>
 </code>

@@ -41,3 +41,78 @@ export function validateCssProperties(
 }
 
 
+
+
+export function isUsingBoxModel(element: HTMLDivElement, contentWindow: Window): boolean {
+  let style = contentWindow.getComputedStyle(element);
+  let valid = (!style.position || style.position === 'static') && (!style.display || style.display.includes('block'));
+  if (!valid) {        
+    return false
+  } else {
+    return true;
+  }
+}
+
+export function validateSpaceBetweenElementsLR(
+  element1: HTMLDivElement, 
+  element2: HTMLDivElement, 
+  minSpace: number
+): boolean {
+  let rect1 = element1.getBoundingClientRect();
+  let rect2 = element2.getBoundingClientRect();
+  return (rect2.left - rect1.right) >= minSpace;
+}
+export function validateSpaceBetweenElementsTB(
+  element1: HTMLDivElement,
+  element2: HTMLDivElement,
+  minSpace: number
+): boolean {
+  let rect1 = element1.getBoundingClientRect();
+  let rect2 = element2.getBoundingClientRect();
+  return rect2.top - rect1.bottom >= minSpace;
+}
+
+export function validateElementSize(
+  element: HTMLDivElement, 
+  expectedWidth: number, 
+  expectedHeight: number, 
+  threshold: number = 5
+): boolean {
+  let rect = element.getBoundingClientRect();
+  return (
+    Math.abs(rect.width - expectedWidth) <= threshold &&
+    Math.abs(rect.height - expectedHeight) <= threshold
+  );
+}
+
+
+export function hasVisibleBorder(element: HTMLElement): {
+  top: boolean;
+  right: boolean;
+  bottom: boolean;
+  left: boolean;
+  all: boolean;
+} {
+  const computedStyle = getComputedStyle(element);
+
+  const hasWidth = (side: string) =>
+    parseInt(computedStyle[`border${side}Width`], 10) > 0;
+  const hasColor = (side: string) =>
+    computedStyle[`border${side}Color`] !== "transparent" &&
+    computedStyle[`border${side}Color`] !== "rgba(0, 0, 0, 0)";
+  const hasStyle = (side: string) =>
+    computedStyle[`border${side}Style`] !== "none";
+
+  const top = hasWidth("Top") && hasColor("Top") && hasStyle("Top");
+  const right = hasWidth("Right") && hasColor("Right") && hasStyle("Right");
+  const bottom = hasWidth("Bottom") && hasColor("Bottom") && hasStyle("Bottom");
+  const left = hasWidth("Left") && hasColor("Left") && hasStyle("Left");
+
+  return {
+    top,
+    right,
+    bottom,
+    left,
+    all: top && right && bottom && left,
+  };
+}

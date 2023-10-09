@@ -1,4 +1,5 @@
 <script lang="ts">
+  export let onNext = ()=>null;
   import type { ChallengeDefinition } from "../types/challenge";
   export let challenge: ChallengeDefinition 
 
@@ -75,20 +76,48 @@
       onWindowLoaded={onIframeLoad}
     />
     {#if challenge.html}
-    <CodeHighlighter template={challenge.html} insertion={$studentWork}/>
+    <CodeHighlighter template={challenge.html} insertion={$studentWork} lang='html'/>
     {/if}
     {#if challenge.css}
-    <CodeHighlighter template={challenge.css} insertion={$studentWork}/>
+    <CodeHighlighter template={challenge.css} insertion={$studentWork} lang='css'/>
     {/if}
     {#if challenge.js}
-    <CodeHighlighter template={challenge.js} insertion={$studentWork}/>
+    <CodeHighlighter template={challenge.js} insertion={$studentWork} lang='js'/>
     {/if}
   </div>
-  <div slot="right">    
+  <div slot="right"> 
+    {#if solved}
+      <button on:click={onNext}>Next!</button>
+    {/if}   
     <Markdown markdown={challenge.instructions}/>
     {#if result && edited}<Feedback {result}/>{/if}
     <h2>Target</h2>
-    <ChallengeResult {challenge} solution={challenge.solution} solved={true} model={true}/>
-    
+    <ChallengeResult {challenge} solution={challenge.solution} solved={true} model={true}/>    
   </div>
 </ThreeColumn>
+
+
+<style>
+  button {
+  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+button:hover {
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.next-button:active {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  transform: translateY(1px);
+}
+</style>
