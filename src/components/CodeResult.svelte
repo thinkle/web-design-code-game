@@ -1,12 +1,19 @@
-<script>
-  import { onMount } from 'svelte';
-  
+<script lang="ts">
+  import { onMount } from 'svelte';      
+
+  // ... [Rest of the Code]
+
+  const dispatch = (name, detail) => {
+    console.log('Fire away!',name,detail);
+    iframe.dispatchEvent(new CustomEvent(name, { detail }));
+  };
+
   export let js = '';
   export let css = '';
   export let html = '';
-  export let height;
-    
-  let iframe;
+  export let height : number;
+
+  let iframe : HTMLIFrameElement;
   
   const updateIframe = () => {
     if (!iframe || !iframe.contentWindow) {
@@ -41,8 +48,14 @@
   $: css && updateIframe();
   $: html && updateIframe();
 
-  onMount(updateIframe);
-  $: updateIframe();
+  onMount(()=>{
+    updateIframe();
+    iframe.addEventListener('load',
+    ()=>{
+      dispatch('loaded',iframe.contentWindow);
+    })
+  });
+  
 </script>
 
 <iframe style:--height={`${height}px`} bind:this={iframe}></iframe>

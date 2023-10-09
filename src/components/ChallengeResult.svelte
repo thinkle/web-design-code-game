@@ -34,5 +34,7 @@
   
 </script>
 <CodeResult
+  on:loaded
+  height={challenge.height}
   {html} {css} {js}
 />

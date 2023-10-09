@@ -23,10 +23,30 @@
 
   
   import ChallengeResult from './ChallengeResult.svelte';  
+  import Markdown from "./Markdown.svelte";
+  import type { ValidationResult } from "../types/validation";
+  import Feedback from "./Feedback.svelte";
   
   $: $studentWork = challenge.starterCode;
 
+  let resultWindow : Window;
+  function onIframeLoad (event : {detail : Window}) {
+    console.log('iframe loaded!',event.detail)
+    resultWindow = event.detail;
+  }
 
+  
+
+  let result : ValidationResult | null;
+  function updateResult (contentWindow : Window, work : any) {
+    if (contentWindow) {
+      result = challenge.validate(contentWindow)
+    } else {
+      result = null;
+    }
+  }
+
+  $: updateResult(resultWindow,$studentWork);
   
 </script>
 
@@ -34,9 +54,11 @@
   <div slot="left">
     <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
   </div>
-  <div slot="center">
+  <div slot="center">    
     <h2>Result</h2>        
-    <ChallengeResult {challenge} solution={$studentWork}/>
+    <ChallengeResult {challenge} solution={$studentWork}
+      on:loaded={onIframeLoad}
+    />
     {#if challenge.html}
     <CodeHighlighter template={challenge.html} insertion={$studentWork}/>
     {/if}
@@ -48,9 +70,10 @@
     {/if}
   </div>
   <div slot="right">
+    {#if result}<Feedback {result}/>{/if}
     <h2>Target</h2>
     <ChallengeResult {challenge} solution={challenge.solution}/>
     <h2>Instructions</h2>
-    {@html challenge.instructions}
+    <Markdown markdown={challenge.instructions}/>
   </div>
 </ThreeColumn>

@@ -17,8 +17,8 @@ import type { ValidationResult } from './validation';
 export type ChallengeDefinition = {
   language: 'html' | 'css' | 'js';
   html : string;
-  css : string;
-  js : string;
+  css? : string;
+  js? : string;
   hiddenHTMLBefore? : string;
   hiddenHTMLAfter? : string;
   hiddenCSSBefore? : string;
@@ -26,6 +26,7 @@ export type ChallengeDefinition = {
   starterCode: string;
   solution: string;      
   validate: (contentWindow: Window) => ValidationResult;
+  height?: number;
 };
 
 
