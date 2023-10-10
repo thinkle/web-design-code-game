@@ -38,6 +38,9 @@ export const sidesChallenge: ChallengeDefinition = {
     .box {
       
     }
+    .cat {
+      
+    }
   `,
   solution: `  
     .box {      
