@@ -5,13 +5,17 @@ import { paddingChallenge } from "./kitten-challenges/paddingChallenge";
 import { sidesChallenge } from "./kitten-challenges/sideChallenge";
 import { centeringChallenge} from './kitten-challenges/centeringChallenge'
 import { inlineBlockChallenge } from "./kitten-challenges/inlineBlock";
+import { cozyCatNapChallenge } from "./kitten-challenges/catnapChallenge";
+import { escapeWaterChallenge } from "./kitten-challenges/waterChallenge";
 
 export let challenges: ChallengeDefinition[] = [
-  inlineBlockChallenge,
-  centeringChallenge,
-  sidesChallenge,
-  borderChallenge,
+  escapeWaterChallenge,
   paddingChallenge,
   marginChallenge,
+  borderChallenge,
+  inlineBlockChallenge,
+  sidesChallenge,
+  centeringChallenge,
+  cozyCatNapChallenge,
 ];
 

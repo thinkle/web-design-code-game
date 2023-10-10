@@ -70,7 +70,12 @@ export function validateSpaceBetweenElementsTB(
 ): boolean {
   let rect1 = element1.getBoundingClientRect();
   let rect2 = element2.getBoundingClientRect();
-  return rect2.top - rect1.bottom >= minSpace;
+  if (rect1.top > rect2.top) {
+    [rect2,rect1] = [rect1,rect2];
+  }
+  debugger;
+  console.log("measured", rect2.top - rect1.bottom, "space");
+  return (rect2.top - rect1.bottom) >= minSpace;
 }
 
 export function validateElementSize(
@@ -118,6 +123,7 @@ export function hasVisibleBorder(element: HTMLElement): {
   };
 }
 
+
 export function calculateOffsets(element1: HTMLElement, element2: HTMLElement) {
   const rect1 = element1.getBoundingClientRect();
   const rect2 = element2.getBoundingClientRect();
@@ -146,4 +152,21 @@ export function validateHorizontalAlignment(
   });
 
   return true;
+}
+
+export function doElementsOverlap(
+  element1: HTMLElement,
+  element2: HTMLElement
+): boolean {
+  const rect1 = element1.getBoundingClientRect();
+  const rect2 = element2.getBoundingClientRect();
+  // IF NOT
+  return !(
+    (
+      rect1.right < rect2.left || // rect1 is to the left of rect2
+      rect1.left > rect2.right || // rect1 is to the right of rect2
+      rect1.bottom < rect2.top || // rect1 is above rect2
+      rect1.top > rect2.bottom
+    ) // rect1 is below rect2
+  );
 }
