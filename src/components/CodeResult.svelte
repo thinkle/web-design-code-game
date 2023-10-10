@@ -60,5 +60,6 @@
     width: 100%;
     height: var(--height,400px);
     border: none;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 </style>

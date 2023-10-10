@@ -17,7 +17,7 @@
 <header>
   <div>
     {#if theChallenge != challenges[0]}
-      <button on:click={lastChallenge}>Back</button>
+      <button on:click={lastChallenge} class='back'>Back</button>
     {/if}
   </div>
   <h1>Cats in Boxes</h1>

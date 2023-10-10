@@ -9,8 +9,8 @@
   export let insertion = "<b>Bold</b>";
   export let lang = 'html'
   let transformed = "";
-  let start = "◆◆start◆◆";
-  let end = "▲▲end▲▲";
+  let start = "◆◆appetizer◆◆";
+  let end = "▲▲dessert▲▲";
   $: format(template, insertion);
 
   async function formatCode(value: string) {

@@ -87,7 +87,7 @@
   </div>
   <div slot="right"> 
     {#if solved}
-      <button on:click={onNext}>Next!</button>
+      <button class='next' on:click={onNext}>Next!</button>
     {/if}   
     <Markdown markdown={challenge.instructions}/>
     {#if result && edited}<Feedback {result}/>{/if}
@@ -98,26 +98,5 @@
 
 
 <style>
-  button {
-  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
-  border: none;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 25px;
-  cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  outline: none;
-}
-
-button:hover {
-  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
-}
-
-.next-button:active {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-  transform: translateY(1px);
-}
+  
 </style>

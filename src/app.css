@@ -6,3 +6,62 @@ h1,h2,h3,h4,h5,h6,p {
 * {
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+button {
+  background-color: #f0f0f0;
+  /* Light grey background */
+  border: none;
+  color: #333;
+  /* Dark grey text */
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+button:hover {
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+button:active {
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+button.back {
+  background-color: #e0e0e0;
+  /* Slightly darker grey */
+  color: #555;
+  /* Darker text for contrast */
+  padding-left: 30px;
+  /* Extra padding to accommodate arrow */
+  position: relative;
+}
+
+button.back:before {
+  content: "←";
+  /* Left arrow */
+  position: absolute;
+  left: 10px;
+  font-size: 18px;
+}
+
+button.forward {
+  background-color: #d0d0d0;
+  /* Even slightly darker grey */
+  color: #555;
+  padding-right: 30px;
+  position: relative;
+}
+
+button.forward:after {
+  content: "→";
+  /* Right arrow */
+  position: absolute;
+  right: 10px;
+  font-size: 18px;
+}

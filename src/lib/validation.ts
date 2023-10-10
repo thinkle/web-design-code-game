@@ -53,6 +53,7 @@ export function isUsingBoxModel(element: HTMLDivElement, contentWindow: Window):
   }
 }
 
+
 export function validateSpaceBetweenElementsLR(
   element1: HTMLDivElement, 
   element2: HTMLDivElement, 
@@ -115,4 +116,34 @@ export function hasVisibleBorder(element: HTMLElement): {
     left,
     all: top && right && bottom && left,
   };
+}
+
+export function calculateOffsets(element1: HTMLElement, element2: HTMLElement) {
+  const rect1 = element1.getBoundingClientRect();
+  const rect2 = element2.getBoundingClientRect();
+
+  return {
+    left: rect2.left - rect1.left,
+    top: rect2.top - rect1.top,
+    right: rect1.right - rect2.right,
+    bottom: rect1.bottom - rect2.bottom,
+  };
+}
+
+export function validateHorizontalAlignment(
+  elements: NodeListOf<Element>,
+  contentWindow: Window
+) : boolean {  
+
+  const firstElementTop = elements[0].getBoundingClientRect().top;
+
+  elements.forEach((element, index) => {
+    const elementTop = element.getBoundingClientRect().top;
+    if (Math.abs(elementTop - firstElementTop) > 1) {
+      // Allowing 1px tolerance
+      return false;
+    }
+  });
+
+  return true;
 }

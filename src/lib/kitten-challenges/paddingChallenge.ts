@@ -13,7 +13,7 @@ const threshhold = 5;
 
 export var paddingChallenge: ChallengeDefinition = {
   language: "css",
-  height: 90,
+  height: 140,
   instructions,
   html: '\n<div class="box">\n  <div class="cat"></div>\n</div>',
   hiddenHTMLBefore: "<main>",
