@@ -40,8 +40,7 @@ export const inlineBlockChallenge: ChallengeDefinition = {
       margin: 16px;
     }
   `,
-  validate(contentWindow) {
-    debugger;
+  validate(contentWindow) {    
     let boxElements = contentWindow.document.querySelectorAll(".box");
     let items: ValidationItem[] = [];
     let isSolved = true;

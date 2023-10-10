@@ -65,3 +65,46 @@ button.forward:after {
   right: 10px;
   font-size: 18px;
 }
+
+:root {
+  --primary-color: #4facfe;
+  --secondary-color: #00f2fe;
+  --accent-color: #ffabab;
+  --background-color: #f8f8f8;
+  --text-color: #333;
+  --border-color: #ddd;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--color);
+}
+
+h1 {
+  color: var(--primary-color);
+  -webkit-text-stroke: 1px solid var(--secondary-color);
+}
+
+button.next {
+  background-color: var(--accent-color);
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: auto;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  5% {
+    transform: scale(1.2);    
+  }
+  10% {
+    transform: scale(0.9);
+  }
+  12% {
+    transform: scale(1);
+  }
+}

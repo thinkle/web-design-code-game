@@ -1,66 +1,65 @@
 <!-- src/ThreeColumnLayout.svelte -->
 <script>
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
   let leftWidth = 33;
   let rightWidth = 33;
 
   let isResizingLeft = false;
   let isResizingRight = false;
-const handleMouseMove = (e) => {
-      if (isResizingLeft) {
-        leftWidth = (e.clientX / window.innerWidth) * 100;
-      } else if (isResizingRight) {
-        rightWidth = ((window.innerWidth - e.clientX) / window.innerWidth) * 100;
-      }
-    };
+  const handleMouseMove = (e) => {
+    if (isResizingLeft) {
+      leftWidth = (e.clientX / window.innerWidth) * 100;
+    } else if (isResizingRight) {
+      rightWidth = ((window.innerWidth - e.clientX) / window.innerWidth) * 100;
+    }
+  };
 
-    const handleMouseUp = () => {
-      isResizingLeft = false;
-      isResizingRight = false;
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
+  const handleMouseUp = () => {
+    isResizingLeft = false;
+    isResizingRight = false;
+    window.removeEventListener("mousemove", handleMouseMove);
+    window.removeEventListener("mouseup", handleMouseUp);
+  };
 
-    const handleMouseDownLeft = () => {
-      isResizingLeft = true;
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-    };
+  const handleMouseDownLeft = () => {
+    isResizingLeft = true;
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  };
 
-    const handleMouseDownRight = () => {
-      isResizingRight = true;
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-    };
+  const handleMouseDownRight = () => {
+    isResizingRight = true;
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  };
 
   onMount(() => {
-    
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   });
 </script>
 
 <div id="container">
   <div class="column" style="flex: {leftWidth};">
-    <slot name="left"></slot>
-    <div class="resizer" on:mousedown={handleMouseDownLeft}></div>
+    <slot name="left" />
+    <div class="resizer" on:mousedown={handleMouseDownLeft} />
   </div>
   <div class="column" style="flex: {100 - leftWidth - rightWidth};">
-    <slot name="center"></slot>
+    <slot name="center" />
   </div>
   <div class="column" style="flex: {rightWidth};">
-    <div class="resizer" on:mousedown={handleMouseDownRight}></div>
-    <slot name="right"></slot>
+    <div class="resizer" on:mousedown={handleMouseDownRight} />
+    <slot name="right" />
   </div>
 </div>
 
 <style>
   #container {
     display: flex;
-    height: calc(100vh - var(--header-height,0));
+    height: calc(100vh - var(--header-height, 0));
   }
   .column {
     position: relative;
@@ -72,12 +71,37 @@ const handleMouseMove = (e) => {
     cursor: ew-resize;
     position: absolute;
     top: 0;
-    right: 0;
-    width: 10px;
+    right: 0;    
     height: 100%;
-    background-color: #ccc;
     z-index: 2;
+    border: 1px dotted #ccc;    
+    cursor: ew-resize;
+    background-color: transparent;
+    width: 8px;
+    height: 100%;
   }
+
+  .resizer::before,
+  .resizer::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 4px;
+    height: 30px;
+    background-color: #666;
+    border-radius: 2px;
+  }
+
+  .resizer::before {
+    top: 30px;
+    transform: translateX(-50%);
+  }
+
+  .resizer::after {
+    bottom: 30px;
+    transform: translateX(-50%);
+  }
+
   .column:last-child .resizer {
     left: 0;
   }

@@ -7,6 +7,7 @@
   import CodeHighlighter from './CodeHighlighter.svelte';
   import ThreeColumn from "./ThreeColumn.svelte";    
   import CodeMirror from "svelte-codemirror-editor";
+  
   import ChallengeResult from './ChallengeResult.svelte';  
   import Feedback from "./Feedback.svelte";
   import Markdown from "./Markdown.svelte";
@@ -68,7 +69,14 @@
 
 <ThreeColumn>
   <div slot="left">
-    <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
+    <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)}
+      styles={{
+              "&": {
+                backgroundColor: '#fefefe',
+                color: '#333',                                                      
+              },
+          }}
+    />
   </div>
   <div slot="center">    
     <h2>Result</h2>        
@@ -87,7 +95,10 @@
   </div>
   <div slot="right"> 
     {#if solved}
-      <button class='next' on:click={onNext}>Next!</button>
+      <div 
+        style="display:flex;justify-content:end">
+        <button class='next' on:click={onNext}>Next!</button>
+      </div>
     {/if}   
     <Markdown markdown={challenge.instructions}/>
     {#if result && edited}<Feedback {result}/>{/if}
