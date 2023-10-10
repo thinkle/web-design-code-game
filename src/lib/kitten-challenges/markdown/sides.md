@@ -1,10 +1,9 @@
 # left, right, top, bottom
 
-Every box-model property we've studied (margin, padding, border)
-can be specified for only one side at a time, which allows us
-to make an item have an item on the left, the right, the top,
-or the bottom.
+Every box-model property we've explored so far—margin, padding, and border—can be specified for each side of an element individually, allowing you to independently adjust the space or border on the left, right, top, or bottom of an item.
 
-Use a combination of left, right, top and bottom properties to
-put the kitten 1/3 of the way across the room, standing on a 
-line, just like in the example below.
+For instance:
+
+border-right-width: 5px; applies a border width only to the right side of an element.
+padding-bottom: 10px; adds padding only to the bottom side of an element.
+In this challenge, use a combination of these properties to position the kitten 1/3 of the way across the room, ensuring it stands on a line, just like in the example below.

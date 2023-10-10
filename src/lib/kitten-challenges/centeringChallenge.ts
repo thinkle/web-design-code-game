@@ -23,22 +23,18 @@ export const centeringChallenge: ChallengeDefinition = {
   hiddenHTMLBefore: "<main>",
   hiddenHTMLAfter: "</main>",
   hiddenCSSBefore:
-    catcss + '\n' + maincss + '\n' +
+    catcss +
+    "\n" +
+    maincss +
+    "\n" +
     `
     main { 
       background-color: #222;
       width: 100vw;
       height: 100vh;      
     }
-
-    .cat {
-      width: ${CAT_SIZE}px;
-      height: ${CAT_SIZE}px;      
-    }
-
-    .box {
-      width: ${BOX_SIZE}px;
-      height: ${BOX_SIZE}px;
+    
+    .box {            
       background-color: beige;      
     }
 
@@ -47,15 +43,19 @@ export const centeringChallenge: ChallengeDefinition = {
     }
   `,
   css: `
-    .box {
-      width: ${BOX_SIZE}px;
-      height: ${BOX_SIZE}px;
-    }
-    .room {
-      width: ${ROOM_SIZE}px;
-      height: ${ROOM_SIZE}px;
-    }
-    WORK
+.cat {
+  width: ${CAT_SIZE}px;
+  height: ${CAT_SIZE}px;      
+}
+.box {
+  width: ${BOX_SIZE}px;
+  height: ${BOX_SIZE}px;
+}
+.room {
+  width: ${ROOM_SIZE}px;
+  height: ${ROOM_SIZE}px;
+}
+WORK
   `,
   starterCode: `
     .box {
@@ -95,9 +95,10 @@ export const centeringChallenge: ChallengeDefinition = {
     const catOffsets = calculateOffsets(boxElement, catElement);
     if (!isUsingBoxModel(boxElement, contentWindow)) {
       items.push({
-        name:"Use the box model, Luke!",
-        message : 'Your .box element is using something other than the box model',
-        isValid : false,
+        name: "Use the box model, Luke!",
+        message:
+          "Your .box element is using something other than the box model",
+        isValid: false,
       });
     }
     if (!isUsingBoxModel(roomElement, contentWindow)) {

@@ -9,9 +9,9 @@ import { cozyCatNapChallenge } from "./kitten-challenges/catnapChallenge";
 import { escapeWaterChallenge } from "./kitten-challenges/waterChallenge";
 
 export let challenges: ChallengeDefinition[] = [
-  escapeWaterChallenge,
   paddingChallenge,
   marginChallenge,
+  escapeWaterChallenge,
   borderChallenge,
   inlineBlockChallenge,
   sidesChallenge,
