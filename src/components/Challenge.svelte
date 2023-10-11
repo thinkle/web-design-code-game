@@ -68,7 +68,10 @@
 </script>
 
 <ThreeColumn>
-  <div slot="left">
+  <div slot="left" class="code">
+    <button class="reset"
+      on:click={()=>$studentWork=challenge.starterCode}
+    >Restart</button>
     <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)}
       styles={{
               "&": {
@@ -109,5 +112,22 @@
 
 
 <style>
-  
+  button {    
+    box-shadow: 4px 4px #ccc9;
+    z-index: 1;
+  }
+  .next {
+    position: fixed;
+    top: 64px;
+    right: 64px;    
+  }
+  .reset {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+  .code {
+    position: relative;
+    padding-top: 32px;
+  }
 </style>
