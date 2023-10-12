@@ -13,6 +13,7 @@ const PADDING = 5;
 const threshhold = 5;
 
 export const marginChallenge: ChallengeDefinition = {
+  title: "Fighting Cats",
   language: "css",
   height: 140,
   instructions,
@@ -24,8 +25,8 @@ export const marginChallenge: ChallengeDefinition = {
       <div class="cat"></div>
     </div>
   `,
-  hiddenHTMLBefore : '<main>',
-  hiddenHTMLAfter : '</main>',
+  hiddenHTMLBefore: "<main>",
+  hiddenHTMLAfter: "</main>",
   hiddenCSSBefore: `main { background-color: #222}` + maincss + "\n" + catcss,
   css: `
     
@@ -55,7 +56,7 @@ export const marginChallenge: ChallengeDefinition = {
   }
   `,
   validate(contentWindow) {
-    let boxes = contentWindow.document.querySelectorAll(".box");    
+    let boxes = contentWindow.document.querySelectorAll(".box");
     let box1Element = boxes[0] as HTMLDivElement;
     let box2Element = boxes[1] as HTMLDivElement;
 

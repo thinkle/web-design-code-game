@@ -1,6 +1,5 @@
-
 export type ChallengeDefinitionOld = {
-  language: 'html' | 'css' | 'js';
+  language: "html" | "css" | "js";
   template: string;
   instructions: string;
   solution: string;
@@ -12,21 +11,20 @@ export type ChallengeDefinitionOld = {
 
 // challengeType.ts
 
-import type { ValidationResult } from './validation';
+import type { ValidationResult } from "./validation";
 
 export type ChallengeDefinition = {
-  language: 'html' | 'css' | 'js';
-  html : string;
-  css? : string;
-  js? : string;
-  hiddenHTMLBefore? : string;
-  hiddenHTMLAfter? : string;
-  hiddenCSSBefore? : string;
+  title: string;
+  language: "html" | "css" | "js";
+  html: string;
+  css?: string;
+  js?: string;
+  hiddenHTMLBefore?: string;
+  hiddenHTMLAfter?: string;
+  hiddenCSSBefore?: string;
   instructions: string;
   starterCode: string;
-  solution: string;      
+  solution: string;
   validate: (contentWindow: Window) => ValidationResult;
   height?: number;
 };
-
-

@@ -1,15 +1,15 @@
-
 import type { ChallengeDefinition } from "../../types/challenge";
 import type { ValidationItem } from "../../types/validation";
 import instructions from "./markdown/centering.md?raw";
 import { calculateOffsets, isUsingBoxModel } from "../validation";
-import catcss from './css/cat.css?raw'
-import maincss from './css/main.css?raw'
+import catcss from "./css/cat.css?raw";
+import maincss from "./css/main.css?raw";
 const CAT_SIZE = 30;
 const BOX_SIZE = 70;
 const ROOM_SIZE = 200;
 
 export const centeringChallenge: ChallengeDefinition = {
+  title: "Cat in Box",
   language: "css",
   height: 200,
   instructions,

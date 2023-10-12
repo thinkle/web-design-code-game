@@ -9,11 +9,11 @@ const CAT_WIDTH = 30;
 const CAT_HEIGHT = 30;
 const BOX_SIZE = 40;
 const BORDER_WIDTH = 5;
-const MARGIN = 20
-const PADDING = 20
-
+const MARGIN = 20;
+const PADDING = 20;
 
 export const borderChallenge: ChallengeDefinition = {
+  title: "Fence in the Cat",
   language: "css",
   height: 200,
   instructions,
@@ -73,20 +73,20 @@ export const borderChallenge: ChallengeDefinition = {
   `,
   validate(contentWindow) {
     let solved = false;
-    let yard = contentWindow.document.querySelector('.cat-yard') as HTMLDivElement;
+    let yard = contentWindow.document.querySelector(
+      ".cat-yard"
+    ) as HTMLDivElement;
     let items: ValidationItem[] = [];
     let borderInfo = hasVisibleBorder(yard);
     if (borderInfo.all) {
-      return {isSolved:true,items:[]}
+      return { isSolved: true, items: [] };
     } else {
-      for (let dir of ['left','right','top','bottom']) {
-        items.push(
-          {
-            isValid : borderInfo[dir],
-            name : `${dir} border`,
-            message : `What if the dog comes from the ${dir}!`
-          }
-        );
+      for (let dir of ["left", "right", "top", "bottom"]) {
+        items.push({
+          isValid: borderInfo[dir],
+          name: `${dir} border`,
+          message: `What if the dog comes from the ${dir}!`,
+        });
       }
     }
     return {

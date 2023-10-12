@@ -1,6 +1,10 @@
 // validationLibrary.js
 
-import type {CssSolution,ValidationResult,ValidationItem} from '../types/validation';
+import type {
+  CssSolution,
+  ValidationResult,
+  ValidationItem,
+} from "../types/validation";
 
 export function validateCssProperties(
   element: Element,
@@ -40,28 +44,29 @@ export function validateCssProperties(
   };
 }
 
-
-
-
-export function isUsingBoxModel(element: HTMLDivElement, contentWindow: Window): boolean {
+export function isUsingBoxModel(
+  element: HTMLDivElement,
+  contentWindow: Window
+): boolean {
   let style = contentWindow.getComputedStyle(element);
-  let valid = (!style.position || style.position === 'static') && (!style.display || style.display.includes('block'));
-  if (!valid) {        
-    return false
+  let valid =
+    (!style.position || style.position === "static") &&
+    (!style.display || style.display.includes("block"));
+  if (!valid) {
+    return false;
   } else {
     return true;
   }
 }
 
-
 export function validateSpaceBetweenElementsLR(
-  element1: HTMLDivElement, 
-  element2: HTMLDivElement, 
+  element1: HTMLDivElement,
+  element2: HTMLDivElement,
   minSpace: number
 ): boolean {
   let rect1 = element1.getBoundingClientRect();
   let rect2 = element2.getBoundingClientRect();
-  return (rect2.left - rect1.right) >= minSpace;
+  return rect2.left - rect1.right >= minSpace;
 }
 export function validateSpaceBetweenElementsTB(
   element1: HTMLDivElement,
@@ -71,17 +76,16 @@ export function validateSpaceBetweenElementsTB(
   let rect1 = element1.getBoundingClientRect();
   let rect2 = element2.getBoundingClientRect();
   if (rect1.top > rect2.top) {
-    [rect2,rect1] = [rect1,rect2];
+    [rect2, rect1] = [rect1, rect2];
   }
-  debugger;
   console.log("measured", rect2.top - rect1.bottom, "space");
-  return (rect2.top - rect1.bottom) >= minSpace;
+  return rect2.top - rect1.bottom >= minSpace;
 }
 
 export function validateElementSize(
-  element: HTMLDivElement, 
-  expectedWidth: number, 
-  expectedHeight: number, 
+  element: HTMLDivElement,
+  expectedWidth: number,
+  expectedHeight: number,
   threshold: number = 5
 ): boolean {
   let rect = element.getBoundingClientRect();
@@ -90,7 +94,6 @@ export function validateElementSize(
     Math.abs(rect.height - expectedHeight) <= threshold
   );
 }
-
 
 export function hasVisibleBorder(element: HTMLElement): {
   top: boolean;
@@ -123,7 +126,6 @@ export function hasVisibleBorder(element: HTMLElement): {
   };
 }
 
-
 export function calculateOffsets(element1: HTMLElement, element2: HTMLElement) {
   const rect1 = element1.getBoundingClientRect();
   const rect2 = element2.getBoundingClientRect();
@@ -139,8 +141,7 @@ export function calculateOffsets(element1: HTMLElement, element2: HTMLElement) {
 export function validateHorizontalAlignment(
   elements: NodeListOf<Element>,
   contentWindow: Window
-) : boolean {  
-
+): boolean {
   const firstElementTop = elements[0].getBoundingClientRect().top;
 
   elements.forEach((element, index) => {

@@ -12,6 +12,7 @@ const BOX_SIZE = 70;
 const threshhold = 5;
 
 export var paddingChallenge: ChallengeDefinition = {
+  title: "Cat in a Corner",
   language: "css",
   height: 140,
   instructions,
@@ -19,7 +20,7 @@ export var paddingChallenge: ChallengeDefinition = {
   hiddenHTMLBefore: "<main>",
   hiddenHTMLAfter: `</main>
   `,
-  hiddenCSSBefore: maincss+'\n'+catcss,
+  hiddenCSSBefore: maincss + "\n" + catcss,
   css: `
   WORK
 
@@ -31,6 +32,7 @@ export var paddingChallenge: ChallengeDefinition = {
   starterCode: `
     .box {
       box-sizing: border-box; 
+      border: 2px solid brown;
       width: ${BOX_SIZE}px;
       height: ${BOX_SIZE}px;
 
@@ -39,6 +41,7 @@ export var paddingChallenge: ChallengeDefinition = {
   solution: `
     .box {      
       box-sizing: border-box; 
+      border: 2px solid brown;
       width: ${BOX_SIZE}px;
       height: ${BOX_SIZE}px;
       padding: ${PADDING}px;
@@ -115,9 +118,9 @@ export var paddingChallenge: ChallengeDefinition = {
         message: "The box-sizing should be border-box!",
       });
       isSolved = false;
-    }    
+    }
     // Validate Positioning of .cat
-    if (!isUsingBoxModel(catElement,contentWindow)) {
+    if (!isUsingBoxModel(catElement, contentWindow)) {
       items.push({
         name: "Use the box!",
         isValid: false,
@@ -127,12 +130,11 @@ export var paddingChallenge: ChallengeDefinition = {
     }
 
     // Validate Positioning of .box
-    if (!isUsingBoxModel(boxElement,contentWindow)) {
+    if (!isUsingBoxModel(boxElement, contentWindow)) {
       items.push({
         name: "Box Positioning",
         isValid: false,
-        message:
-          "Ensure the box is using the box model!"
+        message: "Ensure the box is using the box model!",
       });
       isSolved = false;
     }

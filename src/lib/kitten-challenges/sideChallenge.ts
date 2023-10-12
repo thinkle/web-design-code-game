@@ -8,6 +8,7 @@ import { calculateOffsets, hasVisibleBorder } from "../validation";
 const CAT_HEIGHT = 30;
 
 export const sidesChallenge: ChallengeDefinition = {
+  title: "Cat on a Line",
   language: "css",
   height: 140,
   instructions,
@@ -50,18 +51,22 @@ export const sidesChallenge: ChallengeDefinition = {
       padding-bottom: 0;
     }
   `,
-  validate(contentWindow) {    
-    let boxElement = contentWindow.document.querySelector('.box') as HTMLDivElement;
-    let catElement = boxElement.querySelector('.cat') as HTMLDivElement;
+  validate(contentWindow) {
+    let boxElement = contentWindow.document.querySelector(
+      ".box"
+    ) as HTMLDivElement;
+    let catElement = boxElement.querySelector(".cat") as HTMLDivElement;
     let items: ValidationItem[] = [];
     let isSolved = true;
     let boxrect = boxElement.getBoundingClientRect();
     const computedStyle = contentWindow.getComputedStyle(boxElement);
     const visibleBorder = hasVisibleBorder(boxElement);
-    let offsets = calculateOffsets(boxElement,catElement);
+    let offsets = calculateOffsets(boxElement, catElement);
     // Validate padding-left
-    if (offsets.left < boxrect.width * 0.3 || 
-        offsets.left > boxrect.width * 0.5) {
+    if (
+      offsets.left < boxrect.width * 0.3 ||
+      offsets.left > boxrect.width * 0.5
+    ) {
       items.push({
         name: "1/3 of the way across",
         message: "Move the cat one-third of the way from left to right",

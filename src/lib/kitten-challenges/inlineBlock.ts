@@ -2,11 +2,16 @@ import type { ChallengeDefinition } from "../../types/challenge";
 import type { ValidationItem } from "../../types/validation";
 
 import instructions from "./markdown/inlineBlock.md?raw";
-import maincss from './css/main.css?raw'
+import maincss from "./css/main.css?raw";
 import catcss from "./css/cat.css?raw";
-import { validateHorizontalAlignment, validateSpaceBetweenElementsLR, validateSpaceBetweenElementsTB } from "../validation";
+import {
+  validateHorizontalAlignment,
+  validateSpaceBetweenElementsLR,
+  validateSpaceBetweenElementsTB,
+} from "../validation";
 
 export const inlineBlockChallenge: ChallengeDefinition = {
+  title: "Cats in Line",
   language: "css",
   height: 200,
   instructions,
@@ -40,28 +45,28 @@ export const inlineBlockChallenge: ChallengeDefinition = {
       margin: 16px;
     }
   `,
-  validate(contentWindow) {    
+  validate(contentWindow) {
     let boxElements = contentWindow.document.querySelectorAll(".box");
     let items: ValidationItem[] = [];
     let isSolved = true;
 
     // Validate display property and margin
     let marginValidation = {
-      name : 'Gap between boxes',
-      message : 'Put more space between the boxes!',
-      isValid : true
-    }
+      name: "Gap between boxes",
+      message: "Put more space between the boxes!",
+      isValid: true,
+    };
     boxElements.forEach((box, index) => {
       if (index) {
-        let otherBox = boxElements[index-1];
-        let marginValid = validateSpaceBetweenElementsLR(otherBox,box,16);
-        if (!marginValid) {            
-            marginValidation.isValid = false;
-            isSolved = false;                      
+        let otherBox = boxElements[index - 1];
+        let marginValid = validateSpaceBetweenElementsLR(otherBox, box, 16);
+        if (!marginValid) {
+          marginValidation.isValid = false;
+          isSolved = false;
         }
       }
     });
-    items.push(marginValidation)
+    items.push(marginValidation);
     let horizontalValidation = {
       name: "Line boxes up horizontally",
       message: `Boxes in a line horizontally`,
@@ -71,7 +76,7 @@ export const inlineBlockChallenge: ChallengeDefinition = {
     if (!horizontalValidation.isValid) {
       isSolved = false;
     }
-      
+
     return {
       isSolved,
       items,

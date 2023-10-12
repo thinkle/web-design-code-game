@@ -1,3 +1,4 @@
+
 h1,h2,h3,h4,h5,h6,p {
   margin-block-start: 0;
   margin-block-end: 8px;
@@ -73,6 +74,8 @@ button.forward:after {
   --background-color: #f8f8f8;
   --text-color: #333;
   --border-color: #ddd;
+  --dark: #222;
+  --white: #fefeda;
 }
 
 body {

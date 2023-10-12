@@ -4,9 +4,14 @@ import type { ValidationItem } from "../../types/validation";
 import instructions from "./markdown/catnap.md?raw";
 import maincss from "./css/main.css?raw";
 import catcss from "./css/cat.css?raw";
-import { calculateOffsets, doElementsOverlap, hasVisibleBorder } from "../validation";
+import {
+  calculateOffsets,
+  doElementsOverlap,
+  hasVisibleBorder,
+} from "../validation";
 
 export const cozyCatNapChallenge: ChallengeDefinition = {
+  title: "Cat Nap",
   language: "css",
   height: 300,
   instructions,
@@ -161,11 +166,11 @@ export const cozyCatNapChallenge: ChallengeDefinition = {
       message: "The cat should be on the right half of the bed.",
       isValid: catOffsets.left >= bed.getBoundingClientRect().width / 2,
     });
-                
+
     items.push({
       name: "Blanket overlaps pillow",
       message: "The blanket should overlap the pillow.",
-      isValid: doElementsOverlap(pillow,blanket)
+      isValid: doElementsOverlap(pillow, blanket),
     });
 
     // Check if the bed has a visible bottom and top border

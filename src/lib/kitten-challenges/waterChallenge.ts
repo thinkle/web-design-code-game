@@ -9,6 +9,7 @@ import {
 } from "../validation";
 
 export const escapeWaterChallenge: ChallengeDefinition = {
+  title: "Beach Cat",
   language: "css",
   height: 200,
   instructions,
@@ -75,10 +76,9 @@ export const escapeWaterChallenge: ChallengeDefinition = {
 
     items.push({
       name: "Cat Position",
-      message:
-        "The cat should be far away from the water!",
+      message: "The cat should be far away from the water!",
       isValid: validateSpaceBetweenElementsTB(water, cat, 50),
-    });    
+    });
     return {
       isSolved: items.every((item) => item.isValid),
       items,

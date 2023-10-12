@@ -1,45 +1,121 @@
 <script lang="ts">
+  import ChallengeMenu from "./ChallengeMenu.svelte";
+
   import Challenge from "./components/Challenge.svelte";
-  import {challenges} from './lib/challenges';
-  
+  import PopupMenu from "./components/PopupMenu.svelte";
+  import { challengeSets, type ChallengeSetId } from "./lib/challenges";
+  import type { ChallengeDefinition } from "./types/challenge";
+
+  let challengeId: "box" = "box";
+  let challengeSet = challengeSets[challengeId];
+
+  let challenges = challengeSet.challenges;
   let idx = 0;
   let theChallenge = challenges[idx];
-  
-  function nextChallenge () {
-    idx++;
-    theChallenge = challenges[idx];
-    if (!theChallenge) {
-      idx--;
-      completed = true;
-    }
-  }
-  function lastChallenge () {
-    idx--;
-    theChallenge = challenges[idx];
-    completed = false;
-  }
-  let completed : boolean;
-</script>
-<main>
-<header>
-  <div>
-    {#if theChallenge != challenges[0]}
-      <button on:click={lastChallenge} class='back'>Back</button>
-    {/if}
-  </div>
-  <h1>Cats in Boxes</h1>
-  <div>
 
-  </div>
-</header>
-{#if completed}
-<section class="win">
-<h1>You won!</h1>
-<p>You've completed all my challenges so far!</p>
-</section>
-{:else}
-<Challenge challenge={theChallenge} onNext={nextChallenge}/>
-{/if}
+  $: {
+    challengeSet = challengeSets[challengeId];
+    challenges = challengeSet.challenges;
+    idx = 0;
+    theChallenge = challenges[0];
+  }
+
+  function nextChallenge() {
+    idx++;
+  }
+  function lastChallenge() {
+    idx--;
+  }
+
+  function setChallenge(idx) {
+    if (idx > challenges.length) {
+      idx = 0;
+      completed = true;
+    } else {
+      theChallenge = challenges[idx];
+      completed = false;
+    }
+    showIndexChangePopup = false;
+  }
+
+  $: setChallenge(idx);
+  let showIndexChangePopup: boolean;
+  let showChallengeChangePopup: boolean;
+
+  let challengePopupOptions = Object.keys(challengeSets).map(
+    (key: ChallengeSetId) => {
+      let cs = challengeSets[key];
+      return {
+        value: key,
+        html: `<span class="name">${cs.name}</span>: <span class="concept">${cs.concept} (${cs.challenges.length} challenges)`,
+      };
+    }
+  );
+
+  let completed: boolean;
+  let popupOptions: { html: string; value: number }[] = [];
+  function getPopupOptions(cc: ChallengeDefinition[]) {
+    return cc.map((c, i) => ({
+      html: `<span class="number">${i + 1}</span> <span class="name">${
+        c.title
+      }</span>`,
+      value: i,
+    }));
+  }
+
+  $: popupOptions = getPopupOptions(challenges);
+</script>
+
+<main>
+  <header>
+    <div>
+      {#if theChallenge != challenges[0]}
+        <button on:click={lastChallenge} class="back">Back</button>
+      {/if}
+    </div>
+    <div class="title-box">
+      <h1>
+        {#if showChallengeChangePopup}
+          <PopupMenu
+            onClose={() => (showChallengeChangePopup = false)}
+            options={challengePopupOptions}
+            onSelected={(id) => (challengeId = id)}
+          />
+        {/if}
+        <button
+          on:click={() => (showChallengeChangePopup = true)}
+          class="subtle">✎</button
+        >
+        {challengeSet.name}:
+        <span class="subtitle">{theChallenge.title}</span>
+      </h1>
+      <h3>Learn the {challengeSet.concept}</h3>
+    </div>
+
+    <div class="count">
+      Step
+      <button
+        class="subtle border"
+        on:click={() => (showIndexChangePopup = true)}>{idx + 1}</button
+      >
+      of {challengeSet.challenges.length}
+      {#if showIndexChangePopup}
+        <PopupMenu
+          onClose={() => (showIndexChangePopup = false)}
+          options={popupOptions}
+          onSelected={(i) => (idx = i)}
+        />
+      {/if}
+    </div>
+  </header>
+  {#if completed}
+    <section class="win">
+      <h1>You won!</h1>
+      <p>You've completed all my challenges so far!</p>
+    </section>
+  {:else}
+    <Challenge challenge={theChallenge} onNext={nextChallenge} />
+  {/if}
 </main>
 
 <style>
@@ -62,5 +138,50 @@
   h1 {
     margin: 0;
   }
-
+  .title-box {
+    text-align: center;
+  }
+  .title-box h3 {
+    color: var(--light-text);
+    font-size: small;
+  }
+  header div:first-child,
+  header div:last-child {
+    width: 10%;
+  }
+  .count {
+    font-size: small;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  header {
+    border-bottom: 3px solid var(--dark);
+    background-color: var(--dark);
+    color: var(--white);
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+  .subtle {
+    background-color: transparent;
+    color: inherit;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+  .subtle.border {
+    border: 1px solid var(--white);
+  }
+  h1 {
+    display: flex;
+    align-items: center;
+  }
+  .subtitle {
+    font-weight: normal;
+    font-style: italic;
+    font-size: 1.1rem;
+    display: flex;
+    align-self: bottom;
+  }
 </style>
