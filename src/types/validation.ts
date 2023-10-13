@@ -8,6 +8,9 @@ export type ValidationItem = {
   name: string;
   isValid: boolean;
   message?: string;
+  mesaured?: string;
+  element?: HTMLElement;
+  expected?: string;
 };
 
 export type ValidationResult = {

@@ -11,7 +11,7 @@
   {/if}
 
   <ul>
-    {#each result.items as { name, isValid, message } (name)}
+    {#each result.items as { name, isValid, message }}
       <li class:valid={isValid} class:invalid={!isValid}>
         {#if isValid}
           ✔️ {name}
@@ -28,7 +28,7 @@
     margin: 1em;
     padding: 1em;
     border-radius: 8px;
-    background-color: #f8f8f8;    
+    background-color: #f8f8f8;
   }
   h2 {
     color: #333;

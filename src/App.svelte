@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import ChallengeMenu from "./ChallengeMenu.svelte";
 
   import Challenge from "./components/Challenge.svelte";
@@ -6,7 +7,7 @@
   import { challengeSets, type ChallengeSetId } from "./lib/challenges";
   import type { ChallengeDefinition } from "./types/challenge";
 
-  let challengeId: "box" = "box";
+  let challengeId: ChallengeSetId = "selectors";
   let challengeSet = challengeSets[challengeId];
 
   let challenges = challengeSet.challenges;
@@ -28,7 +29,10 @@
   }
 
   function setChallenge(idx) {
-    if (idx > challenges.length) {
+    if (idx < 0) {
+      idx = 0;
+    }
+    if (idx >= challenges.length) {
       idx = 0;
       completed = true;
     } else {
@@ -64,6 +68,34 @@
   }
 
   $: popupOptions = getPopupOptions(challenges);
+
+  let loaded: boolean;
+  onMount(() => {
+    function handleHashChange() {
+      // Extracting the hash (without #) and updating challengeId
+      let possibleId = window.location.hash.substring(1);
+      if (["box", "selectors"].includes(possibleId)) {
+        challengeId = possibleId as ChallengeSetId;
+      }
+    }
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", handleHashChange);
+
+    // Initial check in case the app is loaded with a hash in the URL
+    handleHashChange();
+    loaded = true;
+    // Cleanup: remove the event listener when the component is destroyed
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  });
+
+  $: {
+    if (loaded) {
+      window.location.hash = challengeId;
+    }
+  }
 </script>
 
 <main>
@@ -87,7 +119,7 @@
           class="subtle">✎</button
         >
         {challengeSet.name}:
-        <span class="subtitle">{theChallenge.title}</span>
+        {theChallenge.title}
       </h1>
       <h3>Learn the {challengeSet.concept}</h3>
     </div>

@@ -1,14 +1,3 @@
-export type ChallengeDefinitionOld = {
-  language: "html" | "css" | "js";
-  template: string;
-  instructions: string;
-  solution: string;
-  html: string;
-  css: string;
-  js: string;
-  starter: string;
-};
-
 // challengeType.ts
 
 import type { ValidationResult } from "./validation";
@@ -24,7 +13,10 @@ export type ChallengeDefinition = {
   hiddenCSSBefore?: string;
   instructions: string;
   starterCode: string;
+  requireHover?: boolean;
   solution: string;
-  validate: (contentWindow: Window) => ValidationResult;
+  validate: (
+    contentWindow: Window
+  ) => ValidationResult | Promise<ValidationResult>;
   height?: number;
 };

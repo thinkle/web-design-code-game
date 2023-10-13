@@ -6,42 +6,26 @@ import type {
   ValidationItem,
 } from "../types/validation";
 
-export function validateCssProperties(
-  element: Element,
-  solution: CssSolution,
-  tolerance: number = 1
-): ValidationResult {
-  const computedStyle = getComputedStyle(element);
-  const items: ValidationItem[] = [];
+export function isElementRotated(
+  element: HTMLDivElement,
+  contentWindow: Window
+): boolean {
+  const style = contentWindow.getComputedStyle(element);
+  const transform = style.transform;
 
-  for (const [property, expectedValue] of Object.entries(solution)) {
-    const actualValue = computedStyle[property];
-    let isValid = false;
-    let message = "";
-
-    if (typeof expectedValue === "number" && !isNaN(parseFloat(actualValue))) {
-      isValid = Math.abs(parseFloat(actualValue) - expectedValue) < tolerance;
-      message = isValid
-        ? `Correct ${property}!`
-        : `The ${property} should be ${expectedValue}px.`;
-    } else {
-      isValid = actualValue === expectedValue;
-      message = isValid
-        ? `Correct ${property}!`
-        : `The ${property} should be ${expectedValue}.`;
-    }
-
-    items.push({
-      name: `Validate ${property}`,
-      isValid,
-      message,
-    });
+  // If there's no transform property, it's not rotated
+  if (transform === "none" || !transform) {
+    return false;
   }
+  // Extracting the rotation matrix values
+  const values = transform.split("(")[1].split(")")[0].split(",").map(Number);
 
-  return {
-    isSolved: items.every((item) => item.isValid),
-    items,
-  };
+  // Calculating the angle of rotation in degrees
+  // using arctan(y/x) and converting radians to degrees
+  const angle = Math.atan2(values[1], values[0]) * (180 / Math.PI);
+
+  // If the angle is not 0, the element is rotated
+  return angle !== 0;
 }
 
 export function isUsingBoxModel(
@@ -170,4 +154,308 @@ export function doElementsOverlap(
       rect1.top > rect2.bottom
     ) // rect1 is below rect2
   );
+}
+
+export class PropertyChecker {
+  private contentWindow: Window;
+
+  private static iframe: HTMLIFrameElement | null = null;
+
+  private getIframe(): HTMLIFrameElement {
+    if (!PropertyChecker.iframe) {
+      PropertyChecker.iframe = document.createElement("iframe");
+      PropertyChecker.iframe.style.display = "none";
+      document.body.appendChild(PropertyChecker.iframe);
+    }
+    return PropertyChecker.iframe;
+  }
+
+  constructor(contentWindow: Window) {
+    this.contentWindow = contentWindow;
+  }
+
+  checkCSSProperty(
+    element: HTMLElement,
+    property: string,
+    expectedCss: string | null,
+    customMessageFn?: (expected: string, actual: string) => string,
+    customName?: string
+  ): ValidationItem {
+    const iframe = this.getIframe();
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+
+    if (!iframeDoc) {
+      throw new Error("Unable to access iframe's document");
+    }
+
+    // Clone the element into the iframe and apply the CSS to check
+    const elementClone = iframeDoc.importNode(element, true);
+    elementClone.style.cssText = `${property}: ${expectedCss};`;
+    iframeDoc.body.appendChild(elementClone);
+
+    // Get the computed style
+    const expectedComputedCss = getComputedStyle(elementClone)[property];
+    debugger;
+    const actualCss = getComputedStyle(element)[property];
+    // Clean up: remove the element from the iframe
+    iframeDoc.body.removeChild(elementClone);
+
+    const isValid = actualCss === expectedComputedCss;
+    const name = customName || `Check ${property} for ${element.tagName}`;
+    const message = customMessageFn
+      ? customMessageFn(expectedCss ?? "none", actualCss)
+      : `Expected ${property}: ${
+          expectedCss ?? "none"
+        }; (${expectedComputedCss}) but got ${property}: ${actualCss};`;
+
+    return {
+      name,
+      isValid,
+      message,
+      expected: expectedCss,
+      measured: actualCss,
+      element, // Not returning the element since it's in a different document (iframe)
+    };
+  }
+
+  checkAllPV(
+    selector: string,
+    property: string,
+    expectedCss: string | null,
+    customMessageFn?: (expected: string, actual: string) => string,
+    customName?: string
+  ): ValidationItem {
+    const elements = Array.from(
+      this.contentWindow.document.querySelectorAll(selector)
+    );
+    for (const el of elements) {
+      const check = this.checkCSSProperty(
+        el,
+        property,
+        expectedCss,
+        customMessageFn,
+        customName
+      );
+      if (!check.isValid) return check;
+    }
+    return {
+      name: customName || `Check ${property} for all ${selector}`,
+      isValid: true,
+      message: `All ${selector} have correct ${property}.`,
+    };
+  }
+
+  checkOnePV(
+    selector: string,
+    property: string,
+    expectedCss: string | null,
+    customMessageFn?: (expected: string, actual: string) => string,
+    customName?: string
+  ): ValidationItem {
+    const element = this.contentWindow.document.querySelector(selector);
+    if (!element) {
+      return {
+        name: customName || `Check ${property} for ${selector}`,
+        isValid: false,
+        message: `No element found for selector: ${selector}`,
+      };
+    }
+    return this.checkCSSProperty(
+      element,
+      property,
+      expectedCss,
+      customMessageFn,
+      customName
+    );
+  }
+
+  checkAllButPV(
+    selector: string,
+    property: string,
+    expectedCss: string | null,
+    excludeSelectors: string[],
+    customMessageFn?: (expected: string, actual: string) => string,
+    customName?: string
+  ): ValidationItem {
+    const excludedElements = excludeSelectors.flatMap((sel) =>
+      Array.from(this.contentWindow.document.querySelectorAll(sel))
+    );
+    const elements = Array.from(
+      this.contentWindow.document.querySelectorAll(selector)
+    ).filter((el) => !excludedElements.includes(el));
+
+    for (const el of elements) {
+      const check = this.checkCSSProperty(
+        el,
+        property,
+        expectedCss,
+        customMessageFn,
+        customName
+      );
+      if (!check.isValid) return check;
+    }
+    return {
+      name:
+        customName ||
+        `Check ${property} for all ${selector} excluding ${excludeSelectors.join(
+          ", "
+        )}`,
+      isValid: true,
+      message: `All ${selector} (excluding ${excludeSelectors.join(
+        ", "
+      )}) have correct ${property}.`,
+    };
+  }
+
+  checkCSSProperties(
+    element: HTMLElement,
+    propDic: { [key: string]: string },
+    customMessageFn?: (expected: string, actual: string) => string,
+    customName?: string
+  ) {
+    let validationItem;
+    for (let key in propDic) {
+      validationItem = this.checkCSSProperty(
+        element,
+        key,
+        propDic[key],
+        customMessageFn,
+        customName
+      );
+      if (!validationItem.isValid) {
+        return validationItem;
+      }
+    }
+    return validationItem;
+  }
+
+  checkOne(
+    selector: string,
+    properties: { [key: string]: string | null },
+    customMessageFn?: (expected: string, actual: string) => string,
+    customName?: string
+  ): ValidationItem {
+    const element = this.contentWindow.document.querySelector(selector);
+    if (!element) {
+      return {
+        name: customName || `Check properties for ${selector}`,
+        isValid: false,
+        message: `No element found for selector: ${selector}`,
+      };
+    }
+    for (const prop in properties) {
+      const check = this.checkCSSProperty(
+        element,
+        prop,
+        properties[prop],
+        customMessageFn,
+        customName
+      );
+      if (!check.isValid) return check;
+    }
+    return {
+      name: customName || `All properties correct for ${selector}`,
+      isValid: true,
+      message: `All properties are correctly set for ${selector}.`,
+    };
+  }
+
+  checkAll(
+    selector: string,
+    properties: { [key: string]: string | null },
+    customMessageFn?: (expected: string, actual: string) => string,
+    customName?: string
+  ): ValidationItem {
+    const elements = Array.from(
+      this.contentWindow.document.querySelectorAll(selector)
+    );
+    for (const el of elements) {
+      for (const prop in properties) {
+        const check = this.checkCSSProperty(
+          el,
+          prop,
+          properties[prop],
+          customMessageFn,
+          customName
+        );
+        if (!check.isValid) return check;
+      }
+    }
+    return {
+      name: customName || `Check properties for all ${selector}`,
+      isValid: true,
+      message: `All ${selector} have correct properties.`,
+    };
+  }
+
+  checkAllBut(
+    selector: string,
+    properties: { [key: string]: string | null },
+    excludeSelectors: string[],
+    customMessageFn?: (expected: string, actual: string) => string,
+    customName?: string
+  ): ValidationItem {
+    const excludedElements = excludeSelectors.flatMap((sel) =>
+      Array.from(this.contentWindow.document.querySelectorAll(sel))
+    );
+    const elements = Array.from(
+      this.contentWindow.document.querySelectorAll(selector)
+    ).filter((el) => !excludedElements.includes(el));
+
+    for (const el of elements) {
+      for (const prop in properties) {
+        const check = this.checkCSSProperty(
+          el,
+          prop,
+          properties[prop],
+          customMessageFn,
+          customName
+        );
+        if (!check.isValid) return check;
+      }
+    }
+    return {
+      name:
+        customName ||
+        `Check properties for all ${selector} excluding ${excludeSelectors.join(
+          ", "
+        )}`,
+      isValid: true,
+      message: `All ${selector} (excluding ${excludeSelectors.join(
+        ", "
+      )}) have correct properties.`,
+    };
+  }
+
+  hoverOne(selector: string, extraDelay = 0): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const element = this.contentWindow.document.querySelector(selector);
+      if (!element) {
+        reject(`No element found for selector: ${selector}`);
+        return;
+      }
+
+      // Set up a one-time event listener
+      const onMouseOver = async () => {
+        element.removeEventListener("mouseover", onMouseOver);
+        await new Promise((resolve) => setTimeout(resolve, extraDelay));
+        resolve();
+      };
+
+      element.addEventListener("mouseover", onMouseOver);
+    });
+  }
+
+  async unhoverOne(selector: string): Promise<void> {
+    const element = this.contentWindow.document.querySelector(selector);
+    if (!element) {
+      throw new Error(`No element found for selector: ${selector}`);
+    }
+
+    // Trigger unhover
+    element.dispatchEvent(new MouseEvent("mouseout", { bubbles: true }));
+
+    // Wait for a frame to ensure CSS is applied
+    await new Promise(requestAnimationFrame);
+  }
 }

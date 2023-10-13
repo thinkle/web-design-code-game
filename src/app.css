@@ -81,6 +81,7 @@ button.forward:after {
 body {
   background-color: var(--background-color);
   color: var(--color);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 h1 {

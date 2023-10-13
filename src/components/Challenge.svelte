@@ -53,8 +53,16 @@
     // Set a new timeout
     timeoutId = setTimeout(() => {
       if (contentWindow) {
-        result = challenge.validate(contentWindow);
-        solved = result.isSolved;
+        let returnValue = challenge.validate(contentWindow);
+        if (returnValue instanceof Promise) {
+          returnValue.then((r: ValidationResult) => {
+            result = r;
+            solved = result.isSolved;
+          });
+        } else {
+          result = returnValue;
+          solved = result.isSolved;
+        }
       } else {
         result = null;
       }
@@ -73,17 +81,15 @@
       class="reset"
       on:click={() => ($studentWork = challenge.starterCode)}>Restart</button
     >
-    <CodeMirror
-      bind:value={$studentWork}
-      lang={getLanguage(challenge)}
-      styles={{
-        "&": {
-          backgroundColor: "#fefefe",
-          color: "#333",
-        },
-      }}
-    />
-    {#if result && edited}<Feedback {result} />{/if}
+    <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
+    {#if edited && challenge.requireHover && !result?.isSolved}
+      <div>
+        Hold your mouse over the target element to complete the challenge!
+      </div>
+    {/if}
+    {#if result && edited}
+      <Feedback {result} />
+    {/if}
   </div>
   <div slot="center">
     <h2>Result</h2>
