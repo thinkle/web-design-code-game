@@ -11,7 +11,7 @@ import type { ValidationItem } from "../../types/validation";
 export const linkChallenge: ChallengeDefinition = {
   title: "Menu Links",
   language: "css",
-  height: 240,
+  height: 260,
   instructions: `
 ## Links
 
@@ -100,10 +100,10 @@ come with so many default styles we don't like!
     list-style: none;
   }
   .blue a {
-    color: #224;
+    color: #ff4;
   }
   .pink a {
-    color: #321;
+    color: #933;
   }
   `,
   validate(contentWindow) {
