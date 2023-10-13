@@ -41,7 +41,7 @@ export let challengeSets = {
     ],
   },
   box: {
-    concept: "Box Model",
+    concept: "the Box Model",
     name: "Cats in Boxes",
     challenges: [
       paddingChallenge,

@@ -124,7 +124,7 @@
         {challengeSet.name}:
         {theChallenge.title}
       </h1>
-      <h3>Learn the {challengeSet.concept}</h3>
+      <h3>Learn {challengeSet.concept}</h3>
     </div>
 
     <div class="count">
