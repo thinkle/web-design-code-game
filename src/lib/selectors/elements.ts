@@ -19,23 +19,9 @@ flip the chairs upside down!
 
 Select the chair elements and rotate them 180 degrees!
 
-### Selectors
-
-The *left* side of a CSS expression is the selector. The *simplest*
-selector is just the name of an element, written without any pointy
-brackets.
-
-Selectors are always followed by a *ruleset* of CSS properties and
-values that are *applied* to the matched elements.
-
-Here's how it works:
-\`\`\`css
-/* Select every div */
-div {
-  /* Turn it's background green...*/
-  background-color: green;
-}
-\`\`\`
+### Hint
+Remember, to select an element in CSS, you just use its name
+as the selector, with no pointy brackets.
   `,
   html: `
   <room>
