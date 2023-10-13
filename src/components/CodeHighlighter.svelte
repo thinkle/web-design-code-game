@@ -7,10 +7,10 @@
 
   export let template = "<div>Hello WORK World</div>";
   export let insertion = "<b>Bold</b>";
-  export let lang = 'html'
+  export let lang = "html";
   let transformed = "";
-  let start = "◆◆appetizer◆◆";
-  let end = "▲▲dessert▲▲";
+  let start = "◆◆◆◆";
+  let end = "▲▲▲▲";
   $: format(template, insertion);
 
   async function formatCode(value: string) {
@@ -31,7 +31,8 @@
 
     temp = await formatCode(temp);
     // Step 1: Use highlight.js to highlight transformed code
-    temp = hljs.highlightAuto(temp).value;
+    temp = hljs.highlight(lang, temp).value;
+    //temp = hljs.highlightAuto(temp).value;
 
     // Step 2: Replace start with <span class="my-code-segment">
     temp = temp.replace(start, '<span class="my-code-segment">');
@@ -41,16 +42,18 @@
     transformed = temp;
   }
 </script>
+
 <div class="code-block">
   <div class="code-label">
     {lang}
   </div>
-<code>
-  <pre>  
+  <code>
+    <pre>  
     {@html transformed}
   </pre>
-</code>
+  </code>
 </div>
+
 <style>
   code :global(.my-code-segment) {
     background-color: yellow;
