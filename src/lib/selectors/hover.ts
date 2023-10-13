@@ -73,7 +73,6 @@ Now you do the same, but with the \`<cat>\` element!
     }
   `,
   async validate(contentWindow) {
-    debugger;
     let pc = new PropertyChecker(contentWindow);
     const items: ValidationItem[] = [];
     items.push(
