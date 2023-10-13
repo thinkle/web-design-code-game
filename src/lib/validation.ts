@@ -459,3 +459,49 @@ export class PropertyChecker {
     await new Promise(requestAnimationFrame);
   }
 }
+
+export function validatePseudoSelector(
+  contentWindow,
+  selector,
+  expectedProperties,
+  name
+) {
+  // Get all stylesheets from the contentWindow
+  const styleSheets = contentWindow.document.styleSheets;
+  let isValid = true;
+  let errorMessage = "";
+
+  // Iterate through all stylesheets
+  for (const sheet of styleSheets) {
+    // Try-catch block to handle cross-origin restrictions
+    try {
+      const rules = sheet.cssRules || sheet.rules;
+      // Iterate through all rules in the stylesheet
+      for (const rule of rules) {
+        // Check if the rule selector matches the desired selector and is a StyleRule
+        if (
+          rule.selectorText === selector &&
+          rule.type === CSSRule.STYLE_RULE
+        ) {
+          // Validate each property
+          for (const property in expectedProperties) {
+            const expectedValue = expectedProperties[property];
+            if (rule.style[property] !== expectedValue) {
+              isValid = false;
+              errorMessage += `Expected ${property}: ${expectedValue}, but got ${rule.style[property]}. `;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Can't read the css rules of: ", sheet.href, e);
+    }
+  }
+
+  return {
+    isValid,
+    name,
+    message:
+      errorMessage || `All properties are correctly set for ${selector}.`,
+  };
+}
