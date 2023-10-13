@@ -111,7 +111,10 @@
           <PopupMenu
             onClose={() => (showChallengeChangePopup = false)}
             options={challengePopupOptions}
-            onSelected={(id) => (challengeId = id)}
+            onSelected={(id) => {
+              challengeId = id;
+              showChallengeChangePopup = false;
+            }}
           />
         {/if}
         <button
@@ -144,6 +147,35 @@
     <section class="win">
       <h1>You won!</h1>
       <p>You've completed all my challenges so far!</p>
+      <ul>
+        <li>
+          My Challenges:
+          <ul>
+            {#each Object.keys(challengeSets) as key}
+              {@const cs = challengeSets[key]}
+              <li>
+                <a href={`#${key}`}>{cs.name}: {cs.concept}</a>
+              </li>
+            {/each}
+          </ul>
+        </li>
+        <li>
+          Other Challenges
+          <ul>
+            <li>
+              <a href="https://flukeout.github.io/">
+                CSS Selectors with Sushi!
+              </a>
+            </li>
+            <li>
+              <a href="https://flukeout.github.io/"> Flexbox Froggy </a>
+            </li>
+            <li>
+              <a href="https://cssgridgarden.com/"> Grid Garden </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </section>
   {:else}
     <Challenge challenge={theChallenge} onNext={nextChallenge} />
@@ -156,6 +188,11 @@
     place-content: center;
     min-height: 50vh;
     text-align: center;
+  }
+  .win ul {
+    width: 20em;
+    margin: auto;
+    text-align: left;
   }
   main {
     height: 100vh;
