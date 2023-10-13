@@ -16,6 +16,8 @@ import { nestedClassesChallenge } from "./selectors/nestedClasses";
 import { linkChallenge } from "./selectors/links";
 import { idChallenge } from "./selectors/ids";
 import { hoverChallenge } from "./selectors/hover";
+import { twoClassChallenge } from "./selectors/two-classes";
+import { classesChallenge } from "./selectors/two-classes-css";
 
 export type ChallengeSetId = "box" | "selectors";
 
@@ -29,6 +31,8 @@ export let challengeSets = {
       nestedChallenge,
       classChallenge,
       nestedClassesChallenge,
+      classesChallenge,
+      twoClassChallenge,
       idChallenge,
       linkChallenge,
       hoverChallenge,
