@@ -220,6 +220,8 @@
   header div:first-child,
   header div:last-child {
     width: 10%;
+    display: flex;
+    align-items: center;
   }
   .count {
     font-size: small;
