@@ -195,7 +195,6 @@ export class PropertyChecker {
 
     // Get the computed style
     const expectedComputedCss = getComputedStyle(elementClone)[property];
-    debugger;
     const actualCss = getComputedStyle(element)[property];
     // Clean up: remove the element from the iframe
     iframeDoc.body.removeChild(elementClone);
@@ -468,7 +467,7 @@ export function validatePseudoSelector(
 ) {
   // Get all stylesheets from the contentWindow
   const styleSheets = contentWindow.document.styleSheets;
-  let isValid = true;
+  let isValid = false;
   let errorMessage = "";
 
   // Iterate through all stylesheets
@@ -483,6 +482,7 @@ export function validatePseudoSelector(
           rule.selectorText === selector &&
           rule.type === CSSRule.STYLE_RULE
         ) {
+          isValid = true;
           // Validate each property
           for (const property in expectedProperties) {
             const expectedValue = expectedProperties[property];
@@ -491,17 +491,25 @@ export function validatePseudoSelector(
               errorMessage += `Expected ${property}: ${expectedValue}, but got ${rule.style[property]}. `;
             }
           }
+          if (isValid) {
+            return {
+              isValid,
+              name,
+              message: "Correct rules for " + selector,
+            };
+          }
         }
       }
     } catch (e) {
       console.warn("Can't read the css rules of: ", sheet.href, e);
     }
   }
-
+  if (!errorMessage) {
+    errorMessage = "Looks like you don't have a working rule yet!";
+  }
   return {
     isValid,
     name,
-    message:
-      errorMessage || `All properties are correctly set for ${selector}.`,
+    message: errorMessage,
   };
 }
