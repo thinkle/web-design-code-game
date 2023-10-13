@@ -114,3 +114,10 @@ button.next {
     transform: scale(1);
   }
 }
+
+.emphasize {
+  font-weight: bold;
+  border-left: 3px solid var(--accent-color);
+  border-right: 3px solid var(--accent-color);
+  padding-left: 8px;
+}

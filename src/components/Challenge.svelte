@@ -83,7 +83,7 @@
     >
     <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
     {#if edited && challenge.requireHover && !result?.isSolved}
-      <div>
+      <div class="emphasize">
         Hold your mouse over the target element to complete the challenge!
       </div>
     {/if}
