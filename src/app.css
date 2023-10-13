@@ -76,6 +76,8 @@ button.forward:after {
   --border-color: #ddd;
   --dark: #222;
   --white: #fefeda;
+  --off-white: #e8e8e8;
+  --code-font: monospace;
 }
 
 body {
