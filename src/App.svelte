@@ -7,7 +7,7 @@
   import { challengeSets, type ChallengeSetId } from "./lib/challenges";
   import type { ChallengeDefinition } from "./types/challenge";
 
-  let challengeId: ChallengeSetId = "selectors";
+  let challengeId: ChallengeSetId = "box";
   let challengeSet = challengeSets[challengeId];
 
   let challenges = challengeSet.challenges;
