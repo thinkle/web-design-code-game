@@ -190,6 +190,7 @@
     place-content: center;
     min-height: 50vh;
     text-align: center;
+    line-height: 1.8;
   }
   .win ul {
     width: 20em;
