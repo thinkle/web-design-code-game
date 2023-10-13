@@ -14,7 +14,7 @@ import type { ValidationItem } from "../../types/validation";
 export const nestedClassesChallenge: ChallengeDefinition = {
   title: "Nested Classes",
   language: "css",
-  height: 140,
+  height: 180,
   instructions: `
 # Fancy Brand Cat Toys
 
