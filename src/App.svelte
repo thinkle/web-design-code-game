@@ -146,7 +146,9 @@
   {#if completed}
     <section class="win">
       <h1>You won!</h1>
-      <p>You've completed all my challenges so far!</p>
+      <p>
+        You've completed all the steps for {challengeSet.name} ({challengeSet.concept})!
+      </p>
       <ul>
         <li>
           My Challenges:
