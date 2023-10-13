@@ -49,10 +49,18 @@ a **dot**.
 \`\`\`
   `,
   html: `
-  <p>This is a boring paragraph. You can tell because there are no cats in it.</p>
-  <p class="important">This is an important paragraph which includes
-  a cat: <cat></cat></p>
-  <p>This is another unimportant paragraph.</p>
+<p>This is a boring paragraph. 
+  You can tell because there
+    are no cats in it.
+</p>
+<p class="important">This is an
+  important paragraph which 
+  includes a cat: 
+  <cat></cat>
+</p>
+<p>This is another unimportant
+  paragraph.
+  </p>
   `,
   hiddenCSSBefore: catcss,
   css: `   
