@@ -15,7 +15,7 @@ export const classesChallenge: ChallengeDefinition = {
   instructions: `
 # Use multiple class selectors
 
-This code has a rule for .shadow and a rule for \`.dark\`,
+This code has a rule for \`.shadow\` and a rule for \`.dark\`,
 but update the rule so that if both \`.dark\` and \`.shadow\`
 are present, the shadow turns white.
 

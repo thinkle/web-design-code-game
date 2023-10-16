@@ -6,13 +6,16 @@
   import { studentWork } from "../stores";
   import CodeHighlighter from "./CodeHighlighter.svelte";
   import ThreeColumn from "./ThreeColumn.svelte";
-  import CodeMirror from "svelte-codemirror-editor";
+
+  //import CodeMirror from "svelte-codemirror-editor";
+  import CodeMirror from "./CodeMirror.svelte";
 
   import ChallengeResult from "./ChallengeResult.svelte";
   import Feedback from "./Feedback.svelte";
   import Markdown from "./Markdown.svelte";
 
-  import { css } from "@codemirror/lang-css";
+  //import { css } from "@codemirror/lang-css";
+  import { css } from "../lib/codemirror/customCss";
   import { javascript } from "@codemirror/lang-javascript";
   import { html } from "@codemirror/lang-html";
 

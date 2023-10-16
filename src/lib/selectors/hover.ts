@@ -58,7 +58,7 @@ Now you do the same, but with the \`<cat>\` element!
     FIXME {
       transition: all 300ms;      
     }
-    FIXME {
+    FIX {
       background-color: black;
       transform: scale(2);
     }

@@ -16,10 +16,15 @@ export const flipCatChallenge: ChallengeDefinition = {
 
 Our cats are feeling silly and want to turn upside down.
 
-Select all the cats and turn them upside down using
+Write the code to select *all* the cats and turn them
+upside down. I've already written the code for turning
+them upside down:
+
 \`\`\`css
 transform: rotate(180deg);
 \`\`\`
+
+Now _you_c need to write the code to select all the cats!
 
 ### Selectors
 

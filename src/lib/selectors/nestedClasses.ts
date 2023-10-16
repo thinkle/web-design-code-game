@@ -21,6 +21,23 @@ export const nestedClassesChallenge: ChallengeDefinition = {
 Our fancy paragraph is special. And our branded items are special.
 Make our fancy, branded items *extra special* by adding a 
 wavy blue underline to them.
+
+## Remember you can select descendants!
+
+Remember, to select a cat on a bed we had to write...
+\`\`\`css
+bed cat {...}
+\`\`\`
+
+We can do the same thing with class selectors, as in...
+\`\`\`css
+.content .important {
+  /* Select elements with 
+  class="important" inside of
+  elements with class="content"
+  */
+}
+\`\`\`
   `,
   html: ` 
   <p class="center"><cat></cat></p>

@@ -19,6 +19,8 @@ import { hoverChallenge } from "./selectors/hover";
 import { twoClassChallenge } from "./selectors/two-classes";
 import { classesChallenge } from "./selectors/two-classes-css";
 import { pseudoChallenge } from "./selectors/pseudo";
+import { linkChallengeEasy } from "./selectors/links-basic";
+import { linkChallengeMedium } from "./selectors/links-2";
 
 export type ChallengeSetId = "box" | "selectors";
 
@@ -35,6 +37,8 @@ export let challengeSets = {
       classesChallenge,
       twoClassChallenge,
       idChallenge,
+      linkChallengeEasy,
+      linkChallengeMedium,
       linkChallenge,
       hoverChallenge,
       pseudoChallenge,

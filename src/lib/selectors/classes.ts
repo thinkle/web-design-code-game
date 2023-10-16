@@ -14,7 +14,8 @@ export const classChallenge: ChallengeDefinition = {
   height: 240,
   instructions: `
 # Highlight the "important" paragraphs
-Go ahead and highlight the important paragraphs in yellow.
+Go ahead and highlight the important paragraphs in yellow
+by using a *class* selector.
 
 ## Picking out elements
 

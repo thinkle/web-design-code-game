@@ -9,16 +9,16 @@ import {
 } from "../validation";
 import type { ValidationItem } from "../../types/validation";
 export const linkChallenge: ChallengeDefinition = {
-  title: "Menu Links",
+  title: "Building a Menu",
   language: "css",
   height: 260,
   instructions: `
 ## Links
 
-Menus with links can be extra annoying to style because they
-come with so many default styles we don't like!
+Now let's build a full menu with CSS!
 
-- Use \`text-decoration: none\` to remove underlines from links.
+- Use \`text-decoration: none\` to remove underlines from links
+  in your menu while leaving underlines elsewhere.
 - Use \`list-style: none;\` to remove bullets from list items
   in your menu
 - Make sure to leave normal lists and links alone.
@@ -78,16 +78,16 @@ come with so many default styles we don't like!
     FIXME {
       text-decoration: none;    
     }
-    FIXME {
+    FIX {
       list-style: none;
     }
     /* FIX: Why isn't this working??? */
-    .pink {
+    .pink  {
       color : #933; /* red */
       font-weight: bold;
     }
     /* FIX: Why isn't this working??? */
-    .blue {
+    .blue  {
       color: #ff4; /* yellow */
       font-weight: bold;
     }

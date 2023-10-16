@@ -19,14 +19,16 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
+    "@codemirror/autocomplete": "^6.10.2",
     "@codemirror/lang-css": "^6.2.1",
     "@codemirror/lang-html": "^6.4.6",
     "@codemirror/lang-javascript": "^6.2.1",
+    "@codemirror/lang-sass": "^6.0.2",
+    "codemirror": "^6.0.1",
     "highlightjs": "^9.16.2",
     "markdown-it": "^13.0.2",
     "markdown-it-highlightjs": "^4.0.1",
     "prettier": "^3.0.3",
-    "svelte-codemirror-editor": "^1.1.0",
     "svelte-highlight": "^7.3.0"
   }
 }
