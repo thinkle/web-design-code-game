@@ -672,7 +672,7 @@ const tags = /*@__PURE__*/ [
   "chair",
   "basket",
   "box",
-  "room",.
+  "room",
   ...[
     "a",
     "abbr",
