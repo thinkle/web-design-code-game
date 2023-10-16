@@ -47,7 +47,7 @@ export const marginChallenge: ChallengeDefinition = {
   `,
   starterCode: `
     .box {
-      
+      FIXME
     }
   `,
   solution: `  

@@ -91,7 +91,8 @@ export const cozyCatNapChallenge: ChallengeDefinition = {
   WORK`,
   starterCode: `
 .blanket {
-  box-sizing: border-box;        
+  box-sizing: border-box;   
+  FIXME     
 }
 
 .bed {

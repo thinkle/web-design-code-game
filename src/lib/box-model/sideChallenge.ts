@@ -37,7 +37,7 @@ export const sidesChallenge: ChallengeDefinition = {
   `,
   starterCode: `
     .box {
-      
+      FIXME
     }
     .cat {
       

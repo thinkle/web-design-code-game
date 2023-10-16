@@ -55,7 +55,7 @@ export const escapeWaterChallenge: ChallengeDefinition = {
   `,
   starterCode: `
     .cat {
-      
+      FIXME
     }
   `,
   solution: `

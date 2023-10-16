@@ -36,8 +36,9 @@ export const inlineBlockChallenge: ChallengeDefinition = {
     padding: 20px;
   }
   WORK`,
-  starterCode: `.box {
+  starterCode: `.box {    
     margin: 16px;
+    FIXME
   }`,
   solution: `  
     .box {

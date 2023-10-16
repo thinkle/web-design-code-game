@@ -35,7 +35,7 @@ export var paddingChallenge: ChallengeDefinition = {
       border: 2px solid brown;
       width: ${BOX_SIZE}px;
       height: ${BOX_SIZE}px;
-
+      FIXME
     }
   `,
   solution: `

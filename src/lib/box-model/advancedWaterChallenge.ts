@@ -73,7 +73,7 @@ export const advancedWaterChallenge: ChallengeDefinition = {
   `,
   starterCode: `
     .cat {
-      
+      FIXME
     }
   `,
   solution: `

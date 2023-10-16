@@ -59,7 +59,7 @@ WORK
   `,
   starterCode: `
     .box {
-      
+      FIXME
     }
 
     .room {

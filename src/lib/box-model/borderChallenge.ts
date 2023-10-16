@@ -61,6 +61,7 @@ export const borderChallenge: ChallengeDefinition = {
   starterCode: `
     .cat-yard {
       box-sizing: border-box;
+      FIXME
     }
   `,
   solution: `  
