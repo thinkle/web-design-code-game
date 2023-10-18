@@ -27,18 +27,27 @@ selectors together with no space, like this:
 
 \`.important.dark\` - select elements like \`<div class="dark important">\`
 
-You can also select a specific element only, like:
-
-\`li.important\` - select \`<li class="important">\`
 \`\`\`
 .info {
-  font-weight: normal;
+  background-color: yellow;
 }
 .important {
   font-weight: bold;
 }
+.info.important {
+  /* Select items with both
+     info and important classes */
+  background-color: black;
+  color: yellow;  
+}
 \`\`\`
 
+
+Note: you can actually chain *any* selectors, so you could also write items like...
+\`\`\`
+div.important { /* any <div class="important"> */}
+li.important {/* any <li class="important"> /* }
+/* etc */
 \`\`\`
   `,
   html: `  
