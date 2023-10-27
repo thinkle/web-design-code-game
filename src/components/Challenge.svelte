@@ -56,7 +56,7 @@
     // Set a new timeout
     timeoutId = setTimeout(() => {
       if (contentWindow) {
-        let returnValue = challenge.validate(contentWindow);
+        let returnValue = challenge.validate(contentWindow, $studentWork);
         if (returnValue instanceof Promise) {
           returnValue.then((r: ValidationResult) => {
             result = r;
