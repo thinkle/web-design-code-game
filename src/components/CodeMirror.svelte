@@ -1,13 +1,8 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { onMount } from "svelte";
   import { EditorView } from "@codemirror/view";
   import { EditorState } from "@codemirror/state";
   import { basicSetup } from "codemirror";
-  import {
-    autocompletion,
-    startCompletion,
-    completeFromList,
-  } from "@codemirror/autocomplete";
 
   export let value = "";
   export let lang;
@@ -15,34 +10,6 @@
 
   let editorContainer;
   let editorView;
-
-  async function customAutocompleter(context) {
-    const myItems = [
-      { label: "room", type: "type", boost: 2 },
-      { label: "cat", type: "type", boost: 2 },
-      { label: "chair", type: "type", boost: 2 },
-      { label: "box", type: "type", boost: 2 },
-      { label: "basket", type: "type", boost: 2 },
-      { label: "color", type: "variable", boost: 3 },
-      { label: "orange", type: "value", boost: 3 },
-    ];
-    let cssCompleter = editorView.state.getHelpers(
-      context.state,
-      "autocomplete",
-      lang
-    );
-    let defaultCompletions = [];
-    if (cssCompleter) {
-      defaultCompletions = cssCompleter(context);
-    }
-
-    // If there are no default completions, use completeFromList to create a completion function
-    return [...completeFromList(myItems)(context), ...defaultCompletions];
-  }
-
-  const customAutocompleteExtension = autocompletion({
-    override: [customAutocompleter],
-  });
 
   // extensions = [...extensions, autocompletion(), customAutocompleteExtension];
   extensions = [...extensions];

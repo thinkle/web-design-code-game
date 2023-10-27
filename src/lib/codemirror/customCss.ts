@@ -667,11 +667,17 @@ const values = /*@__PURE__*/ [
     ].map((name) => ({ type: "constant", label: name }))
   );
 const tags = /*@__PURE__*/ [
+  "basket",
   "bed",
+  "box",
   "cat",
   "chair",
-  "basket",
-  "box",
+  "dog",
+  "koala",
+  "frog",
+  "fox",
+  "tiger",
+  "mouse",
   "room",
   ...[
     "a",
