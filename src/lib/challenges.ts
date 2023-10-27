@@ -21,6 +21,7 @@ import { classesChallenge } from "./selectors/two-classes-css";
 import { pseudoChallenge } from "./selectors/pseudo";
 import { linkChallengeEasy } from "./selectors/links-basic";
 import { linkChallengeMedium } from "./selectors/links-2";
+import { htmlChallenge } from "./selectors/add-to-html";
 
 export type ChallengeSetId = "box" | "selectors";
 
@@ -28,11 +29,12 @@ export let challengeSets = {
   selectors: {
     concept: "CSS Selectors",
     name: "Find the Cats!",
-    challenges: [
+    challenges: [      
       flipCatChallenge,
       elementChallenge,
       nestedChallenge,
       classChallenge,
+      htmlChallenge,
       nestedClassesChallenge,
       classesChallenge,
       twoClassChallenge,
