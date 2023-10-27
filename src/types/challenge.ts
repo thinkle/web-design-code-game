@@ -16,7 +16,8 @@ export type ChallengeDefinition = {
   requireHover?: boolean;
   solution: string;
   validate: (
-    contentWindow: Window
+    contentWindow: Window,
+    studentWork: string
   ) => ValidationResult | Promise<ValidationResult>;
   height?: number;
 };
