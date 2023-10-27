@@ -31,7 +31,6 @@ export let challengeSets = {
     concept: "CSS Selectors",
     name: "Find the Cats!",
     challenges: [
-      commaChallenge,
       flipCatChallenge,
       elementChallenge,
       nestedChallenge,
@@ -41,6 +40,7 @@ export let challengeSets = {
       classesChallenge,
       twoClassChallenge,
       idChallenge,
+      commaChallenge,
       linkChallengeEasy,
       linkChallengeMedium,
       linkChallenge,
