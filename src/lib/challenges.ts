@@ -22,6 +22,7 @@ import { pseudoChallenge } from "./selectors/pseudo";
 import { linkChallengeEasy } from "./selectors/links-basic";
 import { linkChallengeMedium } from "./selectors/links-2";
 import { htmlChallenge } from "./selectors/add-to-html";
+import { commaChallenge } from "./selectors/commas";
 
 export type ChallengeSetId = "box" | "selectors";
 
@@ -29,7 +30,8 @@ export let challengeSets = {
   selectors: {
     concept: "CSS Selectors",
     name: "Find the Cats!",
-    challenges: [      
+    challenges: [
+      commaChallenge,
       flipCatChallenge,
       elementChallenge,
       nestedChallenge,
