@@ -17,8 +17,7 @@
   $: {
     challengeSet = challengeSets[challengeId];
     challenges = challengeSet.challenges;
-    idx = 0;
-    theChallenge = challenges[0];
+    theChallenge = challenges[idx];
   }
 
   function nextChallenge() {
@@ -73,9 +72,15 @@
   onMount(() => {
     function handleHashChange() {
       // Extracting the hash (without #) and updating challengeId
-      let possibleId = window.location.hash.substring(1);
+      let hash = window.location.hash.substring(1);
+      let splitHash = hash.split("-");
+      let possibleId = splitHash[0];
+      let challengeNumber = splitHash[1] || 0;
       if (["box", "selectors"].includes(possibleId)) {
         challengeId = possibleId as ChallengeSetId;
+        if (challengeNumber) {
+          idx = Number(challengeNumber) || 0;
+        }
       }
     }
 
@@ -93,7 +98,7 @@
 
   $: {
     if (loaded) {
-      window.location.hash = challengeId;
+      window.location.hash = challengeId + "-" + idx;
     }
   }
 </script>
