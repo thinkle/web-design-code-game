@@ -2,10 +2,46 @@ body {
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-cat,dog {
+
+cat,dog,mouse,rabbit,fox,koala,tiger,pig,frog {
   width: 30px;
   height: 30px;
   display: inline-block;
+}
+dog::after,cat::after,mouse::after,rabbit::after,fox::after,koala::after,tiger::after,pig::after,frog::after{
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+mouse::after {  
+  content: "🐭"
+}
+rabbit::after {
+  content: "🐰";
+}
+
+fox::after {
+  content: "🦊";
+}
+
+koala::after {
+  content: "🐨";
+}
+
+tiger::after {
+  content: "🐯";
+}
+
+pig::after {
+  content: "🐷";
+}
+
+frog::after {
+  content: "🐸";
 }
 
 room {
