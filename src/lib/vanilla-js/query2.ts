@@ -40,7 +40,7 @@ export const query2Challenge: ChallengeDefinition = {
     // drop-shadow(4px 4px 4px green)
     FIXME
 
-    // Set Marisol's filter to hue-rotation(270deg)
+    // Set Marisol's filter to hue-rotate(270deg)
   `,
   solution: `  
   document
