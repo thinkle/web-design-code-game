@@ -53,7 +53,6 @@
       editorView.focus();
     }
   }
-
   $: value && editorView && replaceFIXMEAndSetCursor();
 </script>
 

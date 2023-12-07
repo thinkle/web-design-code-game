@@ -76,7 +76,8 @@
       let splitHash = hash.split("-");
       let possibleId = splitHash[0];
       let challengeNumber = splitHash[1] || 0;
-      if (["box", "selectors"].includes(possibleId)) {
+      //if (["box", "selectors"].includes(possibleId)) {
+      if (possibleId in challengeSets) {
         challengeId = possibleId as ChallengeSetId;
         if (challengeNumber) {
           idx = Number(challengeNumber) || 0;

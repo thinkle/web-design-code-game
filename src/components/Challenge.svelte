@@ -84,7 +84,9 @@
       class="reset"
       on:click={() => ($studentWork = challenge.starterCode)}>Restart</button
     >
-    <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
+    {#key challenge.language}
+      <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
+    {/key}
     {#if edited && challenge.requireHover && !result?.isSolved}
       <div class="emphasize">
         Hold your mouse over the target element to complete the challenge!

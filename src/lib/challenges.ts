@@ -23,10 +23,26 @@ import { linkChallengeEasy } from "./selectors/links-basic";
 import { linkChallengeMedium } from "./selectors/links-2";
 import { htmlChallenge } from "./selectors/add-to-html";
 import { commaChallenge } from "./selectors/commas";
+import { query1Challenge } from "./vanilla-js/query1";
+import { query2Challenge } from "./vanilla-js/query2";
+import { functionChallenge } from "./vanilla-js/functions";
+import { function2Challenge } from "./vanilla-js/functions2";
+import { function3Challenge } from "./vanilla-js/functions3";
 
 export type ChallengeSetId = "box" | "selectors";
 
 export let challengeSets = {
+  vanilla: {
+    concept: "VanillaJS",
+    name: "Disco Cats",
+    challenges: [
+      query1Challenge,
+      query2Challenge,
+      functionChallenge,
+      function2Challenge,
+      function3Challenge,
+    ],
+  },
   selectors: {
     concept: "CSS Selectors",
     name: "Find the Cats!",

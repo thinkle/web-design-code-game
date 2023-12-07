@@ -1,0 +1,195 @@
+body {
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+cat,dog,mouse,rabbit,fox,koala,tiger,pig,frog {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+}
+dog::after,cat::after,mouse::after,rabbit::after,fox::after,koala::after,tiger::after,pig::after,frog::after{
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+mouse::after {  
+  content: "🐭"
+}
+rabbit::after {
+  content: "🐰";
+}
+
+fox::after {
+  content: "🦊";
+}
+
+koala::after {
+  content: "🐨";
+}
+
+tiger::after {
+  content: "🐯";
+}
+
+pig::after {
+  content: "🐷";
+}
+
+frog::after {
+  content: "🐸";
+}
+
+room {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  filter: drop-shadow(-5px 5px #cacaca77)
+}
+box,bear,chair,books,basket,bed {
+  display: grid;
+    place-content: center;
+    z-index: 1;
+  width: 80px; 
+  height: 80px;
+}
+cat {
+  position: relative;
+  z-index: 2;
+}
+box {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50%25' x='50%25' dy='.3em' text-anchor='middle' font-size='90' %3E📦%3C/text%3E%3C/svg%3E");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  place-content: start center;
+}
+bear {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50%25' x='50%25' dy='.3em' text-anchor='middle' font-size='90' %3E🧸%3C/text%3E%3C/svg%3E");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  place-content: end center;
+}
+garden {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50%25' x='50%25' dy='.3em' text-anchor='middle' font-size='60' %3E🌳🌺🌺🌺%3C/text%3E%3C/svg%3E");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;    
+}
+books {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50%25' x='50%25' dy='.3em' text-anchor='middle' font-size='90' %3E📚%3C/text%3E%3C/svg%3E");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  place-content: start center; 
+}
+basket {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50%25' x='50%25' dy='.3em' text-anchor='middle' font-size='90' %3E🧺%3C/text%3E%3C/svg%3E");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+chair {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50%25' x='50%25' dy='.3em' text-anchor='middle' font-size='90' %3E🪑%3C/text%3E%3C/svg%3E");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+ 
+}
+bed {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50%25' x='50%25' dy='.3em' text-anchor='middle' font-size='90' %3E🛏️%3C/text%3E%3C/svg%3E");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  
+}
+rug {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50%25' x='50%25' dy='.3em' text-anchor='middle' font-size='90' %3E🧹%3C/text%3E%3C/svg%3E");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+cat,dog {
+  z-index: 2;
+  position: relative;
+}
+
+cat {
+  transition: padding, margin, width, height 300ms;
+}
+
+cat::after {
+  content: "😿";
+  font-size: 30px;
+  text-align: center;
+}
+
+.solved cat::after {
+  content: "😺";
+}
+
+.solved cat::after {
+  display: inline-block;
+  animation: bounce 2s ease infinite;
+}
+
+.solved.model cat::after {
+  animation: none;
+}
+
+.box {
+  background-color: beige;
+}
+
+dog::after {
+  content: "🐶";
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  5% {
+    transform: translateY(-5px) rotate(0);
+  }
+
+  10% {
+    transform: translateY(0) rotate(0);
+  }
+
+  15% {
+    transform: translateY(-5px) rotate(-10deg);
+  }
+
+  20% {
+    transform: translateY(0) rotate(10deg);
+  }
+
+  25% {
+    transform: translateY(0) rotate(-10deg);
+  }
+
+  30% {
+    transform: translateY(0) rotate(10deg);
+  }
+
+  35% {
+    transform: translateY(0) rotate(0);
+  }
+}
