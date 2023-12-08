@@ -7,7 +7,7 @@
   let leftPosition = 0;
 
   function scrollOnePageDown() {
-    container.scrollBy(0, window.innerHeight);
+    container.scrollBy(0, window.innerHeight - 120);
   }
 
   function checkScroll() {
