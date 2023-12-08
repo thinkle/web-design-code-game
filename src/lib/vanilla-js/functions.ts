@@ -3,7 +3,7 @@ import instructions from "./markdown/functions.md?raw";
 import catcss from "./css/cat.css?raw";
 import { PropertyChecker } from "../validation";
 export const functionChallenge: ChallengeDefinition = {
-  title: "More Queries",
+  title: "Functions",
   language: "js",
   instructions,
   height: 150,
