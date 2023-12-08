@@ -1,5 +1,12 @@
+@font-face {
+  src: url('fonts/OutputSans2Beta-Regular.woff2') format("woff2"),
+    url('fonts/OutputSans2Beta-Regular.woff') format("woff");
+  font-family: 'Output Sans';
+  font-style: normal italic;
+  font-weight: 1 800;
+}
 body {
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family:'Output Sans','Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 
