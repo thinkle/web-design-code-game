@@ -6,7 +6,6 @@
   import PopupMenu from "./components/PopupMenu.svelte";
   import { challengeSets, type ChallengeSetId } from "./lib/challenges";
   import type { ChallengeDefinition } from "./types/challenge";
-
   let challengeId: ChallengeSetId = "box";
   let challengeSet = challengeSets[challengeId];
 
@@ -27,7 +26,7 @@
     idx--;
   }
 
-  function setChallenge(idx) {
+  function setChallenge(idx: number) {
     if (idx < 0) {
       idx = 0;
     }
@@ -127,8 +126,10 @@
           on:click={() => (showChallengeChangePopup = true)}
           class="subtle">✎</button
         >
-        {challengeSet.name}:
-        {theChallenge.title}
+        {challengeSet.name}
+        {#if theChallenge}
+          : {theChallenge.title}
+        {/if}
       </h1>
       <h3>Learn {challengeSet.concept}</h3>
     </div>
@@ -162,7 +163,7 @@
             {#each Object.keys(challengeSets) as key}
               {@const cs = challengeSets[key]}
               <li>
-                <a href={`#${key}`}>{cs.name}: {cs.concept}</a>
+                <a href={`#${key}-0`}>{cs.name}: {cs.concept}</a>
               </li>
             {/each}
           </ul>
@@ -263,5 +264,11 @@
     font-size: 1.1rem;
     display: flex;
     align-self: bottom;
+  }
+  .back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
   }
 </style>
