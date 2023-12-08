@@ -75,7 +75,7 @@
   $: updateResult(resultWindow, $studentWork);
 </script>
 
-<ThreeColumn>
+<ThreeColumn scrollReminderRight={true}>
   <div slot="left" class="code">
     <div class="editor-label">
       {challenge.language} editor
