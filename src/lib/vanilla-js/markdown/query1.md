@@ -1,8 +1,8 @@
-# Disco Cats
+# Selecting `id="miguel`
 
-Use JavaScript to dress "Miguel" in his disco colors by setting his filter to invert(1).
+Use JavaScript to dress "Miguel" in his disco colors. The code to change his color is already in place: you just need to fix the selector passed to `querySelector` to match `<cat id="miguel">`
 
-# Reaching Into the DOM
+## Reaching Into the DOM
 
 The first step to using JavaScript to change a webpage is reaching into the HTML to select an element.
 
@@ -10,7 +10,7 @@ We can *reach into the document* by calling a special
 *method* of document called `querySelector`. In JavaScript, you *call* a function by writing its name
 and then parentheses, and *handing* it "arguments." 
 
-For example, to select a <div> and set its border to
+For example, to select a `<div>` and set its border to
 red, we could write:
 
 ```javascript
