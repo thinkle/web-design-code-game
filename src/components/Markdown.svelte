@@ -16,6 +16,9 @@
 <div>{@html compiledMarkdown}</div>
 
 <style>
+  div {
+    line-height: 1.5;
+  }
   div :global(code),
   div :global(code *) {
     background-color: var(--off-white);
