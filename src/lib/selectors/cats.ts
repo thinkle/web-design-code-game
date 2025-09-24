@@ -81,6 +81,7 @@ div {
     let box = contentWindow.document.querySelector("box");
     let bed = contentWindow.document.querySelector("bed");
     let cats = contentWindow.document.querySelectorAll("cat");
+    let room = contentWindow.document.querySelector("room");
     let allCatsFlipped = true;
     let anyCatsFlipped = false;
     cats.forEach((cat) => {
@@ -115,6 +116,11 @@ div {
       name: "Bed not flipped",
       message: "Goodness, why would you flip the bed?",
       isValid: !isElementRotated(bed, contentWindow),
+    });
+    items.push({
+      name: "Room not flipped",
+      message: "Goodness, why would you flip the room?",
+      isValid: !isElementRotated(room, contentWindow),
     });
 
     return {

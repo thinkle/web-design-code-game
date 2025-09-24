@@ -30,8 +30,7 @@ export var paddingChallenge: ChallengeDefinition = {
   }
   `,
   starterCode: `
-    .box {
-      box-sizing: border-box; 
+    .box {      
       border: 2px solid brown;
       width: ${BOX_SIZE}px;
       height: ${BOX_SIZE}px;
@@ -39,12 +38,12 @@ export var paddingChallenge: ChallengeDefinition = {
     }
   `,
   solution: `
-    .box {      
-      box-sizing: border-box; 
+    .box {            
       border: 2px solid brown;
       width: ${BOX_SIZE}px;
       height: ${BOX_SIZE}px;
       padding: ${PADDING}px;
+      box-sizing: border-box;
     }
   `,
   validate(contentWindow) {
@@ -110,7 +109,7 @@ export var paddingChallenge: ChallengeDefinition = {
       isSolved = false;
     }
 
-    // Validate box-sizing
+    /* // Validate box-sizing
     if (boxStyle.boxSizing !== "border-box") {
       items.push({
         name: "Box-sizing",
@@ -118,7 +117,7 @@ export var paddingChallenge: ChallengeDefinition = {
         message: "The box-sizing should be border-box!",
       });
       isSolved = false;
-    }
+    } */
     // Validate Positioning of .cat
     if (!isUsingBoxModel(catElement, contentWindow)) {
       items.push({
