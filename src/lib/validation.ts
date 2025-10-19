@@ -504,10 +504,10 @@ export class PropertyChecker {
 }
 
 export function validatePseudoSelector(
-  contentWindow,
-  selector,
-  expectedProperties,
-  name
+  contentWindow: Window,
+  selector: string,
+  expectedProperties: { [key: string]: string | null },
+  name: string
 ) {
   // Get all stylesheets from the contentWindow
   const styleSheets = contentWindow.document.styleSheets;

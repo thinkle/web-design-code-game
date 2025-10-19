@@ -29,13 +29,15 @@ Note: Only cats that directly follow a dog should be affected — other cats sho
   `,
   html: `
   <yard>
-    <dog></dog>
+
     <cat></cat>
     <cat></cat>
     <dog></dog>    
     <dog></dog>
+    <cat></cat>
     <cat></cat>    
     <dog></dog>    
+    <cat></cat>
     <cat></cat>
   </yard>
   `,
@@ -57,18 +59,21 @@ Note: Only cats that directly follow a dog should be affected — other cats sho
     cat, dog {
       transition: filter 0.3s;
     }
+      yard:hover > * {
+      transform: rotateY(-30deg);
+      }
 
     WORK
   `,
   starterCode: `
     /* Make cats after dogs glow */
     FIXME {
-      filter: drop-shadow(3px 3px 6px orange);
+      filter: drop-shadow(3px 3px 8px red);
     }
   `,
   solution: `
     dog + cat {
-      filter: drop-shadow(3px 3px 6px orange);
+      filter: drop-shadow(3px 3px 8px red);
     }
   `,
   validate(contentWindow) {
@@ -76,7 +81,7 @@ Note: Only cats that directly follow a dog should be affected — other cats sho
     const items: ValidationItem[] = [
       pc.checkAll(
         "dog + cat",
-        { filter: "drop-shadow(3px 3px 6px orange)" },
+        { filter: "drop-shadow(3px 3px 8px red)" },
         () => "Cats immediately after dogs should glow!",
         "Spooked cats"
       ),

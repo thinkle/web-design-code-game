@@ -8,7 +8,7 @@ export const generalSiblingChallenge: ChallengeDefinition = {
   language: "css",
   height: 240,
   instructions: `
-# Use the general sibling selector (\`~\`)
+## Use the general sibling selector (\`~\`)
 
 The \`~\` selector selects **all** siblings that come **after** another element — not just the next one.
 
@@ -20,7 +20,7 @@ h2 ~ p {
 
 This would color every \`<p>\` that follows an \`<h2>\` — not just the first.
 
-## Challenge: Cats Panic
+# Challenge: All Cats to the Right of Dogs Panic
 
 👉 When a **dog** is on the bed, **every cat to its right** flips upside down. Cats to the left don’t notice.  
 
@@ -30,11 +30,9 @@ Tip: \`dog ~ cat\` will select every cat *after* a dog.
   <bed>
     <cat></cat>
     <dog></dog>
+    <cat></cat>    
     <cat></cat>
-    <cat></cat>
-    <dog></dog>
-    <cat></cat>
-    <cat></cat>
+    <cat></cat>    
   </bed>
   `,
   hiddenHTMLBefore: "<room>",

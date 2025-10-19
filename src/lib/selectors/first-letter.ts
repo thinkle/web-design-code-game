@@ -140,7 +140,7 @@ You can combine \`+ p\` (adjacent sibling selector) with \`::first-letter\` to t
         contentWindow,
         "h2 + p::first-letter",
         { "font-size": "2em", "font-weight": "bold", color: "purple" },
-        "Correct h2 + p::first-letter rule"
+        "Style the first letter of the first paragraph after an h2"
       )
     );
 

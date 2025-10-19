@@ -73,10 +73,15 @@ This would make only the first line of each paragraph bold and red.
   validate(contentWindow) {
     const pc = new PropertyChecker(contentWindow);
     const items: ValidationItem[] = [
-      validatePseudoSelector(contentWindow, "h2 + p::first-line", {
-        "font-weight": "bold",
-        color: "darkslateblue",
-      }),
+      validatePseudoSelector(
+        contentWindow,
+        "p::first-line",
+        {
+          "font-weight": "bold",
+          color: "purple",
+        },
+        "Fancy first line"
+      ),
     ];
     return {
       items,
