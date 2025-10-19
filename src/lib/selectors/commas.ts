@@ -143,7 +143,14 @@ You can check out some crazy uses of this trick at this
         "Cat's hat"
       )
     );
-    items.push(pc.checkOne("koala hat", { "border-bottom-color": "pink" }));
+    items.push(
+      pc.checkOne(
+        "koala hat",
+        { "border-bottom-color": "pink" },
+        () => "Give the koala a pink hat",
+        "Koala's hat"
+      )
+    );
     items.push(
       pc.checkOne(
         "tiger hat",
