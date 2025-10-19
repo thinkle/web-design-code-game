@@ -67,7 +67,9 @@ We can do the same thing with class selectors, as in...
     text-align: center;
   }
    `,
-  starterCode: ` FIXME {
+  starterCode: `
+  /* Target <span class="brand"> inside <p class="fancy"> */
+  FIXME {
     text-decoration: blue wavy underline;    
   }
 
@@ -80,11 +82,16 @@ We can do the same thing with class selectors, as in...
     let pc = new PropertyChecker(contentWindow);
 
     let items = [
-      pc.checkOne(".fancy .brand", {
-        "text-decoration-line": "underline",
-        "text-decoration-style": "wavy",
-        "text-decoration-color": "blue",
-      }),
+      pc.checkOne(
+        ".fancy .brand",
+        {
+          "text-decoration-line": "underline",
+          "text-decoration-style": "wavy",
+          "text-decoration-color": "blue",
+        },
+        (e, a) => "Underline fancy brand items in wavy blue!",
+        "Underline fancy brand"
+      ),
       pc.checkAllBut(
         ".brand",
         { "text-decoration-style": null },

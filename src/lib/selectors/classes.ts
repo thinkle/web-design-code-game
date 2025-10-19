@@ -14,25 +14,22 @@ export const classChallenge: ChallengeDefinition = {
   height: 240,
   instructions: `
 # Highlight the "important" paragraphs
-Go ahead and highlight the important paragraphs in yellow
+Highlight the important paragraphs in yellow
 by using a *class* selector.
 
 ## Picking out elements
 
-So far, all my examples used different elements (and I didn't even use
-real elements &mdash; I used pretend ones for fun).
-
-In actual HTML, we often need to distinguish between tags that are otherwise
-similar. For this reason, you can add a \`class\` attribute to *any* element
+In actual web projects, we often need to distinguish between different instances
+of the *same tag*. For this reason, you can add a \`class\` attribute to *any* element
 with one or more class names, like this:
 
 \`\`\`html
-<div class="important info">
+<p class="important">
   This part has important info
-</div>
-<div class="info">
+</p>
+<p>
   This part has regular info.
-</div>
+</p>
 \`\`\`
 
 You can then *select* classes by prefixing the class name with
