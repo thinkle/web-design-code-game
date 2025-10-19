@@ -12,16 +12,13 @@ export const elementChallenge: ChallengeDefinition = {
   language: "css",
   height: 140,
   instructions: `
-## Turn the Chair Upside Down
+## Turn the chair upside down
 
-Our cats love a little mischief and want you to 
-flip the chairs upside down!
+Our cats love a little mischief. Flip every chair so it's upside down.
 
-Select the chair elements and rotate them 180 degrees!
+Select the chair elements and rotate them 180 degrees
 
-### Hint
-Remember, to select an element in CSS, you just use its name
-as the selector, with no pointy brackets.
+Hint: use the element name as the selector (no angle brackets)
   `,
   html: `
   <room>
@@ -44,6 +41,7 @@ as the selector, with no pointy brackets.
     WORK 
   `,
   starterCode: `
+    /* Target the <chair> elements and flip them */
     FIXME {
       transform: rotate(180deg);      
     }
@@ -62,12 +60,12 @@ as the selector, with no pointy brackets.
 
     items.push({
       name: "Chair",
-      message: "Flip the chair upside down!",
+      message: "Flip the chairs",
       isValid: isElementRotated(chair, contentWindow),
     });
     items.push({
       name: "Basket",
-      message: "Don't flip the box!",
+      message: "Don't flip the basket",
       isValid: !isElementRotated(basket, contentWindow),
     });
     items.push({

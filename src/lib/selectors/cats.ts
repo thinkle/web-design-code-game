@@ -14,12 +14,9 @@ export const flipCatChallenge: ChallengeDefinition = {
   instructions: `
   ### Selectors
 
-The *left* side of a CSS expression is the selector. The *simplest*
-selector is just the name of an element, written without any pointy
-brackets.
-
-Selectors are always followed by a *ruleset* of CSS properties and
-values that are *applied* to the matched elements.
+Selectors are the way you pick which elements you want to style with CSS.
+The selector always comes on the *left* side of a CSS expression before
+all the rules which apply styles.
 
 Here's how it works:
 \`\`\`css
@@ -30,27 +27,16 @@ div {
 }
 \`\`\`
 
-## Your Challenge: Flip the Cats!
+## Your challenge: Flip the cats!
 
-Our cats are feeling silly and want to turn upside down.
-
-Write the code to select *all* the cats and turn them
-upside down. I've already written the code for turning
-them upside down:
-
+Every cat should turn upside down. The rotation rule is already written:
 \`\`\`css
 transform: rotate(180deg);
 \`\`\`
+Add the selector so that the rule applies to each cat element.
 
-Now _you_ need to write the code to select all the cats!
-
-**Note: for this game, we're using custom elements like \`<cat>\`,
-\`<box>\`, and \`<chair>\`. Selecting these with CSS works just
-like normal HTML elements like \`<div>\` and \`<span>\`.**
-
-
-\`\`\`
-  `,
+**Note: for this game, we’re using custom elements like <cat>, <box>, and <chair>.
+Selecting these with CSS works just like normal HTML elements like <div> and <span>.**`,
   html: `
   <room>
     <bed>
@@ -108,7 +94,11 @@ like normal HTML elements like \`<div>\` and \`<span>\`.**
         isValid: false,
       });
     } else {
-      items.push({ name: "Flip the cats!", message: "The cats want to flip!" });
+      items.push({
+        name: "Flip the cats!",
+        message: "The cats want to flip!",
+        isValid: false,
+      });
     }
     items.push({
       name: "Chair not flipped!",

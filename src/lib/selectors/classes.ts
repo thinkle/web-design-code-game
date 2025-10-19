@@ -68,6 +68,7 @@ a **dot**.
     WORK 
   `,
   starterCode: `
+    /* Target elements with the important class */
     FIXME {
       background-color: yellow;
       border-right: 3px solid red;
@@ -87,9 +88,8 @@ a **dot**.
       pc.checkOne(
         ".important",
         { "background-color": "yellow" },
-        (expected, actual) =>
-          `Unexpected color! Got ${actual} instead of ${expected}`,
-        "Highlight important paragraph in yellow"
+        (expected, actual) => `Unexpected color`,
+        "Highlight the important paragraph"
       ),
       pc.checkAllBut(
         "p",

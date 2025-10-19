@@ -12,15 +12,14 @@ export const nestedChallenge: ChallengeDefinition = {
   language: "css",
   height: 140,
   instructions: `
-### Selectors
+## Selectors
 
-You can chain two selectors together with a space between
-them to select descendants.
+Sometimes you want to select elements that are nested
+inside other elements. You can do this with a
+*descendant selector*, which is just a space
+between two selectors.
 
-So, if you write: \`parent descendant\`, that will select
-any matching descendant *inside* of parent.
-
-Here's how it works:
+Example:
 \`\`\`css
 /* Select every <a> inside of <nav> */
 nav a {
@@ -32,8 +31,7 @@ nav a {
 Cats on beds can't help but be silly: turn the
 cat on the bed upside down!
 
-Use *descendant* selectors to select only
-the cat on the bed.
+Challenge: flip the cat on the bed only
 
 
 
@@ -59,6 +57,7 @@ the cat on the bed.
     WORK 
   `,
   starterCode: `
+    /* Target the cat inside <bed> only */
     FIXME {
       transform: rotate(180deg);      
     }

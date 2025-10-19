@@ -8,21 +8,18 @@ export const childCombinatorChallenge: ChallengeDefinition = {
   language: "css",
   height: 240,
   instructions: `
-# Use the child selector (\`>\`) 
+# Use the child selector (\`>\`)
 
-The \`>\` selector selects elements that are *immediate* children of another element.
+The \`>\` selector matches only immediate children — elements one level down.
 
+Example:
 \`\`\`css
-section > p {
-  color: red;
-}
+section > p { color: red }
 \`\`\`
 
-This would color only \`<p>\` elements that are *directly* inside a \`<section>\`, not paragraphs nested deeper inside divs.
+Challenge: only the top-level cats on the bed should lie down
 
-## Challenge: Only the Cats on the Bed Lie Down
-
-👉 In the example below, make only the **top-level cats** sitting on the bed lie on their sides. The cats hiding inside *boxes* on the bed should not be affected.
+Make just the cats that are direct children of the bed lie on their sides; cats inside boxes should stay standing
 
   `,
   html: `
@@ -63,7 +60,7 @@ This would color only \`<p>\` elements that are *directly* inside a \`<section>\
     WORK
   `,
   starterCode: `
-    /* Select only cats that are direct children of the couch */
+    /* Target cats that are direct children of <bed> */
     FIXME {
       transform: rotate(-90deg);
       transform-origin: right;
@@ -88,17 +85,9 @@ This would color only \`<p>\` elements that are *directly* inside a \`<section>\
     });
 
     if (allDirectCatsRotated && directCats.length > 0) {
-      items.push({
-        name: "Direct bed cats",
-        message: "Cats on the bed are lying down!",
-        isValid: true,
-      });
+      items.push({ name: "Direct bed cats", message: "Cats on the bed are lying down", isValid: true });
     } else {
-      items.push({
-        name: "Direct bed cats",
-        message: "Cats on the bed should lie down!",
-        isValid: false,
-      });
+      items.push({ name: "Direct bed cats", message: "Make the top-level cats lie down", isValid: false });
     }
 
     // Check that nested cats inside boxes are NOT rotated
@@ -114,17 +103,9 @@ This would color only \`<p>\` elements that are *directly* inside a \`<section>\
     });
 
     if (!anyNestedCatsRotated) {
-      items.push({
-        name: "No nested cats",
-        message: "Cats inside boxes are standing up!",
-        isValid: true,
-      });
+      items.push({ name: "No nested cats", message: "Cats inside boxes are standing up", isValid: true });
     } else {
-      items.push({
-        name: "No nested cats",
-        message: "Cats inside boxes should NOT lie down!",
-        isValid: false,
-      });
+      items.push({ name: "No nested cats", message: "Don't affect cats inside boxes", isValid: false });
     }
 
     return {
