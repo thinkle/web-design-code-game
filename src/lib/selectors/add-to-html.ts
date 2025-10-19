@@ -8,28 +8,32 @@ export const htmlChallenge: ChallengeDefinition = {
   language: "html",
   height: 250,
   instructions: `
-# Adding classes to HTML
+## Your Challenge
 
-You can add classes to *any* element in HTML.
+Your challenge is use **HTML** to add classes to elements of the text
+so that our fancy style rules will work correctly.
 
-Let's practice adding classes in HTML to apply rules
-we've already defined in CSS.
+| class | style | element | 
+|-------|-------|---------|
+| kitten | Make it cuter and smaller | The word "kitten" |
+| crazy | Make it look crazy | The word "crazy" |
+| halloween | Add a halloween style | The paragraph about halloween |
 
-In this case, we have created rules for classes:
-- \`halloween\` : to add a halloween style.
-- \`kitten\` : to make things cuter and smaller
-- \`crazy\` : to make things look crazy
+&nbsp;
 
-In HTML, classes can be added like any other attribute. For example:
+## How to Add Classes
+
+In HTML, classes can be added like any other attribute to *any element* by
+adding \`class="classname"\` where \`classname\` can be any word. For example:
 
 \`\`\`html
-<div class="fancy">
-   This div has a 
+<p class="fancy">
+   This paragraph has a 
    fancy class.
    <a href="#start" class="magic">
      This link has the magic class
    </a>
-</div>
+</p>
 \`\`\`
 
 Remember, that in HTML the classname is just a word, whereas when you write
@@ -144,18 +148,18 @@ dog for halloween! <dog></dog></p>
 
     items = [
       {
-        name: "kitten class",
-        message: "Add the class 'kitten' to the <span> with the word kitten!",
+        name: "kitten",
+        message: "Add the class 'kitten' to the word kitten!",
         isValid: !!d.querySelector(".kitten"),
       },
       {
-        name: "crazy class",
-        message: "Add the class 'crazy' to the tag with the word crazy!",
+        name: "crazy",
+        message: "Add the class 'crazy' to the word crazy!",
         isValid: !!d.querySelector(".crazy"),
       },
       {
         name: "Halloween",
-        message: "Add the class 'halloween' to one of the paragraphs!",
+        message: "Add the class 'halloween' to a paragraph!",
         isValid: !!d.querySelector("p.halloween"),
       },
     ];
