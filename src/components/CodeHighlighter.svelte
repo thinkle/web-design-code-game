@@ -56,7 +56,7 @@
 
 <style>
   code :global(.my-code-segment) {
-    background-color: yellow;
+    background-color: rgb(255, 255, 184);
   }
   .code-block {
     width: 90%;
