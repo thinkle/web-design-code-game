@@ -121,6 +121,10 @@ WORK
 }
   `,
   starterCode: `
+  <!-- Add classes to style the elements -->
+  <!-- kitten: make the word kitten cute -->
+  <!-- crazy: make the word crazy look crazy -->
+  <!-- halloween: style the paragraph about halloween -->
   <p>Once there was a 
     <span class="FIXME">kitten</span>
     <cat></cat>
