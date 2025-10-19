@@ -24,4 +24,13 @@
     background-color: var(--off-white);
     font-family: var(--code-font);
   }
+  div :global(table) {
+    border: 1px solid #999;
+    border-collapse: collapse;
+  }
+  div :global(th),
+  div :global(td) {
+    border: 1px solid #999;
+    padding: 0.5rem 1rem;
+  }
 </style>
