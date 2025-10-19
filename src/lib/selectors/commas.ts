@@ -7,13 +7,7 @@ export const commaChallenge: ChallengeDefinition = {
   language: "css",
   height: 140,
   instructions: `
-## Party Time!
-Cat is throwing a party! The cat and its party guests, the koala
-and the tiger, need to put on pink party hats!
-
-Your task is to style them so they both have party hats. 
-
-### Using Commas in CSS
+## Using Commas in CSS
 You can apply the same styles to multiple selectors by separating them with commas. For example:
 \`\`\`css
 selector1, selector2 {
@@ -35,6 +29,11 @@ nav a,.menu a {
   /* Select <a> in <nav> AND <a> in <* class="menu> */
   text-decoration: none;  
 }
+
+# Party Time! Give the Koala and the Tiger party hats
+Cat is throwing a party! The cat and its party guests, the koala
+and the tiger, need to put on pink party hats!
+
 
 \`\`\`
 

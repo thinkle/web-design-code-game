@@ -8,14 +8,11 @@ export const twoClassChallenge: ChallengeDefinition = {
   language: "html",
   height: 250,
   instructions: `
-# Using multiple classes
+## About Multiple Classes
 Designers often use more than one class, separated by spaces, to create
 a design "system" out of CSS.
 
-Add the classes for \`card\`, \`centered\` and \`dark\` to the div to make an emo cat.
-
-## About Multiple classes?
-
+For example:
 \`\`\`html
 <p class="larger highlighted">
   An important paragraph.
@@ -24,6 +21,12 @@ Add the classes for \`card\`, \`centered\` and \`dark\` to the div to make an em
   <span class="highlighted">highlighted item</span>
 </p>
 \`\`\`
+
+# Add the Classes for a centered, dark, card div
+
+Add the classes for \`card\`, \`centered\` and \`dark\` to the div to make an emo cat.
+
+
   `,
   html: `
   WORK

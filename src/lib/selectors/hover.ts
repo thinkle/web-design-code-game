@@ -13,7 +13,7 @@ export const hoverChallenge: ChallengeDefinition = {
   language: "css",
   height: 240,
   instructions: `
-# Hover
+# Make the Cat Respond to a Hovering Mouse
 
 Make the cat background turn black when you hover over it.
 

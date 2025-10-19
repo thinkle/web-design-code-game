@@ -19,9 +19,10 @@ export const linkChallengeEasy: ChallengeDefinition = {
 By default, links are blue and underlined, but in
 many designs, we don't want them that way.
 
+# Make the links readable!
+
 Use the \`a\` tag selector to fix the menu links
 here by:
-
 - Change the color of all links to white.
 - Remove underlines from links.
   `,

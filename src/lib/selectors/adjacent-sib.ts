@@ -8,19 +8,19 @@ export const adjacentSiblingChallenge: ChallengeDefinition = {
   language: "css",
   height: 240,
   instructions: `
-# Use the adjacent sibling selector (\`+\`)
+## Using the adjacent sibling selector (\`+\`)
 
 The \`+\` selector selects an element that is **immediately after** another element.
 
 \`\`\`css
+/* Select <p> elements immediately after <h2> */
 h2 + p {
   color: red;
 }
 \`\`\`
 
-This would color only \`<p>\` elements that **come right after** an \`<h2>\` — not paragraphs further down.
 
-## Challenge: Spooked Cats
+# Challenge: Spooked Cats
 
 👉 When a **dog** is immediately to the left of a **cat**, the cat gets a **glowy shadow**.  
 

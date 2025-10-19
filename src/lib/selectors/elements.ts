@@ -12,13 +12,13 @@ export const elementChallenge: ChallengeDefinition = {
   language: "css",
   height: 140,
   instructions: `
-## Turn the chair upside down
+# Turn the chairs upside down
 
 Our cats love a little mischief. Flip every chair so it's upside down.
 
 Select the chair elements and rotate them 180 degrees
 
-Hint: use the element name as the selector (no angle brackets)
+**Hint: use the element name as the selector (no angle brackets)**
   `,
   html: `
   <room>

@@ -8,7 +8,7 @@ export const htmlChallenge: ChallengeDefinition = {
   language: "html",
   height: 250,
   instructions: `
-## Your Challenge
+# Your Challenge
 
 Your challenge is use **HTML** to add classes to elements of the text
 so that our fancy style rules will work correctly.

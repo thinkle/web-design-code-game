@@ -12,7 +12,7 @@ export const flipCatChallenge: ChallengeDefinition = {
   language: "css",
   height: 140,
   instructions: `
-  ### Selectors
+  ## Selectors
 
 Selectors are the way you pick which elements you want to style with CSS.
 The selector always comes on the *left* side of a CSS expression before
@@ -27,7 +27,7 @@ div {
 }
 \`\`\`
 
-## Your challenge: Flip the cats!
+# Your challenge: Flip the cats!
 
 Every cat should turn upside down. The rotation rule is already written:
 \`\`\`css

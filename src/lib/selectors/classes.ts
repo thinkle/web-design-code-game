@@ -13,9 +13,6 @@ export const classChallenge: ChallengeDefinition = {
   language: "css",
   height: 240,
   instructions: `
-# Highlight the "important" paragraphs
-Highlight the important paragraphs in yellow
-by using a *class* selector.
 
 ## Picking out elements
 
@@ -44,7 +41,10 @@ a **dot**.
 }
 \`\`\`
 
-\`\`\`
+# Highlight the "important" paragraphs
+Highlight the important paragraphs in yellow
+by using a *class* selector.
+
   `,
   html: `
 <p>This is a boring paragraph. 

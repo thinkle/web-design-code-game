@@ -13,14 +13,7 @@ export const idChallenge: ChallengeDefinition = {
   language: "css",
   height: 240,
   instructions: `
-# Make the Highlander Kitty Spin!
-
-Go ahead and select the kitty with the id=highlander
-and make it spin by adding
-
-\`animation: spin 1s infinite;\`
-
-## IDs
+  ## IDs
 
 In addition to classes, you can also add IDs to any element.
 
@@ -40,6 +33,15 @@ You select an ID by using the hashtag (\`#\`).
   color: red;
 }
 \`\`\`
+
+# Make the Highlander Kitty Spin!
+
+Go ahead and select the kitty with the id=highlander
+and make it spin by adding
+
+\`animation: spin 1s infinite;\`
+
+
   `,
   html: `
   <room>

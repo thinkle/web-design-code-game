@@ -12,7 +12,7 @@ export const finalSelectorsChallenge: ChallengeDefinition = {
 
 It's time to use **everything you've learned**.
 
-### Your Tasks:
+## Your Tasks:
 1. **Remove the space above the first \`h2\` in the header**  
    - You can't just target \`h2\`: there are more \`h2\`s below.
 

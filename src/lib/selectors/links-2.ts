@@ -16,20 +16,18 @@ export const linkChallengeMedium: ChallengeDefinition = {
   instructions: `
 ## Styling Links
 
-This time, let's make two rulesets, one for
-links in our menu (no underline + white), and
-one for links in our article (underlined and 
-pale blue).
+Sometimes we want certain links to look different
+depending on where they are on the page.
 
-Remember, you can make more specific selectors
-by combining parent and child, such as...
+In those cases, we can use more specific selectors
+to target links in different sections of the page.
 
-\`\`\`css
+# Challenge: Style Menu Links
 
-nav li {
-  /* Style list items inside a nav */
-}
-\`\`\`
+👉 In the code below:
+- Style links in the **nav menu** to be **white** and have **no underline**.  
+- Style links in the **article** to be **light blue** and **underlined**.
+
   `,
   html: `
   <nav class="menu">
@@ -92,10 +90,12 @@ nav li {
     
   `,
   solution: `  
-    a {
+    nav a {
       text-decoration: none;
       color: white;
     }
+    article a {
+      color: lightblue;}
   `,
   validate(contentWindow) {
     let pc = new PropertyChecker(contentWindow);

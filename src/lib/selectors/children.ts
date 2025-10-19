@@ -8,33 +8,31 @@ export const childCombinatorChallenge: ChallengeDefinition = {
   language: "css",
   height: 240,
   instructions: `
-# Use the child selector (\`>\`)
-
-The \`>\` selector matches only immediate children — elements one level down.
+  ## The Child Selector (>)
+Selectors pick which elements get styled. The child selector (\`>\`) matches only immediate children — elements exactly one level down.
 
 Example:
 \`\`\`css
 section > p { color: red }
 \`\`\`
 
-Challenge: only the top-level cats on the bed should lie down
+# Your challenge: Only flip the cats directly on the bed
 
-Make just the cats that are direct children of the bed lie on their sides; cats inside boxes should stay standing
+Make just the cats that are direct children of the <bed> lie on their sides. Cats nested inside boxes should remain standing.
 
   `,
   html: `
   <bed>
     <cat></cat>
+    <basket>
+      <cat></cat>
+    </basket>            
+    <cat></cat>
     <box>
       <cat></cat>
     </box>
-    <cat></cat>
-    <box>
-      <box>
-        <cat></cat>
-      </box>
-    </box>
   </bed>
+  <cat></cat>
   `,
 
   hiddenCSSBefore: catcss,
@@ -85,9 +83,17 @@ Make just the cats that are direct children of the bed lie on their sides; cats 
     });
 
     if (allDirectCatsRotated && directCats.length > 0) {
-      items.push({ name: "Direct bed cats", message: "Cats on the bed are lying down", isValid: true });
+      items.push({
+        name: "Direct bed cats",
+        message: "Cats on the bed are lying down",
+        isValid: true,
+      });
     } else {
-      items.push({ name: "Direct bed cats", message: "Make the top-level cats lie down", isValid: false });
+      items.push({
+        name: "Direct bed cats",
+        message: "Make the top-level cats lie down",
+        isValid: false,
+      });
     }
 
     // Check that nested cats inside boxes are NOT rotated
@@ -103,9 +109,17 @@ Make just the cats that are direct children of the bed lie on their sides; cats 
     });
 
     if (!anyNestedCatsRotated) {
-      items.push({ name: "No nested cats", message: "Cats inside boxes are standing up", isValid: true });
+      items.push({
+        name: "No nested cats",
+        message: "Cats inside boxes & baskets are standing up",
+        isValid: true,
+      });
     } else {
-      items.push({ name: "No nested cats", message: "Don't affect cats inside boxes", isValid: false });
+      items.push({
+        name: "No nested cats",
+        message: "Don't affect cats inside boxes & baskets",
+        isValid: false,
+      });
     }
 
     return {
