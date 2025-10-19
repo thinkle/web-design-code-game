@@ -1,18 +1,28 @@
 @font-face {
-  src: url('/fonts/OutputSans2Beta-Regular.woff2') format("woff2"),
-    url('/fonts/OutputSans2Beta-Regular.woff') format("woff");
-  font-family: 'Output Sans';
+  src:
+    url("/fonts/OutputSans2Beta-Regular.woff2") format("woff2"),
+    url("/fonts/OutputSans2Beta-Regular.woff") format("woff");
+  font-family: "Output Sans";
   font-style: normal italic;
   font-weight: 1 800;
 }
-
-h1,h2,h3,h4,h5,h6,p {
+body {
+  margin: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin-block-start: 0;
   margin-block-end: 8px;
 }
 
 * {
-  font-family:'Output Sans','Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Output Sans", "Lucida Sans", "Lucida Sans Regular",
+    "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 button {
@@ -90,7 +100,8 @@ button.forward:after {
 body {
   background-color: var(--background-color);
   color: var(--color);
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 h1 {
@@ -112,7 +123,7 @@ button.next {
     transform: scale(1);
   }
   5% {
-    transform: scale(1.2);    
+    transform: scale(1.2);
   }
   10% {
     transform: scale(0.9);
