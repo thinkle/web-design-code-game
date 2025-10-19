@@ -532,7 +532,9 @@ export function validatePseudoSelector(
             const expectedValue = expectedProperties[property];
             if (rule.style[property] !== expectedValue) {
               isValid = false;
-              errorMessage += `Expected ${property}: ${expectedValue}, but got ${rule.style[property]}. `;
+              // Give a short, non-technical hint instead of exposing expected/actual values
+              errorMessage = `Found a rule for ${selector}, but some properties don't match. (expected ${property} to be ${expectedValue} but got ${rule.style[property]})`;
+              break;
             }
           }
           if (isValid) {
