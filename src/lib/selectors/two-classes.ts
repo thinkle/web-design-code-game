@@ -49,6 +49,7 @@ Add the classes for \`card\`, \`centered\` and \`dark\` to the div to make an em
 }   
   `,
   starterCode: `
+    <!-- Add classes: dark centered card -->
     <div>
       <cat></cat>
     </div>

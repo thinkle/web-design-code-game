@@ -76,6 +76,7 @@ You select an ID by using the hashtag (\`#\`).
     }
   `,
   starterCode: `
+    /* Make the kitty with id=highlander spin */
     FIXME {
       animation: spin 1s infinite; 
     }    

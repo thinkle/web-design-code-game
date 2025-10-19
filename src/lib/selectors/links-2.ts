@@ -81,6 +81,7 @@ nav li {
     }
   `,
   starterCode: `
+    /* Style nav links and article links separately */
     FIXME {
       text-decoration: none;
       color: white;

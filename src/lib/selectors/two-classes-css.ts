@@ -85,6 +85,7 @@ li.important {/* any <li class="important"> /* }
   hiddenHTMLBefore: "<room>",
   hiddenHTMLAfter: "</room>",
   starterCode: `
+    /* Make dark + shadowed items use a white shadow */
     FIXME {
       /* White shadow w transparency */
       text-shadow: 3px 8px rgba(255,255,255,0.5);

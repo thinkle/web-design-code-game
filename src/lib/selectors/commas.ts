@@ -108,6 +108,7 @@ You can check out some crazy uses of this trick at this
   `,
   hiddenCSSBefore: catCss,
   starterCode: `
+    /* Give cat, tiger, and koala party hats */
     cat hat, FIXME {
       border: 16px solid transparent;
       border-bottom: 30px solid pink;

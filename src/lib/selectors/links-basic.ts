@@ -67,6 +67,7 @@ here by:
     }
   `,
   starterCode: `
+    /* Make menu links white and remove underlines */
     FIXME {
       text-decoration: none;
       color: white;

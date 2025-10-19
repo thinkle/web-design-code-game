@@ -75,6 +75,7 @@ Now let's build a full menu with CSS!
     }
   `,
   starterCode: `
+    /* Style menu links: remove underlines and set colors */
     FIXME {
       text-decoration: none;    
     }
