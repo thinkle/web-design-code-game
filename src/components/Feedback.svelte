@@ -37,7 +37,7 @@
   }
 </script>
 
-<section>
+<section class:success={result.isSolved} class:error={!result.isSolved}>
   {#if result.isSolved}
     <h2 class={chosenAnimation}>
       {chosenPhrase}
@@ -60,11 +60,20 @@
 </section>
 
 <style>
-  section {
+  /*  section {
     margin: 1em;
     padding: 1em;
     border-radius: 8px;
     background-color: #f8f8f8;
+  } */
+
+  section {
+    margin: 0;
+    padding: 12px;
+    background: #f8f8f8;
+    border-top: 2px solid #eee;
+    border-radius: 0 0 8px 8px;
+    font-size: 0.9rem;
   }
   h2 {
     color: #333;
@@ -83,7 +92,58 @@
   .invalid {
     color: red;
   }
+  section.success {
+    border-top-color: #5cb85c;
+    background: #f0fff0;
+  }
 
+  section.error {
+    border-top-color: #d9534f;
+    background: #fff5f5;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5em 0 0 0;
+  }
+
+  li {
+    font-size: 0.85rem;
+    margin-bottom: 0.25em;
+  }
+  .valid {
+    color: #2e7d32;
+  }
+  .invalid {
+    color: #d32f2f;
+  }
+  h2 {
+    font-size: 0.95rem;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    animation-duration: 1s;
+    text-align: center;
+  }
+  h2:not(.zoom-in):not(.fly):not(.spin):not(.pop):not(.slide):not(.bounce):not(
+      .swing
+    ) {
+    color: #666;
+    font-weight: 500;
+  }
+  @keyframes feedback-slide {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  section {
+    animation: feedback-slide 0.3s ease-out;
+  }
   @keyframes zoom-in {
     0% {
       transform: scale(0);

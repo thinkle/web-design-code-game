@@ -11,19 +11,13 @@
   }
 
   function checkScroll() {
-    console.log("Check scroll!");
     leftPosition =
       container.getBoundingClientRect().left + container.clientWidth - 120;
-    console.log("Got element", container, "at", leftPosition);
+
     if (
       container.scrollHeight - container.scrollTop <=
-      container.clientHeight
+      container.clientHeight + 30 // adding a small buffer
     ) {
-      console.log(
-        "Still have ",
-        container.scrollHeight - container.scrollTop,
-        "px to go!"
-      );
       hasScrolledToBottom = true;
     } else {
       hasScrolledToBottom = false;

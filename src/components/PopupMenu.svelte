@@ -95,6 +95,7 @@
 <style>
   :root {
     --white: #ffffff;
+    --off-white: #f9f9f9;
     --dark: #333333;
     --border: #cccccc;
     --accent-color: #007bff;
@@ -123,8 +124,8 @@
   }
 
   li:nth-child(odd) {
-    background-color: var(--dark);
-    color: var(--white);
+    background-color: var(--off-white);
+    color: var(--text-color);
   }
 
   li:nth-child(even) {

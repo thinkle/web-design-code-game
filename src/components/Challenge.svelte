@@ -38,14 +38,17 @@
     console.log("iframe loaded!", w);
     resultWindow = w;
   }
-
+  let focusInCodingWindow = false;
   let edited = false;
   let solved = false;
   let result: ValidationResult | null;
   let timeoutId: any; // for debouncing
+  let studentIsCoding = false;
 
   $: edited =
     $studentWork.replace(/\s/g, "") != challenge.starterCode.replace(/\s/g, "");
+
+  $: studentIsCoding = focusInCodingWindow && edited;
 
   function updateResult(contentWindow: Window, work: any) {
     // Clear the existing timeout, if there is one
@@ -75,35 +78,31 @@
   $: updateResult(resultWindow, $studentWork);
 </script>
 
-<ThreeColumn scrollReminderRight={true}>
-  <div slot="left" class="code">
+<ThreeColumn scrollReminderLeft={true}>
+  <div slot="center" class="code">
     <div class="editor-label">
       {challenge.language} editor
     </div>
-    <button
-      class="reset"
-      on:click={() => ($studentWork = challenge.starterCode)}>Restart</button
-    >
+    {#if edited}
+      <button
+        class="reset"
+        on:click={() => ($studentWork = challenge.starterCode)}>Restart</button
+      >{/if}
     {#key challenge.language}
-      <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
+      <div
+        on:focusin={() => (focusInCodingWindow = true)}
+        on:focusout={() => (focusInCodingWindow = false)}
+      >
+        <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
+      </div>
     {/key}
     {#if edited && challenge.requireHover && !result?.isSolved}
       <div class="emphasize">
         Hold your mouse over the target element to complete the challenge!
       </div>
     {/if}
-    {#if result && edited}
-      <Feedback {result} />
-    {/if}
-  </div>
-  <div slot="center">
-    <h2>Result</h2>
-    <ChallengeResult
-      {challenge}
-      solution={$studentWork}
-      {solved}
-      onWindowLoaded={onIframeLoad}
-    />
+
+    <h2>Code</h2>
     {#if challenge.html}
       <CodeHighlighter
         template={challenge.html}
@@ -127,19 +126,35 @@
     {/if}
   </div>
   <div slot="right">
+    <div class="target-area">
+      <h2>Target</h2>
+      <ChallengeResult
+        {challenge}
+        solution={challenge.solution}
+        solved={true}
+        model={true}
+      />
+    </div>
+    <div class="result-area" class:highlight={studentIsCoding}>
+      <h2>Result</h2>
+      <ChallengeResult
+        {challenge}
+        solution={$studentWork}
+        {solved}
+        onWindowLoaded={onIframeLoad}
+      />
+      {#if result && edited}
+        <Feedback {result} />
+      {/if}
+    </div>
+  </div>
+  <div slot="left">
     {#if solved}
       <div style="display:flex;justify-content:end">
         <button class="next" on:click={onNext}>Next!</button>
       </div>
     {/if}
     <Markdown markdown={challenge.instructions} />
-    <h2>Target</h2>
-    <ChallengeResult
-      {challenge}
-      solution={challenge.solution}
-      solved={true}
-      model={true}
-    />
   </div>
 </ThreeColumn>
 
@@ -156,11 +171,10 @@
   .reset {
     position: absolute;
     right: 8px;
-    top: 8px;
+    top: -3px;
   }
   .code {
     position: relative;
-    padding-top: 32px;
   }
   .editor-label {
     font-size: small;
@@ -169,5 +183,92 @@
     display: inline-block;
     padding: 3px;
     border-radius: 8px 8px 0 0;
+  }
+  .target-area {
+    border: 2px dashed #b2b2b2;
+    background: #fafafa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .target-area h2 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #666;
+  }
+
+  .result-area {
+    border: 2px solid #eee;
+    background: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    transition:
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+  .result-area h2 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #666;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 179, 0, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 12px rgba(255, 179, 0, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 179, 0, 0);
+    }
+  }
+
+  .result-area.highlight {
+    border-color: var(--accent-color);
+    animation: pulse 1.6s ease-out 1;
+  }
+
+  .target-area::before,
+  .result-area::before {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 4px;
+  }
+
+  .target-area::before {
+    content: "Model";
+    background: #fafafa;
+    color: #666;
+    border: 1px dashed #b2b2b2;
+  }
+
+  .result-area::before {
+    content: "Your Work";
+    background: #fff;
+    color: #666;
+    border: 1px solid #eee;
+  }
+  .target-area,
+  .result-area {
+    position: relative;
+  }
+  .target-area {
+    opacity: 0.85;
   }
 </style>
