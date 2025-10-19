@@ -16,6 +16,8 @@ export const hoverChallenge: ChallengeDefinition = {
 # Hover
 
 Make the cat background turn black when you hover over it.
+**Note: for the computer to know you completed this challenge, you'll have to
+hover your mouse over the cat in the preview area after fixing the code!**
 
 ## Pseudoselectors
 
@@ -55,10 +57,12 @@ Now you do the same, but with the \`<cat>\` element!
     WORK
   `,
   starterCode: `
-    FIXME {
+  /* Switch back to fixme */
+    ca {
       transition: all 300ms;      
     }
-    FIX {
+      /* Switch back to fixme */
+    cat:hover {
       background-color: black;
       transform: scale(2);
     }
@@ -86,12 +90,9 @@ Now you do the same, but with the \`<cat>\` element!
     items.push(pc.checkOne("cat", { transition: "all 300ms" }));
     await pc.hoverOne("cat", 300);
     items.push(
-      pc.checkOne(
-        "cat",
-        { "background-color": "black" },
-        () => "Background changes to black on hover",
-        "Move mouse, see effect!"
-      )
+      pc.checkOne("cat", {
+        "background-color": "black",
+      })
     );
     return {
       items,

@@ -12,21 +12,7 @@ export const flipCatChallenge: ChallengeDefinition = {
   language: "css",
   height: 140,
   instructions: `
-## Flip the Cats!
-
-Our cats are feeling silly and want to turn upside down.
-
-Write the code to select *all* the cats and turn them
-upside down. I've already written the code for turning
-them upside down:
-
-\`\`\`css
-transform: rotate(180deg);
-\`\`\`
-
-Now _you_c need to write the code to select all the cats!
-
-### Selectors
+  ### Selectors
 
 The *left* side of a CSS expression is the selector. The *simplest*
 selector is just the name of an element, written without any pointy
@@ -42,6 +28,27 @@ div {
   /* Turn it's background green...*/
   background-color: green;
 }
+\`\`\`
+
+## Your Challenge: Flip the Cats!
+
+Our cats are feeling silly and want to turn upside down.
+
+Write the code to select *all* the cats and turn them
+upside down. I've already written the code for turning
+them upside down:
+
+\`\`\`css
+transform: rotate(180deg);
+\`\`\`
+
+Now _you_ need to write the code to select all the cats!
+
+**Note: for this game, we're using custom elements like \`<cat>\`,
+\`<box>\`, and \`<chair>\`. Selecting these with CSS works just
+like normal HTML elements like \`<div>\` and \`<span>\`.**
+
+
 \`\`\`
   `,
   html: `
@@ -65,6 +72,7 @@ div {
     WORK 
   `,
   starterCode: `
+    /* Select the cat elements and flip them */
     FIXME {
       transform: rotate(180deg);      
     }

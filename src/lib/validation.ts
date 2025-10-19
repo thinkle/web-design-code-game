@@ -6,6 +6,43 @@ import type {
   ValidationItem,
 } from "../types/validation";
 
+// Helper function to convert any color format to rgba for comparison
+function colorToRgba(color: string): string | null {
+  // Create a temporary element to leverage the browser's color parsing
+  const tempEl = document.createElement("div");
+  tempEl.style.color = color;
+  document.body.appendChild(tempEl);
+  const computed = getComputedStyle(tempEl).color;
+  document.body.removeChild(tempEl);
+
+  return computed;
+}
+
+// Helper function to normalize color values for comparison
+function normalizeColor(color: string): string {
+  if (!color || color === "transparent") {
+    return "rgba(0, 0, 0, 0)";
+  }
+
+  // Use browser's computed style to normalize the color
+  const normalized = colorToRgba(color);
+  if (normalized) {
+    // Extract rgb/rgba values and normalize spacing
+    const match = normalized.match(
+      /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
+    );
+    if (match) {
+      const [, r, g, b, a] = match;
+      // Return in canonical format: rgba(r, g, b, a)
+      const alpha = a ? parseFloat(a).toFixed(1) : "1.0";
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+  }
+
+  // Return as-is if we can't parse it
+  return color;
+}
+
 export function isElementRotated(
   element: HTMLDivElement,
   contentWindow: Window
@@ -194,15 +231,22 @@ export class PropertyChecker {
     iframeDoc.body.appendChild(elementClone);
 
     // Get the computed style
-    const expectedComputedCss = getComputedStyle(elementClone)[property];
-    const actualCss = getComputedStyle(element)[property];
+    const expectedComputedCss = getComputedStyle(elementClone)[property as any];
+    const actualCss = getComputedStyle(element)[property as any];
+
+    // Check if we should use flexible color comparison
+    const isColorProperty = property.toLowerCase().includes("color");
+    const isValid = isColorProperty
+      ? normalizeColor(actualCss as string) ===
+        normalizeColor(expectedComputedCss as string)
+      : actualCss === expectedComputedCss;
+
     // Clean up: remove the element from the iframe
     iframeDoc.body.removeChild(elementClone);
 
-    const isValid = actualCss === expectedComputedCss;
     const name = customName || `Check ${property} for ${element.tagName}`;
     const message = customMessageFn
-      ? customMessageFn(expectedCss ?? "none", actualCss)
+      ? customMessageFn(expectedCss ?? "none", actualCss as string)
       : `Expected ${property}: ${
           expectedCss ?? "none"
         }; (${expectedComputedCss}) but got ${property}: ${actualCss};`;
@@ -211,8 +255,8 @@ export class PropertyChecker {
       name,
       isValid,
       message,
-      expected: expectedCss,
-      measured: actualCss,
+      expected: expectedCss ?? undefined,
+      measured: actualCss as string,
       element, // Not returning the element since it's in a different document (iframe)
     };
   }

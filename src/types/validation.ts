@@ -8,7 +8,7 @@ export type ValidationItem = {
   name: string;
   isValid: boolean;
   message?: string;
-  mesaured?: string;
+  measured?: string;
   element?: HTMLElement;
   expected?: string;
 };

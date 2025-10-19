@@ -12,13 +12,6 @@ export const nestedChallenge: ChallengeDefinition = {
   language: "css",
   height: 140,
   instructions: `
-## Turn the Cat on the Bed Upside Down
-Cats on beds can't help but be silly: turn the
-cat on the bed upside down!
-
-Use *descendant* selectors to select only
-the cat on the bed.
-
 ### Selectors
 
 You can chain two selectors together with a space between
@@ -35,6 +28,15 @@ nav a {
   text-decoration: none;
 }
 \`\`\`
+  ## Your Challenge: Turn the Cat on the Bed Upside Down
+Cats on beds can't help but be silly: turn the
+cat on the bed upside down!
+
+Use *descendant* selectors to select only
+the cat on the bed.
+
+
+
   `,
   html: `
   <room style="display:flex">
@@ -49,7 +51,7 @@ nav a {
     </box>
     <chair>
       <cat></cat>
-    </chair>
+    </chair>    
   </room>
   `,
   hiddenCSSBefore: catcss,

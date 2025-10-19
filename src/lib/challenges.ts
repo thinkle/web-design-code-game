@@ -28,6 +28,13 @@ import { query2Challenge } from "./vanilla-js/query2";
 import { functionChallenge } from "./vanilla-js/functions";
 import { function2Challenge } from "./vanilla-js/functions2";
 import { function3Challenge } from "./vanilla-js/functions3";
+import { childCombinatorChallenge } from "./selectors/children";
+import { adjacentSiblingChallenge } from "./selectors/adjacent-sib";
+import { generalSiblingChallenge } from "./selectors/subsequent-sib";
+import { firstLineChallenge } from "./selectors/first-line";
+import { firstLetterAfterHeaderChallenge } from "./selectors/first-letter";
+import { childSelectorChallenge } from "./selectors/nth-child";
+import { finalSelectorsChallenge } from "./selectors/challenge1";
 
 export type ChallengeSetId = "box" | "selectors";
 
@@ -62,6 +69,13 @@ export let challengeSets = {
       linkChallenge,
       hoverChallenge,
       pseudoChallenge,
+      childCombinatorChallenge,
+      adjacentSiblingChallenge,
+      generalSiblingChallenge,
+      firstLineChallenge,
+      firstLetterAfterHeaderChallenge,
+      childSelectorChallenge,
+      finalSelectorsChallenge,
     ],
   },
   box: {
