@@ -17,6 +17,14 @@
     "🏆 Sensational! 🏆",
     "🐝 Bee-utiful Job! 🐝",
     "🚴‍♂️ You're Rolling! 🚴‍♂️",
+    "🔍 AMAZING! 🔍",
+    "💀 Scarily Great! 💀",
+    "🐰 Some-bunny's crushing it! 🐰",
+    "👅 Taste of success! 👅",
+    "🫃 Full of great ideas! 🫃",
+    "🦶 Toe-tally awesome! 🦶",
+    "🤤 Drool-worthy! 🤤",
+    "🧱 You’re laying the foundation! 🧱",
   ];
   const animations = [
     "zoom-in",
