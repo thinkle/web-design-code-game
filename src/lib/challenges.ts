@@ -25,6 +25,7 @@ import { htmlChallenge } from "./selectors/add-to-html";
 import { commaChallenge } from "./selectors/commas";
 import { query1Challenge } from "./vanilla-js/query1";
 import { query2Challenge } from "./vanilla-js/query2";
+import { variablesChallenge } from "./vanilla-js/variables";
 import { functionChallenge } from "./vanilla-js/functions";
 import { function2Challenge } from "./vanilla-js/functions2";
 import { function3Challenge } from "./vanilla-js/functions3";
@@ -45,6 +46,7 @@ export let challengeSets = {
     challenges: [
       query1Challenge,
       query2Challenge,
+      variablesChallenge,
       functionChallenge,
       function2Challenge,
       function3Challenge,

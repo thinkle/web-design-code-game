@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   export let onWindowLoaded: ((w: Window) => void) | null;
   export let onJsError: ((message: string) => void) | null = null;
   export let js = '';
@@ -7,7 +7,8 @@
   export let html = '';
   export let height : number;
 
-  let iframe : HTMLIFrameElement;
+  let iframe: HTMLIFrameElement;
+  let frameKey: string = "";
   
   const updateIframe = () => {
     if (!iframe || !iframe.contentWindow) {
@@ -56,11 +57,11 @@
       </html>
     `);
     doc.close();
-  };
 
-  $: js && updateIframe();
-  $: css && updateIframe();
-  $: html && updateIframe();
+    if (onWindowLoaded && iframe && iframe.contentWindow) {
+      onWindowLoaded(iframe.contentWindow);
+    }
+  };
 
   const handleMessage = (event: MessageEvent) => {
     const data = event.data as any;
@@ -86,17 +87,26 @@
     }
   };
 
-  onMount(() => {
+  // Recreate the iframe whenever the student's code or markup changes
+  $: frameKey = `${html}/*sep*/${css}/*sep*/${js}`;
+
+  // Whenever we have an iframe and code, (re)write the document into it
+  $: if (iframe) {
     updateIframe();
-    if (onWindowLoaded && iframe && iframe.contentWindow) {
-      onWindowLoaded(iframe.contentWindow);
-    }
+  }
+
+  onMount(() => {
     window.addEventListener("message", handleMessage);
   });
-  
+
+  onDestroy(() => {
+    window.removeEventListener("message", handleMessage);
+  });
 </script>
 
-<iframe style:--height={`${height}px`} bind:this={iframe}></iframe>
+{#key frameKey}
+  <iframe style:--height={`${height}px`} bind:this={iframe}></iframe>
+{/key}
 
 <style>
   iframe {
