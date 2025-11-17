@@ -173,9 +173,9 @@ You can check out some crazy uses of this trick at this
     });
     items.push({
       name: "DRY (Don't repeat yourself!)",
-      isValid: work.length < 250,
+      isValid: work.length < 300,
       message: `Keep the code nice and short! 
-        Yours is ${work.length - 250} characters too long!`,
+        Yours is ${work.length - 300} characters too long!`,
     });
 
     return {
