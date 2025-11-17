@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';      
-  export let onWindowLoaded : ((w : Window)=>void)|null;
-  // ... [Rest of the Code]
- 
-
+  import { onMount } from "svelte";
+  export let onWindowLoaded: ((w: Window) => void) | null;
+  export let onJsError: ((message: string) => void) | null = null;
   export let js = '';
   export let css = '';
   export let html = '';
@@ -16,7 +14,8 @@
       console.log('No iframe?');
       return;
     }    
-    const doc = iframe.contentWindow.document;
+    const win = iframe.contentWindow;
+    const doc = win.document;
 
     doc.open();
     doc.write(`
@@ -32,6 +31,25 @@
       <body>
           ${html}
           <scr` + `ipt>
+            // Forward errors to the parent window
+            window.onerror = function (message, source, lineno, colno, error) {
+              try {
+                window.parent.postMessage(
+                  {
+                    type: 'student-js-error',
+                    message: String(message),
+                    source,
+                    lineno,
+                    colno
+                  },
+                  '*'
+                );
+              } catch (e) {
+                // Swallow any cross-origin or serialization issues
+              }
+            };
+          </scr` + `ipt>
+          <scr` + `ipt>
               ${js}
           </scr` + `ipt>
       </body>
@@ -44,11 +62,36 @@
   $: css && updateIframe();
   $: html && updateIframe();
 
-  onMount(()=>{
+  const handleMessage = (event: MessageEvent) => {
+    const data = event.data as any;
+    if (!data || data.type !== "student-js-error") return;
+    if (onJsError) {
+      const { message, lineno, colno, source } = data;
+      let formatted = String(message ?? "Unknown error");
+      if (lineno != null) {
+        // Adjust for lines we inject before the student's code
+        const lineOffset = 2;
+        const adjustedLine =
+          typeof lineno === "number" && lineno > lineOffset
+            ? lineno - lineOffset
+            : lineno;
+        formatted = `Line ${adjustedLine}${
+          colno != null ? ":" + colno : ""
+        } — ${formatted}`;
+      }
+      if (source) {
+        formatted = `${formatted} (${source})`;
+      }
+      onJsError(formatted);
+    }
+  };
+
+  onMount(() => {
     updateIframe();
-    if (onWindowLoaded) {
-      onWindowLoaded(iframe.contentWindow)
-    }          
+    if (onWindowLoaded && iframe && iframe.contentWindow) {
+      onWindowLoaded(iframe.contentWindow);
+    }
+    window.addEventListener("message", handleMessage);
   });
   
 </script>

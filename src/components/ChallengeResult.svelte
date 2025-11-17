@@ -11,6 +11,7 @@
   let js = '';
   let css = '';
   let html = '';
+  export let onJsError: ((message: string) => void) | null = null;
 
   $: {
     //filledTemplate = challenge.template.replace('WORK',solution);
@@ -42,6 +43,7 @@
 </script>
 <CodeResult
   {onWindowLoaded}
+  {onJsError}
   height={challenge.height||600}
   {html} {css} {js}
 />

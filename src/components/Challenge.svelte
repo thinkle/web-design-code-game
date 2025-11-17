@@ -44,6 +44,7 @@
   let result: ValidationResult | null;
   let timeoutId: any; // for debouncing
   let studentIsCoding = false;
+  let jsError: string | null = null;
 
   $: edited =
     $studentWork.replace(/\s/g, "") != challenge.starterCode.replace(/\s/g, "");
@@ -55,6 +56,8 @@
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
+    // Reset JS error when we are about to re-run the student's code
+    jsError = null;
 
     // Set a new timeout
     timeoutId = setTimeout(() => {
@@ -76,6 +79,10 @@
   }
 
   $: updateResult(resultWindow, $studentWork);
+
+  function handleJsError(message: string) {
+    jsError = message || "Unknown error in your JavaScript.";
+  }
 </script>
 
 <ThreeColumn scrollReminderLeft={true}>
@@ -142,7 +149,14 @@
         solution={$studentWork}
         {solved}
         onWindowLoaded={onIframeLoad}
+        onJsError={handleJsError}
       />
+      {#if jsError}
+        <div class="js-error-box">
+          <h3>JavaScript error</h3>
+          <p>{jsError}</p>
+        </div>
+      {/if}
       {#if result && edited}
         <Feedback {result} />
       {/if}
@@ -270,5 +284,29 @@
   }
   .target-area {
     opacity: 0.85;
+  }
+
+  .js-error-box {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #f5c2c7;
+    background: #fff5f5;
+    font-size: 0.85rem;
+    color: #842029;
+  }
+
+  .js-error-box h3 {
+    margin: 0 0 4px 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #b02a37;
+  }
+
+  .js-error-box p {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 </style>
