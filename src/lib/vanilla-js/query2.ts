@@ -15,9 +15,9 @@ export const query2Challenge: ChallengeDefinition = {
       <cat id="marisol"></cat>
     </div>
     <div>
-      Use JavaScript to change Miguel
-      into night-time colors by adding
-      the CSS filter property to him!
+      Make Kim have a cool green shadow
+      [drop-shadow(4px 4px 4px green)]
+      and Marisol "hue rotate" to pink[hue-rotate(270deg)]
     </div>
   
   `,
