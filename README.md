@@ -1,20 +1,90 @@
 # Web Design Code Game
 
-A framework for building simple online coding challenges for students. Inspired by Flexbox Froggy, I wanted to teach more concepts I couldn't find nice tutorials for. I started with the box model.
+An interactive, browser-based coding challenge platform for teaching web design fundamentals to beginners. Inspired by [Flexbox Froggy](https://flexboxfroggy.com/), this project provides hands-on lessons where students write real CSS and JavaScript to solve fun, cat-themed puzzles with instant visual feedback.
 
-So far, I have built...
+## Challenge Tracks
 
-* kitten-challenges:
-  * A series of challenges that teaches the box model!
+The game currently includes three tracks:
 
+| Track | Theme | Concepts Covered |
+|-------|-------|-----------------|
+| **Cats in Boxes** | Box Model | `padding`, `margin`, `border`, `display: inline-block`, per-side properties, centering |
+| **Find the Cats!** | CSS Selectors | Element, class, ID, descendant, child (`>`), sibling (`+`, `~`), pseudo-classes (`:hover`, `:nth-child`), pseudo-elements (`::before`, `::first-line`, `::first-letter`), comma-separated selectors |
+| **Disco Cats** | Vanilla JavaScript | `document.querySelector`, DOM manipulation, `let` variables, functions, `event.target`, `addEventListener`, `for...of` loops |
 
-# Svelte + TS + Vite
-This template should help get you started developing with Svelte and TypeScript in Vite.
+Each track has 6–22 progressive challenges that scaffold from basic concepts to a capstone exercise.
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v16 or later)
+- npm (included with Node.js)
+
+### Install & Run
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+Open the URL printed in your terminal (usually `http://localhost:5173`).
+
+### Build for Production
+
+```bash
+npm run build
+npm run preview   # preview the production build locally
+```
+
+### Type Checking
+
+```bash
+npm run check
+```
+
+## Project Structure
+
+```
+src/
+├── lib/
+│   ├── box-model/        # Box Model challenge definitions & lesson markdown
+│   ├── selectors/        # CSS Selectors challenge definitions
+│   ├── vanilla-js/       # JavaScript challenge definitions & lesson markdown
+│   ├── challenges.ts     # Master list that assembles all three tracks
+│   └── validation.ts     # Shared validation helpers
+├── components/           # Svelte UI components (editor, result pane, etc.)
+├── types/                # TypeScript type definitions
+├── App.svelte            # Root application component
+└── stores.ts             # Svelte stores for app state
+```
+
+### Adding a New Challenge
+
+1. Create a new `.ts` file in the appropriate `src/lib/<track>/` folder.
+2. Export a `ChallengeDefinition` object with `title`, `instructions`, `html`, `css`/`js`, `starterCode`, `solution`, and a `validate` function.
+3. (Optional) Write lesson instructions in a `.md` file under `markdown/` and import it with `?raw`.
+4. Import and add your challenge to the relevant array in `src/lib/challenges.ts`.
+
+## Tech Stack
+
+- **[Svelte](https://svelte.dev/)** — UI framework
+- **[TypeScript](https://www.typescriptlang.org/)** — type safety
+- **[Vite](https://vitejs.dev/)** — build tool & dev server
+- **[CodeMirror 6](https://codemirror.net/6/)** — in-browser code editor
+- **[markdown-it](https://github.com/markdown-it/markdown-it)** — lesson instruction rendering
 
 ## Recommended IDE Setup
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+[VS Code](https://code.visualstudio.com/) + [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
 
-## Need an official Svelte framework?
+## Contributing
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+See [AGENTS.md](AGENTS.md) for coding conventions and guidance. Proposed pedagogical improvements are tracked in [PROPOSED_REVISIONS.md](PROPOSED_REVISIONS.md).
+
+## License
+
+This project is private. See the repository settings for access details.
