@@ -22,7 +22,7 @@ Here's how it works:
 \`\`\`css
 /* Select every div */
 div {
-  /* Turn it's background green...*/
+  /* Turn its background green...*/
   background-color: green;
 }
 \`\`\`

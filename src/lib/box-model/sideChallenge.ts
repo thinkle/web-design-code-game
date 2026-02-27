@@ -78,7 +78,7 @@ export const sidesChallenge: ChallengeDefinition = {
     // Validate padding-top
     if (offsets.top < 50) {
       items.push({
-        name: "Needs some room to breath!",
+        name: "Needs some room to breathe!",
         message: `Make sure there is space over the kitty!`,
         isValid: false,
       });

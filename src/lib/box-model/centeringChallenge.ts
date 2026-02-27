@@ -39,7 +39,7 @@ export const centeringChallenge: ChallengeDefinition = {
     }
 
     .room {            
-      background-color: #0022a0;;      
+      background-color: #0022a0;      
     }
   `,
   css: `

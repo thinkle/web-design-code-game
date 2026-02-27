@@ -7,7 +7,7 @@ what a user does. Events have a `target` property which points
 to the HTML Element that "triggered" the event (i.e. the thing
 the user clicked).
 
-So where as before we might have written something like:
+Whereas before we might have written something like:
 
 ```javascript
 document
@@ -16,7 +16,7 @@ document
   .toggle("spin") // add or remove "spin"
 ```
 
-Now in our even handler, we can target whatever element was
+Now in our event handler, we can target whatever element was
 clicked by using `event.target` in place of `document.querySelector(...)`. Like so:
 
 ```javascript

@@ -45,7 +45,7 @@ li.item {
 \`\`\`
 
   `,
-  hiddenHTMLBefore: "<article style='display:flex;''>",
+  hiddenHTMLBefore: "<article style='display:flex;'>",
   hiddenHTMLAfter: "</article>",
   html: `
   <section>
