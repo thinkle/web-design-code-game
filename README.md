@@ -83,8 +83,6 @@ src/
 
 ## Contributing
 
-See [AGENTS.md](AGENTS.md) for coding conventions and guidance. Proposed pedagogical improvements are tracked in [PROPOSED_REVISIONS.md](PROPOSED_REVISIONS.md).
+Contributions are welcome! See [AGENTS.md](AGENTS.md) for coding conventions and guidance. Proposed pedagogical improvements are tracked in [PROPOSED_REVISIONS.md](PROPOSED_REVISIONS.md).
 
-## License
-
-This project is private. See the repository settings for access details.
+If you'd like to add a new challenge, fix a bug, or improve lesson content, feel free to open a pull request.
