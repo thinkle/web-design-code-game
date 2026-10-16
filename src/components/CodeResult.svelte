@@ -7,6 +7,7 @@
   export let js = '';
   export let css = '';
   export let html = '';
+  export let wrapperClass = '';
   export let height : number;
 
   let iframe: HTMLIFrameElement;
@@ -88,7 +89,7 @@
           </style>
       </head>
       <body>
-          ${html}
+          <wrapper class="${wrapperClass}">${html}</wrapper>
           <scr` + `ipt>
             // Forward errors to the parent window
             window.onerror = function (message, source, lineno, colno, error) {
@@ -145,6 +146,11 @@
       onJsError(formatted);
     }
   };
+
+  $: if (iframe && iframe.contentDocument) {
+    const wrapper = iframe.contentDocument.querySelector("body > wrapper");
+    if (wrapper) wrapper.className = wrapperClass;
+  }
 
   // Recreate the iframe whenever the student's code or markup changes
   $: frameKey = `${html}/*sep*/${css}/*sep*/${js}`;

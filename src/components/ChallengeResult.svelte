@@ -34,16 +34,16 @@
     if (challenge.hiddenCSSBefore) {
       css = challenge.hiddenCSSBefore + css;
     }
-    let wrapperClasses = [];    
-    if (solved) { wrapperClasses.push('solved') }
-    if (model) {wrapperClasses.push('model')}
-    html = `<wrapper class="${wrapperClasses.join(' ')}">${html}</wrapper>`            
   }
+  // Applied to the <wrapper> in place, so solving doesn't reload the preview
+  // (a reload would restart click/hover checks and re-run student JS).
+  let wrapperClass = '';
+  $: wrapperClass = [solved && 'solved', model && 'model'].filter(Boolean).join(' ');
   
 </script>
 <CodeResult
   {onWindowLoaded}
   {onJsError}
   height={challenge.height||600}
-  {html} {css} {js}
+  {html} {css} {js} {wrapperClass}
 />

@@ -45,6 +45,10 @@
   let timeoutId: any; // for debouncing
   let studentIsCoding = false;
   let jsError: string | null = null;
+  // Interactive challenges (click/hover) validate asynchronously: the check
+  // only finishes once the student interacts with the Result.
+  let waitingForInteraction = false;
+  let validationRun = 0;
 
   $: edited =
     $studentWork.replace(/\s/g, "") != challenge.starterCode.replace(/\s/g, "");
@@ -61,10 +65,19 @@
 
     // Set a new timeout
     timeoutId = setTimeout(() => {
+      const run = ++validationRun;
+      waitingForInteraction = false;
       if (contentWindow) {
         let returnValue = challenge.validate(contentWindow, previewWork);
         if (returnValue instanceof Promise) {
+          // The code changed, so any earlier verdict no longer applies.
+          result = null;
+          solved = false;
+          waitingForInteraction = true;
           returnValue.then((r: ValidationResult) => {
+            // Ignore answers from an older version of the student's code
+            if (run !== validationRun) return;
+            waitingForInteraction = false;
             result = r;
             solved = result.isSolved;
           });
@@ -119,11 +132,6 @@
         <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
       </div>
     {/key}
-    {#if edited && challenge.requireHover && !result?.isSolved}
-      <div class="emphasize">
-        Hold your mouse over the target element to complete the challenge!
-      </div>
-    {/if}
 
     <h2>Code</h2>
     {#if challenge.html}
@@ -186,7 +194,12 @@
           <p>{jsError}</p>
         </div>
       {/if}
-      {#if result && edited}
+      {#if waitingForInteraction && edited}
+        <div class="try-it">
+          👆 {challenge.interactionPrompt ||
+            "Now try it out in the Result above to check your work!"}
+        </div>
+      {:else if result && edited}
         <Feedback {result} />
       {/if}
     </div>
@@ -339,6 +352,16 @@
     font-size: 0.75rem;
     color: #666;
     margin: 0 0 12px 0;
+  }
+
+  .try-it {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #fff8e1;
+    border: 1px solid #ffd54f;
+    font-size: 0.9rem;
+    font-weight: 600;
   }
 
   .js-error-box {

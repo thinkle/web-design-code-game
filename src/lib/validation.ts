@@ -559,59 +559,119 @@ export class PropertyChecker {
   }
 }
 
+/**
+ * Check styles on a pseudo-element (::before, ::first-line, ...), which
+ * getComputedStyle can't reliably give us, by reading the CSS rules.
+ *
+ * Any selector counts if it ends with the same pseudo-element and its
+ * base selects exactly the same elements as the expected one, so
+ * `ul li::before` or `section li::before` satisfy `li::before`.
+ */
 export function validatePseudoSelector(
   contentWindow: Window,
   selector: string,
   expectedProperties: { [key: string]: string | null },
   name: string
 ) {
-  // Get all stylesheets from the contentWindow
-  const styleSheets = contentWindow.document.styleSheets;
-  let isValid = false;
-  let errorMessage = "";
+  const doc = contentWindow.document;
+  const pseudoMatch = selector.match(/^(.*?)(::?[a-z-]+)$/);
+  const expectedBase = pseudoMatch ? pseudoMatch[1].trim() : selector;
+  const pseudo = pseudoMatch
+    ? pseudoMatch[2].replace(/^::?/, "").toLowerCase()
+    : "";
 
-  // Iterate through all stylesheets
-  for (const sheet of styleSheets) {
-    // Try-catch block to handle cross-origin restrictions
+  const select = (sel: string): Element[] | null => {
     try {
-      const rules = sheet.cssRules || sheet.rules;
-      // Iterate through all rules in the stylesheet
-      for (const rule of rules) {
-        // Check if the rule selector matches the desired selector and is a StyleRule
-        if (
-          rule.selectorText === selector &&
-          rule.type === CSSRule.STYLE_RULE
-        ) {
-          isValid = true;
-          // Validate each property
-          for (const property in expectedProperties) {
-            const expectedValue = expectedProperties[property];
-            if (rule.style[property] !== expectedValue) {
-              isValid = false;
-              // Give a short, non-technical hint instead of exposing expected/actual values
-              errorMessage = `Found a rule for ${selector}, but some properties don't match. (expected ${property} to be ${expectedValue} but got ${rule.style[property]})`;
-              break;
-            }
-          }
-          if (isValid) {
-            return {
-              isValid,
-              name,
-              message: "Correct rules for " + selector,
-            };
-          }
-        }
-      }
+      return Array.from(doc.querySelectorAll(sel || "*"));
+    } catch (e) {
+      return null; // invalid selector
+    }
+  };
+  const expectedElements = select(expectedBase) || [];
+
+  const sameElements = (sel: string) => {
+    if (sel.replace(/\s+/g, " ") === selector.replace(/\s+/g, " ")) {
+      return true;
+    }
+    const m = sel.match(/^(.*?)(::?[a-z-]+)$/);
+    if (!m || m[2].replace(/^::?/, "").toLowerCase() !== pseudo) return false;
+    const found = select(m[1].trim());
+    return (
+      !!found &&
+      expectedElements.length > 0 &&
+      found.length === expectedElements.length &&
+      found.every((el) => expectedElements.includes(el))
+    );
+  };
+
+  // Gather declarations from every matching rule; later rules win
+  const declared: { [property: string]: string } = {};
+  let foundRule = false;
+  for (const sheet of Array.from(doc.styleSheets)) {
+    let rules: CSSRuleList;
+    try {
+      rules = sheet.cssRules;
     } catch (e) {
       console.warn("Can't read the css rules of: ", sheet.href, e);
+      continue;
+    }
+    for (const rule of Array.from(rules)) {
+      if (!(rule as CSSStyleRule).selectorText) continue;
+      const styleRule = rule as CSSStyleRule;
+      const parts = styleRule.selectorText.split(",").map((p) => p.trim());
+      if (!parts.some(sameElements)) continue;
+      foundRule = true;
+      for (const property in expectedProperties) {
+        const value = styleRule.style.getPropertyValue(property);
+        if (value) declared[property] = value;
+      }
     }
   }
-  if (!errorMessage) {
-    errorMessage = "Looks like you don't have a working rule yet!";
+
+  if (!foundRule) {
+    return {
+      isValid: false,
+      name,
+      message: "Looks like you don't have a working rule yet!",
+    };
+  }
+  for (const property in expectedProperties) {
+    const expected = expectedProperties[property];
+    const actual = declared[property] ?? "";
+    if (!sameCssValue(contentWindow, property, actual, expected ?? "")) {
+      return {
+        isValid: false,
+        name,
+        message: `Found a rule for ${selector}, but some properties don't match. (expected ${property} to be ${expected} but got ${
+          actual || "nothing"
+        })`,
+      };
+    }
   }
   return {
-    isValid,
+    isValid: true,
     name,
-    message: errorMessage,
+    message: "Correct rules for " + selector,
   };
+}
+
+/** Compare two CSS values the way the browser would compute them. */
+function sameCssValue(
+  contentWindow: Window,
+  property: string,
+  a: string,
+  b: string
+): boolean {
+  if (a.trim() === b.trim()) return true;
+  if (!a || !b) return false;
+  const doc = contentWindow.document;
+  const probe = (value: string) => {
+    const el = doc.createElement("span");
+    el.style.setProperty(property, value);
+    doc.body.appendChild(el);
+    const computed = contentWindow.getComputedStyle(el).getPropertyValue(property);
+    el.remove();
+    return computed;
+  };
+  return probe(a) === probe(b);
 }

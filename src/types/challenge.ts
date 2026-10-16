@@ -14,6 +14,8 @@ export type ChallengeDefinition = {
   instructions: string;
   starterCode: string;
   requireHover?: boolean;
+  /** Shown while an interactive (click/hover) check waits for the student */
+  interactionPrompt?: string;
   solution: string;
   validate: (
     contentWindow: Window,

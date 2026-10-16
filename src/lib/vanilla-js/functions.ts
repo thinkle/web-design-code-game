@@ -4,6 +4,7 @@ import catcss from "./css/cat.css?raw";
 import { PropertyChecker } from "../validation";
 export const functionChallenge: ChallengeDefinition = {
   title: "Functions",
+  interactionPrompt: "Now click the button in the Result to check your work!",
   language: "js",
   instructions,
   height: 150,
@@ -51,7 +52,6 @@ export const functionChallenge: ChallengeDefinition = {
     return new Promise((resolve) => {
       button.addEventListener("click", () => {
         setTimeout(() => {
-          debugger;
           let items = [
             {
               name: "Click to Spin",
