@@ -1,5 +1,5 @@
 import type { ChallengeDefinition } from "../../types/challenge";
-import instructions from "./markdown/grid.md?raw";
+import instructions from "./markdown/findCenter.md?raw";
 import catcss from "../box-model/css/cat.css?raw";
 import scenecss from "./css/scene.css?raw";
 import { getContentRect } from "../validation";
@@ -19,8 +19,8 @@ import {
 
 const SIZES: { [name: string]: number } = { small: 50, medium: 80, large: 110 };
 
-export const gridChallenge: ChallengeDefinition = {
-  title: "The Centering Shortcut",
+export const findCenterChallenge: ChallengeDefinition = {
+  title: "Find Your Center",
   language: "css",
   height: 170,
   instructions,
@@ -108,8 +108,9 @@ WORK
       const b = getContentRect(box);
       return near(centerX(c), centerX(b), 2) && near(centerY(c), centerY(b), 2);
     });
-    const usesGrid = boxes.every(
-      (box) => win.getComputedStyle(box).display.includes("grid")
+    // Either way of centering is fine: flexbox or the grid shortcut
+    const usesLayout = boxes.every((box) =>
+      /flex|grid/.test(win.getComputedStyle(box).display)
     );
     const sizeItem =
       boxes
@@ -125,25 +126,46 @@ WORK
         })
         .find((item) => !item.isValid) ||
       ({ name: "The boxes keep their sizes", isValid: true } as const);
+    // Half-centered (often place-content in a flex container) gets its own hint
+    const leftRightOnly =
+      !centered &&
+      boxes.every((box) => {
+        const cat = box.querySelector(".cat");
+        return !!cat && near(centerX(getContentRect(cat)), centerX(getContentRect(box)), 2);
+      });
+    const topBottomOnly =
+      !centered &&
+      boxes.every((box) => {
+        const cat = box.querySelector(".cat");
+        return !!cat && near(centerY(getContentRect(cat)), centerY(getContentRect(box)), 2);
+      });
+    let centerHint =
+      "Each cat should be right in the middle of its box, both left-right and top-bottom.";
+    if (leftRightOnly) {
+      centerHint =
+        "Left to right is done! Now center the cats from top to bottom too.";
+    } else if (topBottomOnly) {
+      centerHint =
+        "Top to bottom is done! Now center the cats from left to right too.";
+    }
     return result([
       {
         name: "Every cat is in the middle of its box",
         isValid: centered,
-        message:
-          "Each cat should be right in the middle of its box, both left-right and top-bottom.",
+        message: centerHint,
       },
       {
-        name: "The boxes use the grid shortcut",
-        isValid: usesGrid,
+        name: "The boxes center their cats",
+        isValid: usesLayout,
         message:
-          "This challenge is about the grid shortcut: try it on the boxes!",
+          "Center the cats by changing the boxes: use flexbox, or the grid shortcut.",
       },
       placedByFlexbox(win, all(win, ".cat"), "cats", {
         name: "The boxes place the cats",
       }),
       sizeItem,
       ...boxes
-        .map((box) => paddingUnchanged(win, box, "box", {}, "the grid shortcut"))
+        .map((box) => paddingUnchanged(win, box, "box", {}, "flexbox or the grid shortcut"))
         .filter((item, i, items) => !item.isValid && items.findIndex((o) => !o.isValid) === i),
     ]);
   },

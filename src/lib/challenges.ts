@@ -51,7 +51,7 @@ import { endChallenge } from "./flex/endChallenge";
 import { climbChallenge } from "./flex/climbChallenge";
 import { balanceChallenge } from "./flex/balanceChallenge";
 import { hotelChallenge } from "./flex/hotelChallenge";
-import { gridChallenge } from "./flex/gridChallenge";
+import { findCenterChallenge } from "./flex/findCenterChallenge";
 
 export type ChallengeSetId = "box" | "selectors" | "vanilla" | "flex";
 
@@ -131,6 +131,7 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
     challenges: [
       rowChallenge,
       centerChallenge,
+      findCenterChallenge,
       endChallenge,
       spreadChallenge,
       alignChallenge,
@@ -142,9 +143,6 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
       nestChallenge,
       condoChallenge,
       hotelChallenge,
-      // Optional bonus (CSS Grid's centering shortcut): self-contained, so
-      // it can simply be removed from this list.
-      gridChallenge,
     ],
   },
 };

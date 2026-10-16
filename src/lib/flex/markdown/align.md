@@ -4,7 +4,8 @@ Every yoga pose starts with your paws planted firmly on the ground. But somethin
 
 ## The other direction: align-items
 
-A flex container has two directions, called **axes**:
+You used `align-items: center` to find your center. Here's what's going on:
+a flex container has two directions, called **axes**:
 
 - The **main axis** is the direction the items line up in. In a row, that's left ↔ right. `justify-content` works on the main axis.
 - The **cross axis** goes across it. In a row, that's top ↕ bottom. `align-items` works on the cross axis.
