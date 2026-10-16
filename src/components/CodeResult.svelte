@@ -112,7 +112,7 @@
             };
           </scr` + `ipt><scr` + `ipt>${loopGuardRuntime}</scr` + `ipt>
           <scr` + `ipt>
-              ${addLoopGuards(js)}
+              ${addLoopGuards(js || "")}
           </scr` + `ipt>
       </body>
       </html>
