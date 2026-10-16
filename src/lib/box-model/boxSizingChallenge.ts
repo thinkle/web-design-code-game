@@ -61,14 +61,14 @@ export const boxSizingChallenge: ChallengeDefinition = {
 
     .raft {
       background-color: tan;
-      width: ${RAFT_WIDTH}px;
-      height: ${RAFT_HEIGHT}px;
     }
 
     WORK
   `,
   starterCode: `
     .raft {
+      width: ${RAFT_WIDTH}px;
+      height: ${RAFT_HEIGHT}px;
       padding: 8px;
       FIXME
     }
@@ -79,6 +79,8 @@ export const boxSizingChallenge: ChallengeDefinition = {
   `,
   solution: `
     .raft {
+      width: ${RAFT_WIDTH}px;
+      height: ${RAFT_HEIGHT}px;
       padding: 8px;
       box-sizing: border-box;
     }
