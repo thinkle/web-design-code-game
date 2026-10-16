@@ -15,9 +15,10 @@ const BOX_SIZE = 40;
 const MARGIN = 25;
 const PADDING = 5;
 const threshhold = 5;
-// Space required between the (visible) cats. The starting layout has about
-// 14px between them; the margin solution has about 64px.
-const MIN_CAT_GAP = 30;
+// Space required between the (visible) cats: about as much as the Target.
+// The gap is roughly 2 * margin + 14px: the start has ~14px, the Target's
+// 25px margin ~64px, and the instructions' 16px example ~46px (not enough).
+const MIN_CAT_GAP = 50;
 
 export const marginChallenge: ChallengeDefinition = {
   title: "Fighting Cats",
@@ -82,7 +83,7 @@ export const marginChallenge: ChallengeDefinition = {
     ) {
       items.push({
         name: "Too close!",
-        message: "The kitties are too close! Move them apart!",
+        message: "The kitties are too close! Compare with the Target.",
         isValid: false,
       });
       isSolved = false;

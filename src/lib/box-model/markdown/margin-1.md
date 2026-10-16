@@ -6,11 +6,12 @@ Your task is to create some space between the two boxes using the `margin` prope
 
 Margin defines the amount of space *between* two elements.
 
-For example, this puts a little space around an element. Look at the
-Target to see how much space *your* kittens need!
+For example:
 
 ```css
 selector {
-  margin: 4px;
+  margin: 16px;
 }
 ```
+
+Look at the Target to see how much space *your* kittens need!
