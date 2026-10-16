@@ -4,10 +4,17 @@
      transition: padding, margin, width, height 300ms;
    }
 
+   /* Draw the emoji centered inside the cat's content box, sized to fit
+      (a 30px emoji glyph is wider and taller than a 30px box). */
    .cat::after {
      content: "😿";
-     font-size: 30px;
-     text-align: center;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 100%;
+     height: 100%;
+     font-size: 25px;
+     line-height: 1;
    }
 
    .solved .cat::after {
@@ -15,7 +22,6 @@
    }
 
    .solved .cat::after {
-     display: inline-block;
      animation: bounce 2s ease infinite;
    }
 

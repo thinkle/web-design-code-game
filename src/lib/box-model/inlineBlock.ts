@@ -51,31 +51,31 @@ export const inlineBlockChallenge: ChallengeDefinition = {
     let items: ValidationItem[] = [];
     let isSolved = true;
 
-    // Validate display property and margin
-    let marginValidation = {
-      name: "Gap between boxes",
-      message: "Put more space between the boxes!",
-      isValid: true,
-    };
-    boxElements.forEach((box, index) => {
-      if (index) {
-        let otherBox = boxElements[index - 1];
-        let marginValid = validateSpaceBetweenElementsLR(otherBox, box, 16);
-        if (!marginValid) {
-          marginValidation.isValid = false;
-          isSolved = false;
-        }
-      }
-    });
-    items.push(marginValidation);
     let horizontalValidation = {
       name: "Line boxes up horizontally",
-      message: `Boxes in a line horizontally`,
+      message: "The cats are still stacked! Put the boxes side by side.",
       isValid: validateHorizontalAlignment(boxElements, contentWindow),
     };
     items.push(horizontalValidation);
     if (!horizontalValidation.isValid) {
       isSolved = false;
+    } else {
+      // Only meaningful once the boxes are side by side
+      let marginValidation = {
+        name: "Gap between boxes",
+        message: "Put more space between the boxes!",
+        isValid: true,
+      };
+      boxElements.forEach((box, index) => {
+        if (index) {
+          let otherBox = boxElements[index - 1];
+          if (!validateSpaceBetweenElementsLR(otherBox, box, 16)) {
+            marginValidation.isValid = false;
+            isSolved = false;
+          }
+        }
+      });
+      items.push(marginValidation);
     }
 
     return {

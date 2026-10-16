@@ -4,7 +4,7 @@ import instructions from "./markdown/margin-2.md?raw";
 import maincss from "./css/main.css?raw";
 import catcss from "./css/cat.css?raw";
 import {
-  calculateOffsets,
+  getContentRect,
   validateSpaceBetweenElementsTB,
 } from "../validation";
 
@@ -77,7 +77,7 @@ export const escapeWaterChallenge: ChallengeDefinition = {
     items.push({
       name: "Cat Position",
       message: "The cat should be far away from the water!",
-      isValid: validateSpaceBetweenElementsTB(water, cat, 50),
+      isValid: validateSpaceBetweenElementsTB(water, getContentRect(cat), 50),
     });
     return {
       isSolved: items.every((item) => item.isValid),

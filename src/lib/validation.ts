@@ -80,26 +80,82 @@ export function isUsingBoxModel(
   }
 }
 
+export type RectLike = {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  width: number;
+  height: number;
+};
+
+function toRect(target: Element | RectLike): RectLike {
+  // (Not `instanceof Element`: elements in the preview iframe come from a
+  // different window, so they aren't instances of *our* Element.)
+  return "getBoundingClientRect" in target
+    ? target.getBoundingClientRect()
+    : target;
+}
+
+/**
+ * The rectangle of an element's *content* box (inside border + padding).
+ *
+ * Elements like .cat have no background, so what the student actually sees
+ * is whatever is drawn in the content area (the emoji). If a student moves
+ * the cat with padding instead of margin, the border box stays put but the
+ * visible cat moves, so we measure the content box instead.
+ */
+export function getContentRect(element: Element): RectLike {
+  const rect = element.getBoundingClientRect();
+  const win = element.ownerDocument.defaultView || window;
+  const style = win.getComputedStyle(element);
+  const px = (prop: string) => parseFloat(style.getPropertyValue(prop)) || 0;
+  const left = rect.left + px("border-left-width") + px("padding-left");
+  const top = rect.top + px("border-top-width") + px("padding-top");
+  const right = rect.right - px("border-right-width") - px("padding-right");
+  const bottom = rect.bottom - px("border-bottom-width") - px("padding-bottom");
+  return {
+    left,
+    top,
+    right,
+    bottom,
+    width: right - left,
+    height: bottom - top,
+  };
+}
+
+/** Compare sizes with some slack: browser zoom produces fractional pixels. */
+export function isAboutSize(
+  rect: RectLike,
+  width: number,
+  height: number,
+  tolerance = 1
+): boolean {
+  return (
+    Math.abs(rect.width - width) <= tolerance &&
+    Math.abs(rect.height - height) <= tolerance
+  );
+}
+
 export function validateSpaceBetweenElementsLR(
-  element1: HTMLDivElement,
-  element2: HTMLDivElement,
+  element1: Element | RectLike,
+  element2: Element | RectLike,
   minSpace: number
 ): boolean {
-  let rect1 = element1.getBoundingClientRect();
-  let rect2 = element2.getBoundingClientRect();
+  let rect1 = toRect(element1);
+  let rect2 = toRect(element2);
   return rect2.left - rect1.right >= minSpace;
 }
 export function validateSpaceBetweenElementsTB(
-  element1: HTMLDivElement,
-  element2: HTMLDivElement,
+  element1: Element | RectLike,
+  element2: Element | RectLike,
   minSpace: number
 ): boolean {
-  let rect1 = element1.getBoundingClientRect();
-  let rect2 = element2.getBoundingClientRect();
+  let rect1 = toRect(element1);
+  let rect2 = toRect(element2);
   if (rect1.top > rect2.top) {
     [rect2, rect1] = [rect1, rect2];
   }
-  console.log("measured", rect2.top - rect1.bottom, "space");
   return rect2.top - rect1.bottom >= minSpace;
 }
 
@@ -147,9 +203,12 @@ export function hasVisibleBorder(element: HTMLElement): {
   };
 }
 
-export function calculateOffsets(element1: HTMLElement, element2: HTMLElement) {
-  const rect1 = element1.getBoundingClientRect();
-  const rect2 = element2.getBoundingClientRect();
+export function calculateOffsets(
+  element1: Element | RectLike,
+  element2: Element | RectLike
+) {
+  const rect1 = toRect(element1);
+  const rect2 = toRect(element2);
 
   return {
     left: rect2.left - rect1.left,
@@ -165,23 +224,20 @@ export function validateHorizontalAlignment(
 ): boolean {
   const firstElementTop = elements[0].getBoundingClientRect().top;
 
-  elements.forEach((element, index) => {
-    const elementTop = element.getBoundingClientRect().top;
-    if (Math.abs(elementTop - firstElementTop) > 1) {
-      // Allowing 1px tolerance
-      return false;
-    }
-  });
-
-  return true;
+  // (A `return false` inside forEach only exits the callback, which is why
+  // this used to report "in a line" even when the boxes were stacked.)
+  return Array.from(elements).every(
+    // Allowing 1px tolerance
+    (element) => Math.abs(element.getBoundingClientRect().top - firstElementTop) <= 1
+  );
 }
 
 export function doElementsOverlap(
-  element1: HTMLElement,
-  element2: HTMLElement
+  element1: Element | RectLike,
+  element2: Element | RectLike
 ): boolean {
-  const rect1 = element1.getBoundingClientRect();
-  const rect2 = element2.getBoundingClientRect();
+  const rect1 = toRect(element1);
+  const rect2 = toRect(element2);
   // IF NOT
   return !(
     (

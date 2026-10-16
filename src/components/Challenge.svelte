@@ -3,7 +3,7 @@
   import type { ChallengeDefinition } from "../types/challenge";
   export let challenge: ChallengeDefinition;
 
-  import { studentWork } from "../stores";
+  import { studentWork, showBoxModel } from "../stores";
   import CodeHighlighter from "./CodeHighlighter.svelte";
   import ThreeColumn from "./ThreeColumn.svelte";
 
@@ -62,7 +62,7 @@
     // Set a new timeout
     timeoutId = setTimeout(() => {
       if (contentWindow) {
-        let returnValue = challenge.validate(contentWindow, $studentWork);
+        let returnValue = challenge.validate(contentWindow, previewWork);
         if (returnValue instanceof Promise) {
           returnValue.then((r: ValidationResult) => {
             result = r;
@@ -75,10 +75,26 @@
       } else {
         result = null;
       }
-    }, 300); // 300ms delay
+    }, 150); // the preview itself is already debounced
   }
 
-  $: updateResult(resultWindow, $studentWork);
+  $: updateResult(resultWindow, previewWork);
+
+  // Re-rendering the preview rebuilds the whole iframe (and re-formats the
+  // code listings), so don't do it on every single keystroke: on slower
+  // machines (Chromebooks) that work piles up and the preview lags behind.
+  let previewWork = "";
+  let previewTimeoutId: any;
+  function schedulePreview(work: string) {
+    clearTimeout(previewTimeoutId);
+    if (!previewWork || work === challenge.starterCode) {
+      // New challenge or Restart: show it right away
+      previewWork = work;
+    } else {
+      previewTimeoutId = setTimeout(() => (previewWork = work), 150);
+    }
+  }
+  $: schedulePreview($studentWork);
 
   function handleJsError(message: string) {
     jsError = message || "Unknown error in your JavaScript.";
@@ -113,26 +129,39 @@
     {#if challenge.html}
       <CodeHighlighter
         template={challenge.html}
-        insertion={$studentWork}
+        insertion={previewWork}
         lang="html"
       />
     {/if}
     {#if challenge.css}
       <CodeHighlighter
         template={challenge.css}
-        insertion={$studentWork}
+        insertion={previewWork}
         lang="css"
       />
     {/if}
     {#if challenge.js}
       <CodeHighlighter
         template={challenge.js}
-        insertion={$studentWork}
+        insertion={previewWork}
         lang="js"
       />
     {/if}
   </div>
   <div slot="right">
+    <label class="box-model-toggle">
+      <input type="checkbox" bind:checked={$showBoxModel} />
+      Show the box model
+      <span class="legend">
+        <i style="background:rgba(246, 178, 107, 0.66)"></i>margin
+        <i style="background:rgba(255, 229, 153, 0.75)"></i>border
+        <i style="background:rgba(147, 196, 125, 0.6)"></i>padding
+        <i style="background:rgba(111, 168, 220, 0.6)"></i>content
+      </span>
+    </label>
+    {#if $showBoxModel}
+      <p class="box-model-hint">Hover over anything in the pictures below.</p>
+    {/if}
     <div class="target-area">
       <h2>Target</h2>
       <ChallengeResult
@@ -146,7 +175,7 @@
       <h2>Result</h2>
       <ChallengeResult
         {challenge}
-        solution={$studentWork}
+        solution={previewWork}
         {solved}
         onWindowLoaded={onIframeLoad}
         onJsError={handleJsError}
@@ -284,6 +313,32 @@
   }
   .target-area {
     opacity: 0.85;
+  }
+
+  .box-model-toggle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  .box-model-toggle .legend {
+    font-size: 0.75rem;
+    color: #666;
+  }
+  .box-model-toggle .legend i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 3px 0 6px;
+    vertical-align: middle;
+  }
+  .box-model-hint {
+    font-size: 0.75rem;
+    color: #666;
+    margin: 0 0 12px 0;
   }
 
   .js-error-box {
