@@ -3,16 +3,18 @@ import type { ValidationItem } from "../../types/validation";
 import instructions from "./markdown/box-sizing.md?raw";
 import maincss from "./css/main.css?raw";
 import catcss from "./css/cat.css?raw";
-import { hasVisibleBorder } from "../validation";
+import { getContentRect, hasVisibleBorder } from "../validation";
 
 const RAFT_WIDTH = 80;
-const RAFT_HEIGHT = 40;
+const RAFT_HEIGHT = 64;
 const tolerance = 1;
+// How close Timmy's cat may get to the inside of his border
+const MIN_ROOM = 4;
 
 export const boxSizingChallenge: ChallengeDefinition = {
   title: "Timmy's Raft",
   language: "css",
-  height: 160,
+  height: 180,
   instructions,
   html: `
     <div class="raft"><div class="cat"></div></div>
@@ -27,7 +29,9 @@ export const boxSizingChallenge: ChallengeDefinition = {
     catcss +
     `
   main {
-    align-items: center;
+    display: block;
+    text-align: center;
+    padding: 24px 0;
     min-height: 140px;
     background: repeating-linear-gradient(
       170deg,
@@ -37,12 +41,12 @@ export const boxSizingChallenge: ChallengeDefinition = {
       #6cb8e8 24px
     );
   }
-  /* Keep each cat centered on its raft, whatever size the raft is */
+  /* Line the rafts up on the water */
   .raft {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 12px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    margin: 4px 8px;
     border-radius: 4px;
   }
   .timmy-raft .cat::after {
@@ -64,75 +68,68 @@ export const boxSizingChallenge: ChallengeDefinition = {
     WORK
   `,
   starterCode: `
-    .timmy-raft {
-      border: 8px solid gold;
+    .raft {
       padding: 8px;
       FIXME
     }
-  `,
-  solution: `
+
     .timmy-raft {
       border: 8px solid gold;
+    }
+  `,
+  solution: `
+    .raft {
       padding: 8px;
       box-sizing: border-box;
+    }
+
+    .timmy-raft {
+      border: 8px solid gold;
     }
   `,
   validate(contentWindow) {
     const doc = contentWindow.document;
     const timmy = doc.querySelector(".timmy-raft") as HTMLDivElement;
-    const friends = Array.from(
-      doc.querySelectorAll(".raft:not(.timmy-raft)")
-    ) as HTMLDivElement[];
+    const timmyCat = timmy.querySelector(".cat") as HTMLDivElement;
+    const friend = doc.querySelector(
+      ".raft:not(.timmy-raft)"
+    ) as HTMLDivElement;
     const items: ValidationItem[] = [];
 
-    const isRaftSized = (raft: HTMLElement) => {
-      const rect = raft.getBoundingClientRect();
-      return (
-        Math.abs(rect.width - RAFT_WIDTH) <= tolerance &&
-        Math.abs(rect.height - RAFT_HEIGHT) <= tolerance
-      );
-    };
-
-    items.push({
-      name: "Friends' rafts unchanged",
-      message: `Leave the other rafts alone: they should stay ${RAFT_WIDTH}px by ${RAFT_HEIGHT}px.`,
-      isValid: friends.every(isRaftSized),
-    });
-
-    const timmyRect = timmy.getBoundingClientRect();
-    items.push({
-      name: "Same size as his friends",
-      message: `Timmy's raft is ${Math.round(timmyRect.width)}px by ${Math.round(
-        timmyRect.height
-      )}px, but his friends' rafts are ${RAFT_WIDTH}px by ${RAFT_HEIGHT}px.`,
-      isValid: isRaftSized(timmy),
-    });
-
-    // Fixing the size by removing the outline doesn't count
-    const style = contentWindow.getComputedStyle(timmy);
-    const border = hasVisibleBorder(timmy);
-    const borderWidths = [
-      style.borderTopWidth,
-      style.borderRightWidth,
-      style.borderBottomWidth,
-      style.borderLeftWidth,
-    ].map((w) => parseFloat(w) || 0);
     items.push({
       name: "Gold outline",
-      message: "Keep Timmy's gold border all the way around his raft!",
-      isValid: border.all && borderWidths.every((w) => w >= 4),
+      message: "Timmy is special: give his raft a border all the way around!",
+      isValid: hasVisibleBorder(timmy).all,
     });
 
-    const paddings = [
-      style.paddingTop,
-      style.paddingRight,
-      style.paddingBottom,
-      style.paddingLeft,
-    ].map((p) => parseFloat(p) || 0);
+    // Room between the inside of Timmy's border and his cat
+    const style = contentWindow.getComputedStyle(timmy);
+    const px = (v: string) => parseFloat(v) || 0;
+    const raftRect = timmy.getBoundingClientRect();
+    const catRect = getContentRect(timmyCat);
+    const room = [
+      catRect.top - (raftRect.top + px(style.borderTopWidth)),
+      raftRect.right - px(style.borderRightWidth) - catRect.right,
+      raftRect.bottom - px(style.borderBottomWidth) - catRect.bottom,
+      catRect.left - (raftRect.left + px(style.borderLeftWidth)),
+    ];
     items.push({
-      name: "Padding",
-      message: "Keep the padding inside Timmy's border!",
-      isValid: paddings.every((p) => p >= 4),
+      name: "Room to breathe",
+      message: "Timmy's too close to his border! Give him some padding.",
+      isValid: room.every((r) => r >= MIN_ROOM),
+    });
+
+    const friendRect = friend.getBoundingClientRect();
+    items.push({
+      name: "Same size as his friends",
+      message: `Timmy's raft is ${Math.round(raftRect.width)}px by ${Math.round(
+        raftRect.height
+      )}px, but his friends' rafts are ${Math.round(
+        friendRect.width
+      )}px by ${Math.round(friendRect.height)}px.`,
+      isValid:
+        Math.abs(raftRect.width - friendRect.width) <= tolerance &&
+        Math.abs(raftRect.height - friendRect.height) <= tolerance,
     });
 
     return {
