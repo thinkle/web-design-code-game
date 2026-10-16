@@ -194,10 +194,9 @@
           <p>{jsError}</p>
         </div>
       {/if}
-      {#if waitingForInteraction && edited}
+      {#if waitingForInteraction && edited && challenge.interactionPrompt}
         <div class="try-it">
-          👆 {challenge.interactionPrompt ||
-            "Now try it out in the Result above to check your work!"}
+          👆 {challenge.interactionPrompt}
         </div>
       {:else if result && edited}
         <Feedback {result} />

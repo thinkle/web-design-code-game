@@ -15,7 +15,7 @@ document
   )
 ```
 
-In the code I've set up for you, I've used a the `document.querySelectorAll` method to get *every* cat in the document (there are a hundred!). I've then used a *for loop* to run some code *for each cat* which will enable you to set all one hundred cats to listen for a click event, by writing:
+In the code I've set up for you, I've used the `document.querySelectorAll` method to get *every* cat in the document (there are a hundred!). I've then used a *for loop* to run some code *for each cat* which will enable you to set all one hundred cats to listen for a click event, by writing:
 
 ```javascript
 for (let cat of document.querySelectorAll("cat")) {

@@ -1,4 +1,4 @@
-# Selecting `id="miguel`
+# Selecting `id="miguel"`
 
 Use JavaScript to dress "Miguel" in his disco colors. The code to change his color is already in place: you just need to fix the selector passed to `querySelector` to match `<cat id="miguel">`
 
@@ -14,7 +14,9 @@ For example, to select a `<div>` and set its border to
 red, we could write:
 
 ```javascript
-document.querySelector("div").style.border = "1px solid red";
+document
+  .querySelector("div")
+  .style.border = "1px solid red";
 ```
 
 Note that adding whitespace (spaces, tabs, newlines) does not change the meaning of the code -- I have added whitespace here to make it easier to read. You could write this all on one line if you wanted to:
@@ -46,13 +48,13 @@ There is a good rule of thumb in programming that often the _first_ place an err
 
 Note: when you see quotes (either double quotes or single quotes) in JavaScript, that means we are working with a _string_ -- a sequence of characters. In the case of `querySelector`, we are passing a string that describes what kind of element we want to select.
 
-When you see text _without_ quotes, that means we are working with variables, properties, or functions, which are defined elsewhere in the code. In JavaScript, we work with numerous _objects_ which have _properties_ we access with "chaining" and which are built into the language. So, for example, any time you run JavaScript on a webpage, you can use the `document` object, and every time you select an element on a webpage, it will have numerous properties like `style` (representing it's CSS style) `classList` (representing the list of CSS classes applied to it), textValue (representing the text inside it), and many more.
+When you see text _without_ quotes, that means we are working with variables, properties, or functions, which are defined elsewhere in the code. In JavaScript, we work with numerous _objects_ which have _properties_ we access with "chaining" and which are built into the language. So, for example, any time you run JavaScript on a webpage, you can use the `document` object, and every time you select an element on a webpage, it will have numerous properties like `style` (representing it's CSS style) `classList` (representing the list of CSS classes applied to it), `textContent` (representing the text inside it), and many more.
 
 An important difference between things in and out of quotes is that if you misspell something in quotes, JavaScript won't complain, but if you make an error with a variable or property name, JavaScript will throw an error.
 
 ## Selecting Miguel
 
-In the code on the left, I've already written the code
+In the code editor, I've already written the code
 to set the filter property to "invert" colors. Update the _argument_ of the _querySelector_ call so that it
 successfully selects the cat with id="miguel"
 

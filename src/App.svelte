@@ -79,7 +79,9 @@
       if (possibleId in challengeSets) {
         challengeId = possibleId as ChallengeSetId;
         if (challengeNumber) {
-          idx = Number(challengeNumber) || 0;
+          // Clamp bad hashes like #box-99 to a real challenge
+          const count = challengeSets[possibleId as ChallengeSetId].challenges.length;
+          idx = Math.min(Math.max(Number(challengeNumber) || 0, 0), count - 1);
         }
       }
     }
@@ -135,6 +137,9 @@
     </div>
 
     <div class="count">
+      {#if completed}
+        All {challengeSet.challenges.length} done!
+      {:else}
       Step
       <button
         class="subtle border"
@@ -147,6 +152,7 @@
           options={popupOptions}
           onSelected={(i) => (idx = i)}
         />
+      {/if}
       {/if}
     </div>
   </header>

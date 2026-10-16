@@ -43,6 +43,31 @@ function normalizeColor(color: string): string {
   return color;
 }
 
+/** WCAG relative luminance (0 = black, 1 = white) of any CSS color. */
+export function relativeLuminance(color: string): number {
+  const match = normalizeColor(color).match(
+    /rgba\((\d+), (\d+), (\d+), ([\d.]+)\)/
+  );
+  if (!match) return 1;
+  const [r, g, b] = match.slice(1, 4).map((v) => {
+    const c = parseInt(v, 10) / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** WCAG contrast ratio between two colors (1 to 21). */
+export function contrastRatio(color1: string, color2: string): number {
+  const l1 = relativeLuminance(color1);
+  const l2 = relativeLuminance(color2);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+}
+
+/** True if the color is fully transparent. */
+export function isTransparent(color: string): boolean {
+  return /, 0(\.0)?\)$/.test(normalizeColor(color));
+}
+
 export function isElementRotated(
   element: HTMLDivElement,
   contentWindow: Window
@@ -72,7 +97,10 @@ export function isUsingBoxModel(
   let style = contentWindow.getComputedStyle(element);
   let valid =
     (!style.position || style.position === "static") &&
-    (!style.display || style.display.includes("block"));
+    (!style.display ||
+      style.display.includes("block") ||
+      style.display.includes("flow-root") ||
+      style.display === "list-item");
   if (!valid) {
     return false;
   } else {

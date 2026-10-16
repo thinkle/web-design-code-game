@@ -70,19 +70,22 @@ export const query2Challenge: ChallengeDefinition = {
         miguel,
         "filter",
         "invert(1)",
-        () => `Miguel's filter should be invert(1)`
+        () => `Miguel's filter should be invert(1)`,
+        "Miguel's filter"
       ),
       pc.checkCSSProperty(
         kim,
         "filter",
         "drop-shadow(4px 4px 4px green)",
-        () => `Kim's filter should be drop-shadow(4px 4px 4px green)`
+        () => `Kim's filter should be drop-shadow(4px 4px 4px green)`,
+        "Kim's filter"
       ),
       pc.checkCSSProperty(
         marisol,
         "filter",
         "hue-rotate(270deg)",
-        () => `Marisol's filter should be hue-rotate(270deg)`
+        () => `Marisol's filter should be hue-rotate(270deg)`,
+        "Marisol's filter"
       ),
     ];
     return {

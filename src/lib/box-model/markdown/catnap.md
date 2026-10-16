@@ -9,7 +9,7 @@ Our cat wants to take a cozy nap, but there are a number of problems.
    bed.
 3. Our cat needs to sleep on its own circular blanket, snuggled up right
    on the bullseye!
-4. Our cat likes to drag its blanket up onto the top part of the bed so it
+4. Our cat likes to drag its blanket up onto the top part of the bed so
    it can sleep right next to the pillow.
 
 

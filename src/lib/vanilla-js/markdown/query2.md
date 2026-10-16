@@ -8,7 +8,7 @@ will dress in pink!
 
 ## Properties:
 
-- Kim: set the filter property to `"drop-shadow(4px 4px 4px green);"` to give him a glowstick green glow!
+- Kim: set the filter property to `"drop-shadow(4px 4px 4px green)"` to give him a glowstick green glow!
 - Marisol: set the *filter* style property to `"hue-rotate(270deg)"` to change her color to pink!
 
 ## Concepts

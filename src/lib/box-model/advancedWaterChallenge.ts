@@ -101,7 +101,7 @@ export const advancedWaterChallenge: ChallengeDefinition = {
 
     items.push({
       name: "Away from water!",
-      message: "The cat should at least 50px from the water!",
+      message: "The cat should be at least 50px from the water!",
       isValid: validateSpaceBetweenElementsTB(water, catRect, 50),
     });
     let offsets = calculateOffsets(land, catRect);
