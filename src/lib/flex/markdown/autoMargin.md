@@ -1,6 +1,6 @@
 # The Big Stretch
 
-This cat tree can stretch taller or shorter. Two cats like to lounge at the top, and the other two want to nap down at the **bottom**. 💤 The tree is already a flex column, but all four cats are crowded at the top.
+This cat tree can stretch taller or shorter. Two cats like to lounge at the top, and the other two want to nap down at the **bottom**. 💤 The tree is already a flex column (look at `.cat-tree` in the editor), but all four cats are crowded at the top.
 
 `justify-content` moves *all* the cats together, so it can't split them up. This time, you'll style one cat instead: the first napper, which has the class `sleepy`.
 

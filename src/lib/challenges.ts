@@ -47,6 +47,9 @@ import { gapChallenge } from "./flex/gapChallenge";
 import { autoMarginChallenge } from "./flex/autoMarginChallenge";
 import { nestChallenge } from "./flex/nestChallenge";
 import { condoChallenge } from "./flex/condoChallenge";
+import { endChallenge } from "./flex/endChallenge";
+import { climbChallenge } from "./flex/climbChallenge";
+import { balanceChallenge } from "./flex/balanceChallenge";
 import { hotelChallenge } from "./flex/hotelChallenge";
 import { gridChallenge } from "./flex/gridChallenge";
 
@@ -128,9 +131,12 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
     challenges: [
       rowChallenge,
       centerChallenge,
+      endChallenge,
       spreadChallenge,
       alignChallenge,
       columnChallenge,
+      climbChallenge,
+      balanceChallenge,
       gapChallenge,
       autoMarginChallenge,
       nestChallenge,

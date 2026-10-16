@@ -9,7 +9,7 @@ Once an element is a flex container, `justify-content` decides where its items g
 ```css
 .menu {
   display: flex;
-  justify-content: end;
+  justify-content: start;
 }
 ```
 

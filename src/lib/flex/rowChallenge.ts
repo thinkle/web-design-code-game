@@ -46,11 +46,14 @@ export const rowChallenge: ChallengeDefinition = {
     linear-gradient(#fdfbf7, #fdfbf7) 0 45% / 100% 8px no-repeat,
     radial-gradient(circle at 78% 22%, #ffe27a 0 14px, transparent 15px),
     linear-gradient(#8fd0f5, #d8f1ff 70%, #b9e3a8 70%);
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
+  position: relative;
 }
+/* the sill sits along the bottom of the window */
 .windowsill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border-bottom: 12px solid #b9824f;
   box-shadow: 0 6px 0 #8a5a33;
 }

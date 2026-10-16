@@ -75,9 +75,6 @@ main {
 }
 
 .cat-tree {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 120px;
   height: 260px;
 }
@@ -85,11 +82,23 @@ main {
 WORK
 `,
   starterCode: `
+.cat-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .sleepy {
   FIXME
 }
 `,
   solution: `
+.cat-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .sleepy {
   margin-top: auto;
 }

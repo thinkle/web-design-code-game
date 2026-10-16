@@ -39,10 +39,6 @@ export const gridChallenge: ChallengeDefinition = {
     scenecss +
     `
 .shelf {
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  gap: 24px;
   width: 300px;
   border-bottom: 10px solid #b9824f;
 }
@@ -79,11 +75,25 @@ export const gridChallenge: ChallengeDefinition = {
 WORK
 `,
   starterCode: `
+.shelf {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 24px;
+}
+
 .box {
   FIXME
 }
 `,
   solution: `
+.shelf {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 24px;
+}
+
 .box {
   display: grid;
   place-content: center;

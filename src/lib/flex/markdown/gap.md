@@ -1,6 +1,6 @@
 # Cat Yoga
 
-Time for yoga class! 🧘 Four cats have rolled out their mats in the
+Time for yoga class! 🧘 Three cats have rolled out their mats together in the
 **middle** of the studio, but they're squished together. Every cat needs
 **24px** of elbow room between it and the next cat, so nobody's mat gets
 bumped mid-stretch. 😼

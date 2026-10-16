@@ -27,7 +27,6 @@ export const gapChallenge: ChallengeDefinition = {
   <div class="cat"></div>
   <div class="cat"></div>
   <div class="cat"></div>
-  <div class="cat"></div>
 </div>
 `,
   hiddenHTMLBefore: "<main>",
@@ -65,7 +64,6 @@ main {
 }
 .cat:nth-child(2) { --mat: #f2a7b8; }
 .cat:nth-child(3) { --mat: #b3a6e8; }
-.cat:nth-child(4) { --mat: #f6c56b; }
 .studio {
   position: relative;
   z-index: 0;

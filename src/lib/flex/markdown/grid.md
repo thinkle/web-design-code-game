@@ -15,4 +15,6 @@ You already know how to do this with flexbox: `display: flex`, plus `justify-con
 
 ## Goal
 
-Use the grid shortcut on the boxes to put each cat in the middle of its box, like the Target.
+The `.shelf` is already a flex row (you can see it in the editor) that
+lines the boxes up along the bottom. Leave it as it is, and use the grid
+shortcut on the boxes to put each cat in the middle of its box, like the Target.
