@@ -5,7 +5,18 @@
   /** Offer the "Show the box model" overlay (box model lessons only) */
   export let boxModelTool = false;
 
-  import { studentWork, showBoxModel } from "../stores";
+  import { studentWork, showBoxModel, targetView } from "../stores";
+  import type { TargetView } from "../stores";
+
+  const targetViews: { value: TargetView; label: string; title: string }[] = [
+    { value: "small", label: "Small", title: "Show a small Target" },
+    { value: "full", label: "Full", title: "Show the Target full size" },
+    {
+      value: "overlay",
+      label: "Overlay",
+      title: "Lay a faded Target over your Result",
+    },
+  ];
   import CodeHighlighter from "./CodeHighlighter.svelte";
   import ThreeColumn from "./ThreeColumn.svelte";
 
@@ -214,26 +225,58 @@
       <p class="box-model-hint">Hover over anything in the pictures below.</p>
     {/if}
     {/if}
-    <div class="target-area">
-      <h2>Target</h2>
-      <ChallengeResult
-        {challenge}
-        solution={challenge.solution}
-        solved={true}
-        model={true}
-        boxModel={boxModelTool && $showBoxModel}
-      />
+    <div class="target-view" role="group" aria-label="How to show the Target">
+      <span>Target:</span>
+      {#each targetViews as view}
+        <button
+          class:selected={$targetView === view.value}
+          aria-pressed={$targetView === view.value}
+          title={view.title}
+          on:click={() => ($targetView = view.value)}>{view.label}</button
+        >
+      {/each}
     </div>
+    {#if $targetView !== "overlay"}
+      <div class="target-area" class:small={$targetView === "small"}>
+        <h2>Target</h2>
+        <div
+          class="target-frame"
+          style:--frame-height={`${challenge.height || 600}px`}
+        >
+          <ChallengeResult
+            {challenge}
+            solution={challenge.solution}
+            solved={true}
+            model={true}
+            boxModel={boxModelTool && $showBoxModel}
+          />
+        </div>
+      </div>
+    {/if}
     <div class="result-area" class:highlight={studentIsCoding}>
       <h2>Result</h2>
-      <ChallengeResult
-        {challenge}
-        solution={previewWork}
-        {solved}
-        onWindowLoaded={onIframeLoad}
-        onJsError={handleJsError}
-        boxModel={boxModelTool && $showBoxModel}
-      />
+      <div class="result-frame">
+        <ChallengeResult
+          {challenge}
+          solution={previewWork}
+          {solved}
+          onWindowLoaded={onIframeLoad}
+          onJsError={handleJsError}
+          boxModel={boxModelTool && $showBoxModel}
+        />
+        {#if $targetView === "overlay"}
+          <!-- Faded Target on top; ignores the mouse so hover/click checks
+               still reach the student's Result underneath -->
+          <div class="target-ghost" aria-hidden="true">
+            <ChallengeResult
+              {challenge}
+              solution={challenge.solution}
+              solved={true}
+              model={true}
+            />
+          </div>
+        {/if}
+      </div>
       {#if jsError}
         <div class="js-error-box">
           <h3>JavaScript error</h3>
@@ -402,6 +445,59 @@
     font-size: 0.75rem;
     color: #666;
     margin: 0 0 12px 0;
+  }
+
+  .target-view {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 12px;
+  }
+  .target-view span {
+    margin-right: 2px;
+  }
+  .target-view button {
+    font-size: 0.8rem;
+    padding: 2px 10px;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+  }
+  .target-view button.selected {
+    background: var(--dark, #333);
+    border-color: var(--dark, #333);
+    color: #fff;
+  }
+
+  /* Small: lay the Target out at full width (so it matches the Result),
+     then shrink it to half size */
+  .target-area.small .target-frame {
+    height: calc(var(--frame-height) / 2);
+    overflow: hidden;
+  }
+  .target-area.small .target-frame > :global(.frame-wrap) {
+    width: 200%;
+    transform: scale(0.5);
+    transform-origin: 0 0;
+  }
+
+  .result-frame {
+    position: relative;
+  }
+  .target-ghost {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    /* Darken-only blend, so the student's own work stays fully visible
+       instead of being washed out by the Target's backgrounds */
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  .target-ghost :global(iframe) {
+    box-shadow: none;
   }
 
   .try-it {
