@@ -87,15 +87,35 @@ Now you do the same, but with the \`<cat>\` element!
         "No mouse, no color"
       )
     );
-    items.push(
-      pc.checkOne(
-        "cat",
-        { transition: "all 300ms" },
-        () => "Add a smooth transition to the cat",
-        "Transition"
+    // Any transition that animates what changes on hover counts, whatever
+    // its length (the model uses 500ms). The hidden cat CSS already
+    // transitions padding/margin/size, so those don't count.
+    const cat = contentWindow.document.querySelector("cat") as HTMLElement;
+    const catStyle = contentWindow.getComputedStyle(cat);
+    const properties = catStyle.transitionProperty.split(",").map((p) => p.trim());
+    const durations = catStyle.transitionDuration
+      .split(",")
+      .map((d) => parseFloat(d) || 0);
+    const hoverDurations = properties
+      .map((property, i) => ({
+        property,
+        // durations repeat if there are fewer of them than properties
+        duration: durations[i % durations.length],
+      }))
+      .filter(({ property }) =>
+        ["all", "background", "background-color", "transform"].includes(
+          property
+        )
       )
-    );
-    await pc.hoverOne("cat", 300);
+      .map(({ duration }) => duration);
+    items.push({
+      name: "Transition",
+      isValid: hoverDurations.some((d) => d > 0),
+      message: "Add a smooth transition to the cat",
+    });
+    // Check once the cat's own transition has finished
+    const longest = Math.max(0, ...hoverDurations) * 1000;
+    await pc.hoverOne("cat", Math.min(longest, 2000) + 100);
     items.push(
       pc.checkOne(
         "cat",
