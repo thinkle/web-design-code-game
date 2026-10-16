@@ -96,7 +96,8 @@ You can combine \`+ p\` (adjacent sibling selector) with \`::first-letter\` to t
             }
 
             // detect any h2 + p rule (with or without first-letter)
-            if (sel.startsWith("h2 + p")) {
+            // (anywhere in the selector, so "article h2 + p" counts too)
+            if (/h2\s*\+\s*p\b/.test(sel)) {
               hasH2PlusPRule = true;
             }
 

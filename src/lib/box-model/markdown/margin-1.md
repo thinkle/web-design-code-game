@@ -10,6 +10,8 @@ For example:
 
 ```css
 selector {
-  margin: 32px;
+  margin: 16px;
 }
 ```
+
+Look at the Target to see how much space *your* kittens need!

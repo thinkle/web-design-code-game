@@ -1,7 +1,12 @@
 import type { ChallengeDefinition } from "../../types/challenge";
 import instructions from "./markdown/variables.md?raw";
 import catcss from "./css/cat.css?raw";
-import { PropertyChecker } from "../validation";
+import {
+  PropertyChecker,
+  contrastRatio,
+  isTransparent,
+  relativeLuminance,
+} from "../validation";
 
 export const variablesChallenge: ChallengeDefinition = {
   title: "Saving Work with let",
@@ -58,26 +63,33 @@ export const variablesChallenge: ChallengeDefinition = {
       setTimeout(() => {
         const textItem = {
           name: "Night-time message",
-          isValid: /night/i.test(status.textContent || ""),
+          isValid:
+            /night|moon|star|sleep|dark|dream|evening|bed ?time|midnight/i.test(
+              status.textContent || ""
+            ),
           message:
             "Update the text so it clearly says it's night time for the cats.",
         };
 
-        const bgItem = pc.checkCSSProperty(
-          status,
-          "background-color",
-          "midnightblue",
-          () =>
-            "Give the status a dark background color like midnightblue so it feels like night."
-        );
+        // Any dark background and readable light text will do
+        const style = contentWindow.getComputedStyle(status);
+        const bgItem = {
+          name: "Dark background",
+          isValid:
+            !isTransparent(style.backgroundColor) &&
+            relativeLuminance(style.backgroundColor) < 0.1,
+          message:
+            "Give the status a dark background color (like midnightblue) so it feels like night.",
+        };
 
-        const colorItem = pc.checkCSSProperty(
-          status,
-          "color",
-          "white",
-          () =>
-            "Change the text color to something light (like white) so it shows up on the dark background."
-        );
+        const colorItem = {
+          name: "Light text",
+          isValid:
+            relativeLuminance(style.color) > 0.4 &&
+            contrastRatio(style.color, style.backgroundColor) >= 4.5,
+          message:
+            "Change the text color to something light (like white) so it shows up on the dark background.",
+        };
 
         const items = [textItem, bgItem, colorItem];
 

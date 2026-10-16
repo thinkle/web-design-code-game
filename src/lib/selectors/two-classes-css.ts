@@ -15,8 +15,8 @@ export const classesChallenge: ChallengeDefinition = {
   instructions: `
 # Use multiple class selectors
 
-This code has a rule for \`.shadow\` and a rule for \`.dark\`,
-but update the rule so that if both \`.dark\` and \`.shadow\`
+This code has a rule for \`.shadowed\` and a rule for \`.dark\`,
+but update the rule so that if both \`.dark\` and \`.shadowed\`
 are present, the shadow turns white.
 
 ## Combining selectors
@@ -46,7 +46,7 @@ selectors together with no space, like this:
 Note: you can actually chain *any* selectors, so you could also write items like...
 \`\`\`
 div.important { /* any <div class="important"> */}
-li.important {/* any <li class="important"> /* }
+li.important { /* any <li class="important"> */ }
 /* etc */
 \`\`\`
   `,
@@ -104,7 +104,7 @@ li.important {/* any <li class="important"> /* }
         ".dark.shadowed",
         { "text-shadow": "3px 8px rgba(255,255,255,0.5)" },
         (expected, actual) =>
-          `Didn't get white text shadow :-() Got ${actual} instead of ${expected}`,
+          `Items that are both dark and shadowed should get a white shadow.`,
         "Add a white shadow to 'shadowed' 'dark' elements"
       ),
       pc.checkAllBut(

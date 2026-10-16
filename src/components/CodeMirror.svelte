@@ -14,12 +14,25 @@
   // extensions = [...extensions, autocompletion(), customAutocompleteExtension];
   extensions = [...extensions];
 
+  // This is code, not prose: ask spellcheck and grammar extensions
+  // (Grammarly, LanguageTool, etc.) to leave the editor alone.
+  const noGrammarCheck = EditorView.contentAttributes.of({
+    spellcheck: "false",
+    autocorrect: "off",
+    autocapitalize: "off",
+    translate: "no",
+    "data-gramm": "false",
+    "data-gramm_editor": "false",
+    "data-enable-grammarly": "false",
+    "data-lt-active": "false",
+  });
+
   onMount(() => {
     editorView = new EditorView({
       parent: editorContainer,
       state: EditorState.create({
         doc: value,
-        extensions: [basicSetup, lang, ...extensions],
+        extensions: [basicSetup, lang, noGrammarCheck, ...extensions],
       }),
       dispatch: (tr) => {
         if (tr.docChanged) {
@@ -28,6 +41,7 @@
         editorView.update([tr]);
       },
     });
+    replaceFIXMEAndSetCursor();
     return () => {
       editorView.destroy();
     };
@@ -38,6 +52,10 @@
       changes: { from: 0, to: editorView.state.doc.length, insert: value },
     };
     editorView.dispatch(tr);
+    // New starter code (new challenge or Restart): jump to the FIXME.
+    // Only here, not on every keystroke, or the cursor would keep jumping
+    // back to FIXME while the student types elsewhere.
+    replaceFIXMEAndSetCursor();
   }
 
   function replaceFIXMEAndSetCursor() {
@@ -53,7 +71,6 @@
       editorView.focus();
     }
   }
-  $: value && editorView && replaceFIXMEAndSetCursor();
 </script>
 
 <div bind:this={editorContainer} />

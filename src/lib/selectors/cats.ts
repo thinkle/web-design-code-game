@@ -35,8 +35,8 @@ transform: rotate(180deg);
 \`\`\`
 Add the selector so that the rule applies to each cat element.
 
-**Note: for this game, we’re using custom elements like <cat>, <box>, and <chair>.
-Selecting these with CSS works just like normal HTML elements like <div> and <span>.**`,
+**Note: for this game, we’re using custom elements like \`<cat>\`, \`<box>\`, and \`<chair>\`.
+Selecting these with CSS works just like normal HTML elements like \`<div>\` and \`<span>\`.**`,
   html: `
   <room>
     <bed>

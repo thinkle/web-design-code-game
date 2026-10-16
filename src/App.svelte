@@ -78,9 +78,10 @@
       //if (["box", "selectors"].includes(possibleId)) {
       if (possibleId in challengeSets) {
         challengeId = possibleId as ChallengeSetId;
-        if (challengeNumber) {
-          idx = Number(challengeNumber) || 0;
-        }
+        // Clamp bad hashes like #box-99. One past the last challenge is
+        // allowed: that's the "You won!" screen.
+        const count = challengeSets[challengeId].challenges.length;
+        idx = Math.min(Math.max(Number(challengeNumber) || 0, 0), count);
       }
     }
 
@@ -118,6 +119,7 @@
             options={challengePopupOptions}
             onSelected={(id) => {
               challengeId = id;
+              idx = 0; // start the new tutorial at step 1
               showChallengeChangePopup = false;
             }}
           />
@@ -135,6 +137,9 @@
     </div>
 
     <div class="count">
+      {#if completed}
+        All {challengeSet.challenges.length} done!
+      {:else}
       Step
       <button
         class="subtle border"
@@ -147,6 +152,7 @@
           options={popupOptions}
           onSelected={(i) => (idx = i)}
         />
+      {/if}
       {/if}
     </div>
   </header>
@@ -177,7 +183,7 @@
               </a>
             </li>
             <li>
-              <a href="https://flukeout.github.io/"> Flexbox Froggy </a>
+              <a href="https://flexboxfroggy.com/"> Flexbox Froggy </a>
             </li>
             <li>
               <a href="https://cssgridgarden.com/"> Grid Garden </a>
@@ -187,7 +193,11 @@
       </ul>
     </section>
   {:else}
-    <Challenge challenge={theChallenge} onNext={nextChallenge} />
+    <Challenge
+      challenge={theChallenge}
+      onNext={nextChallenge}
+      boxModelTool={!!challengeSet.boxModelTool}
+    />
   {/if}
 </main>
 

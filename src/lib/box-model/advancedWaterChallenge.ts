@@ -5,6 +5,7 @@ import maincss from "./css/main.css?raw";
 import catcss from "./css/cat.css?raw";
 import {
   calculateOffsets,
+  getContentRect,
   validateSpaceBetweenElementsTB,
 } from "../validation";
 
@@ -79,7 +80,8 @@ export const advancedWaterChallenge: ChallengeDefinition = {
   solution: `
     .cat {
       margin-top: 80px;
-      margin-left: 240px;
+      margin-left: auto;
+      margin-right: 25px;
     }
   `,
   validate(contentWindow) {
@@ -93,18 +95,28 @@ export const advancedWaterChallenge: ChallengeDefinition = {
     const land = contentWindow.document.querySelector(
       ".land"
     ) as HTMLDivElement;
-    // Check if the cat is at the bottom of the land
+    // Measure where the cat is drawn (its content box), so moving it with
+    // padding counts just like moving it with margin.
+    const catRect = getContentRect(cat);
 
     items.push({
       name: "Away from water!",
-      message: "The cat should at least 50px from the water!",
-      isValid: validateSpaceBetweenElementsTB(water, cat, 50),
+      message: "The cat should be at least 50px from the water!",
+      isValid: validateSpaceBetweenElementsTB(water, catRect, 50),
     });
-    let offsets = calculateOffsets(land, cat);
+    let offsets = calculateOffsets(land, catRect);
+    items.push({
+      name: "Still on the beach",
+      message: "Keep the cat on the beach (it went off the edge)!",
+      isValid:
+        offsets.left >= -1 &&
+        offsets.right >= -1 &&
+        offsets.bottom >= -1,
+    });
     items.push({
       name: "Shade",
       message: "Get the cat under the umbrellas!",
-      isValid: offsets.right < 50 && offsets.top > 20,
+      isValid: offsets.right < 50 && offsets.right >= -1 && offsets.top > 20,
     });
     return {
       isSolved: items.every((item) => item.isValid),

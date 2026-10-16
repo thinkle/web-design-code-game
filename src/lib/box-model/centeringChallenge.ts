@@ -1,7 +1,11 @@
 import type { ChallengeDefinition } from "../../types/challenge";
 import type { ValidationItem } from "../../types/validation";
 import instructions from "./markdown/centering.md?raw";
-import { calculateOffsets, isUsingBoxModel } from "../validation";
+import {
+  calculateOffsets,
+  getContentRect,
+  isUsingBoxModel,
+} from "../validation";
 import catcss from "./css/cat.css?raw";
 import maincss from "./css/main.css?raw";
 const CAT_SIZE = 30;
@@ -92,7 +96,7 @@ WORK
     let isSolved = true;
 
     const boxOffsets = calculateOffsets(roomElement, boxElement);
-    const catOffsets = calculateOffsets(boxElement, catElement);
+    const catOffsets = calculateOffsets(boxElement, getContentRect(catElement));
     if (!isUsingBoxModel(boxElement, contentWindow)) {
       items.push({
         name: "Use the box model, Luke!",
@@ -100,6 +104,7 @@ WORK
           "Your .box element is using something other than the box model",
         isValid: false,
       });
+      isSolved = false;
     }
     if (!isUsingBoxModel(roomElement, contentWindow)) {
       items.push({
@@ -108,6 +113,7 @@ WORK
           "Your .room element is using something other than the box model",
         isValid: false,
       });
+      isSolved = false;
     }
     // Validate box centering
     if (

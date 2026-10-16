@@ -7,6 +7,7 @@ import catcss from "./css/cat.css?raw";
 import {
   calculateOffsets,
   doElementsOverlap,
+  getContentRect,
   hasVisibleBorder,
 } from "../validation";
 
@@ -139,19 +140,22 @@ export const cozyCatNapChallenge: ChallengeDefinition = {
     ) as HTMLDivElement;
     const cat = contentWindow.document.querySelector(".cat") as HTMLDivElement;
 
+    // Measure where the cat is drawn (its content box)
+    const catRect = getContentRect(cat);
+
     // Check if the cat is centered on the blanket
-    const catBlanketOffsets = calculateOffsets(blanket, cat);
+    const catBlanketOffsets = calculateOffsets(blanket, catRect);
     const isCatCenteredHorizontally =
       Math.abs(
         catBlanketOffsets.left -
           (blanket.getBoundingClientRect().width / 2 -
-            cat.getBoundingClientRect().width / 2)
+            catRect.width / 2)
       ) <= 5; // Allowing 5px tolerance
     const isCatCenteredVertically =
       Math.abs(
         catBlanketOffsets.top -
           (blanket.getBoundingClientRect().height / 2 -
-            cat.getBoundingClientRect().height / 2)
+            catRect.height / 2)
       ) <= 5; // Allowing 5px tolerance
 
     items.push({
@@ -161,11 +165,18 @@ export const cozyCatNapChallenge: ChallengeDefinition = {
     });
 
     // Check if the cat is on the right half of the bed
-    const catOffsets = calculateOffsets(bed, cat);
+    const catOffsets = calculateOffsets(bed, catRect);
     items.push({
       name: "Right half of the bed",
       message: "The cat should be on the right half of the bed.",
       isValid: catOffsets.left >= bed.getBoundingClientRect().width / 2,
+    });
+
+    const blanketOffsets = calculateOffsets(bed, blanket);
+    items.push({
+      name: "Blanket on the bed",
+      message: "Keep the blanket on the bed - it's hanging off the side!",
+      isValid: blanketOffsets.left >= -1 && blanketOffsets.right >= -1,
     });
 
     items.push({

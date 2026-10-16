@@ -43,6 +43,31 @@ function normalizeColor(color: string): string {
   return color;
 }
 
+/** WCAG relative luminance (0 = black, 1 = white) of any CSS color. */
+export function relativeLuminance(color: string): number {
+  const match = normalizeColor(color).match(
+    /rgba\((\d+), (\d+), (\d+), ([\d.]+)\)/
+  );
+  if (!match) return 1;
+  const [r, g, b] = match.slice(1, 4).map((v) => {
+    const c = parseInt(v, 10) / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** WCAG contrast ratio between two colors (1 to 21). */
+export function contrastRatio(color1: string, color2: string): number {
+  const l1 = relativeLuminance(color1);
+  const l2 = relativeLuminance(color2);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+}
+
+/** True if the color is fully transparent. */
+export function isTransparent(color: string): boolean {
+  return /, 0(\.0)?\)$/.test(normalizeColor(color));
+}
+
 export function isElementRotated(
   element: HTMLDivElement,
   contentWindow: Window
@@ -72,7 +97,10 @@ export function isUsingBoxModel(
   let style = contentWindow.getComputedStyle(element);
   let valid =
     (!style.position || style.position === "static") &&
-    (!style.display || style.display.includes("block"));
+    (!style.display ||
+      style.display.includes("block") ||
+      style.display.includes("flow-root") ||
+      style.display === "list-item");
   if (!valid) {
     return false;
   } else {
@@ -80,26 +108,82 @@ export function isUsingBoxModel(
   }
 }
 
+export type RectLike = {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  width: number;
+  height: number;
+};
+
+function toRect(target: Element | RectLike): RectLike {
+  // (Not `instanceof Element`: elements in the preview iframe come from a
+  // different window, so they aren't instances of *our* Element.)
+  return "getBoundingClientRect" in target
+    ? target.getBoundingClientRect()
+    : target;
+}
+
+/**
+ * The rectangle of an element's *content* box (inside border + padding).
+ *
+ * Elements like .cat have no background, so what the student actually sees
+ * is whatever is drawn in the content area (the emoji). If a student moves
+ * the cat with padding instead of margin, the border box stays put but the
+ * visible cat moves, so we measure the content box instead.
+ */
+export function getContentRect(element: Element): RectLike {
+  const rect = element.getBoundingClientRect();
+  const win = element.ownerDocument.defaultView || window;
+  const style = win.getComputedStyle(element);
+  const px = (prop: string) => parseFloat(style.getPropertyValue(prop)) || 0;
+  const left = rect.left + px("border-left-width") + px("padding-left");
+  const top = rect.top + px("border-top-width") + px("padding-top");
+  const right = rect.right - px("border-right-width") - px("padding-right");
+  const bottom = rect.bottom - px("border-bottom-width") - px("padding-bottom");
+  return {
+    left,
+    top,
+    right,
+    bottom,
+    width: right - left,
+    height: bottom - top,
+  };
+}
+
+/** Compare sizes with some slack: browser zoom produces fractional pixels. */
+export function isAboutSize(
+  rect: RectLike,
+  width: number,
+  height: number,
+  tolerance = 1
+): boolean {
+  return (
+    Math.abs(rect.width - width) <= tolerance &&
+    Math.abs(rect.height - height) <= tolerance
+  );
+}
+
 export function validateSpaceBetweenElementsLR(
-  element1: HTMLDivElement,
-  element2: HTMLDivElement,
+  element1: Element | RectLike,
+  element2: Element | RectLike,
   minSpace: number
 ): boolean {
-  let rect1 = element1.getBoundingClientRect();
-  let rect2 = element2.getBoundingClientRect();
+  let rect1 = toRect(element1);
+  let rect2 = toRect(element2);
   return rect2.left - rect1.right >= minSpace;
 }
 export function validateSpaceBetweenElementsTB(
-  element1: HTMLDivElement,
-  element2: HTMLDivElement,
+  element1: Element | RectLike,
+  element2: Element | RectLike,
   minSpace: number
 ): boolean {
-  let rect1 = element1.getBoundingClientRect();
-  let rect2 = element2.getBoundingClientRect();
+  let rect1 = toRect(element1);
+  let rect2 = toRect(element2);
   if (rect1.top > rect2.top) {
     [rect2, rect1] = [rect1, rect2];
   }
-  console.log("measured", rect2.top - rect1.bottom, "space");
   return rect2.top - rect1.bottom >= minSpace;
 }
 
@@ -147,9 +231,12 @@ export function hasVisibleBorder(element: HTMLElement): {
   };
 }
 
-export function calculateOffsets(element1: HTMLElement, element2: HTMLElement) {
-  const rect1 = element1.getBoundingClientRect();
-  const rect2 = element2.getBoundingClientRect();
+export function calculateOffsets(
+  element1: Element | RectLike,
+  element2: Element | RectLike
+) {
+  const rect1 = toRect(element1);
+  const rect2 = toRect(element2);
 
   return {
     left: rect2.left - rect1.left,
@@ -165,23 +252,20 @@ export function validateHorizontalAlignment(
 ): boolean {
   const firstElementTop = elements[0].getBoundingClientRect().top;
 
-  elements.forEach((element, index) => {
-    const elementTop = element.getBoundingClientRect().top;
-    if (Math.abs(elementTop - firstElementTop) > 1) {
-      // Allowing 1px tolerance
-      return false;
-    }
-  });
-
-  return true;
+  // (A `return false` inside forEach only exits the callback, which is why
+  // this used to report "in a line" even when the boxes were stacked.)
+  return Array.from(elements).every(
+    // Allowing 1px tolerance
+    (element) => Math.abs(element.getBoundingClientRect().top - firstElementTop) <= 1
+  );
 }
 
 export function doElementsOverlap(
-  element1: HTMLElement,
-  element2: HTMLElement
+  element1: Element | RectLike,
+  element2: Element | RectLike
 ): boolean {
-  const rect1 = element1.getBoundingClientRect();
-  const rect2 = element2.getBoundingClientRect();
+  const rect1 = toRect(element1);
+  const rect2 = toRect(element2);
   // IF NOT
   return !(
     (
@@ -503,59 +587,119 @@ export class PropertyChecker {
   }
 }
 
+/**
+ * Check styles on a pseudo-element (::before, ::first-line, ...), which
+ * getComputedStyle can't reliably give us, by reading the CSS rules.
+ *
+ * Any selector counts if it ends with the same pseudo-element and its
+ * base selects exactly the same elements as the expected one, so
+ * `ul li::before` or `section li::before` satisfy `li::before`.
+ */
 export function validatePseudoSelector(
   contentWindow: Window,
   selector: string,
   expectedProperties: { [key: string]: string | null },
   name: string
 ) {
-  // Get all stylesheets from the contentWindow
-  const styleSheets = contentWindow.document.styleSheets;
-  let isValid = false;
-  let errorMessage = "";
+  const doc = contentWindow.document;
+  const pseudoMatch = selector.match(/^(.*?)(::?[a-z-]+)$/);
+  const expectedBase = pseudoMatch ? pseudoMatch[1].trim() : selector;
+  const pseudo = pseudoMatch
+    ? pseudoMatch[2].replace(/^::?/, "").toLowerCase()
+    : "";
 
-  // Iterate through all stylesheets
-  for (const sheet of styleSheets) {
-    // Try-catch block to handle cross-origin restrictions
+  const select = (sel: string): Element[] | null => {
     try {
-      const rules = sheet.cssRules || sheet.rules;
-      // Iterate through all rules in the stylesheet
-      for (const rule of rules) {
-        // Check if the rule selector matches the desired selector and is a StyleRule
-        if (
-          rule.selectorText === selector &&
-          rule.type === CSSRule.STYLE_RULE
-        ) {
-          isValid = true;
-          // Validate each property
-          for (const property in expectedProperties) {
-            const expectedValue = expectedProperties[property];
-            if (rule.style[property] !== expectedValue) {
-              isValid = false;
-              // Give a short, non-technical hint instead of exposing expected/actual values
-              errorMessage = `Found a rule for ${selector}, but some properties don't match. (expected ${property} to be ${expectedValue} but got ${rule.style[property]})`;
-              break;
-            }
-          }
-          if (isValid) {
-            return {
-              isValid,
-              name,
-              message: "Correct rules for " + selector,
-            };
-          }
-        }
-      }
+      return Array.from(doc.querySelectorAll(sel || "*"));
+    } catch (e) {
+      return null; // invalid selector
+    }
+  };
+  const expectedElements = select(expectedBase) || [];
+
+  const sameElements = (sel: string) => {
+    if (sel.replace(/\s+/g, " ") === selector.replace(/\s+/g, " ")) {
+      return true;
+    }
+    const m = sel.match(/^(.*?)(::?[a-z-]+)$/);
+    if (!m || m[2].replace(/^::?/, "").toLowerCase() !== pseudo) return false;
+    const found = select(m[1].trim());
+    return (
+      !!found &&
+      expectedElements.length > 0 &&
+      found.length === expectedElements.length &&
+      found.every((el) => expectedElements.includes(el))
+    );
+  };
+
+  // Gather declarations from every matching rule; later rules win
+  const declared: { [property: string]: string } = {};
+  let foundRule = false;
+  for (const sheet of Array.from(doc.styleSheets)) {
+    let rules: CSSRuleList;
+    try {
+      rules = sheet.cssRules;
     } catch (e) {
       console.warn("Can't read the css rules of: ", sheet.href, e);
+      continue;
+    }
+    for (const rule of Array.from(rules)) {
+      if (!(rule as CSSStyleRule).selectorText) continue;
+      const styleRule = rule as CSSStyleRule;
+      const parts = styleRule.selectorText.split(",").map((p) => p.trim());
+      if (!parts.some(sameElements)) continue;
+      foundRule = true;
+      for (const property in expectedProperties) {
+        const value = styleRule.style.getPropertyValue(property);
+        if (value) declared[property] = value;
+      }
     }
   }
-  if (!errorMessage) {
-    errorMessage = "Looks like you don't have a working rule yet!";
+
+  if (!foundRule) {
+    return {
+      isValid: false,
+      name,
+      message: "Looks like you don't have a working rule yet!",
+    };
+  }
+  for (const property in expectedProperties) {
+    const expected = expectedProperties[property];
+    const actual = declared[property] ?? "";
+    if (!sameCssValue(contentWindow, property, actual, expected ?? "")) {
+      return {
+        isValid: false,
+        name,
+        message: `Found a rule for ${selector}, but some properties don't match. (expected ${property} to be ${expected} but got ${
+          actual || "nothing"
+        })`,
+      };
+    }
   }
   return {
-    isValid,
+    isValid: true,
     name,
-    message: errorMessage,
+    message: "Correct rules for " + selector,
   };
+}
+
+/** Compare two CSS values the way the browser would compute them. */
+function sameCssValue(
+  contentWindow: Window,
+  property: string,
+  a: string,
+  b: string
+): boolean {
+  if (a.trim() === b.trim()) return true;
+  if (!a || !b) return false;
+  const doc = contentWindow.document;
+  const probe = (value: string) => {
+    const el = doc.createElement("span");
+    el.style.setProperty(property, value);
+    doc.body.appendChild(el);
+    const computed = contentWindow.getComputedStyle(el).getPropertyValue(property);
+    el.remove();
+    return computed;
+  };
+  return probe(a) === probe(b);
 }

@@ -3,7 +3,11 @@ import type { ValidationItem } from "../../types/validation";
 import instructions from "./markdown/sides.md?raw";
 import maincss from "./css/main.css?raw";
 import catcss from "./css/cat.css?raw";
-import { calculateOffsets, hasVisibleBorder } from "../validation";
+import {
+  calculateOffsets,
+  getContentRect,
+  hasVisibleBorder,
+} from "../validation";
 
 const CAT_HEIGHT = 30;
 
@@ -61,7 +65,7 @@ export const sidesChallenge: ChallengeDefinition = {
     let boxrect = boxElement.getBoundingClientRect();
     const computedStyle = contentWindow.getComputedStyle(boxElement);
     const visibleBorder = hasVisibleBorder(boxElement);
-    let offsets = calculateOffsets(boxElement, catElement);
+    let offsets = calculateOffsets(boxElement, getContentRect(catElement));
     // Validate padding-left
     if (
       offsets.left < boxrect.width * 0.3 ||
