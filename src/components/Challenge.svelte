@@ -490,11 +490,17 @@
   .target-area.small .target-frame {
     flex: 0 0 50%;
     height: calc(var(--frame-height) / 2);
-    overflow: hidden;
+    position: relative;
+    z-index: 2; /* box model tooltips may stick out over the label */
   }
   .target-area.small .target-frame > :global(.frame-wrap) {
     width: 200%;
     transform: scale(0.5);
+    transform-origin: 0 0;
+  }
+  /* ...but keep box model tooltips readable */
+  .target-area.small :global(.box-model-tip) {
+    transform: scale(2);
     transform-origin: 0 0;
   }
 
