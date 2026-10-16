@@ -38,7 +38,18 @@ import { firstLetterAfterHeaderChallenge } from "./selectors/first-letter";
 import { childSelectorChallenge } from "./selectors/nth-child";
 import { finalSelectorsChallenge } from "./selectors/challenge1";
 
-export type ChallengeSetId = "box" | "selectors" | "vanilla";
+import { rowChallenge } from "./flex/rowChallenge";
+import { centerChallenge } from "./flex/centerChallenge";
+import { spreadChallenge } from "./flex/spreadChallenge";
+import { alignChallenge } from "./flex/alignChallenge";
+import { columnChallenge } from "./flex/columnChallenge";
+import { gapChallenge } from "./flex/gapChallenge";
+import { autoMarginChallenge } from "./flex/autoMarginChallenge";
+import { nestChallenge } from "./flex/nestChallenge";
+import { moveChallenge } from "./flex/moveChallenge";
+import { hotelChallenge } from "./flex/hotelChallenge";
+
+export type ChallengeSetId = "box" | "selectors" | "vanilla" | "flex";
 
 export type ChallengeSet = {
   concept: string;
@@ -107,6 +118,23 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
       sidesChallenge,
       centeringChallenge,
       cozyCatNapChallenge,
+    ],
+  },
+  flex: {
+    concept: "Flexbox",
+    name: "Herding Cats",
+    ghostCatsTool: true,
+    challenges: [
+      rowChallenge,
+      centerChallenge,
+      spreadChallenge,
+      alignChallenge,
+      columnChallenge,
+      gapChallenge,
+      autoMarginChallenge,
+      nestChallenge,
+      moveChallenge,
+      hotelChallenge,
     ],
   },
 };
