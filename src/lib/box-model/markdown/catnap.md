@@ -26,8 +26,8 @@ Need the same thing on the top *and* bottom? Instead of writing
 
 ```css
 selector {
-  border-block: 2px dashed green; /* top and bottom */
-  padding-inline: 4px; /* left and right */
+  border-block: 1px solid #ccc; /* top and bottom */
+  padding-inline: 16px; /* left and right */
 }
 ```
 
