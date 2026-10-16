@@ -98,7 +98,7 @@ export const marginChallenge: ChallengeDefinition = {
       items.push({
         name: "Use the boxes!",
         message:
-          "Use the box model for this challenge! No relative or absolution positioning allowed.",
+          "Use the box model for this challenge! No relative or absolute positioning allowed.",
         isValid: false,
       });
       isSolved = false;

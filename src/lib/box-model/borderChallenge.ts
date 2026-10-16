@@ -26,7 +26,7 @@ export const borderChallenge: ChallengeDefinition = {
     </div>    
   `,
   hiddenHTMLBefore: "<main><section>",
-  hiddenHTMLAfter: "<section></main>",
+  hiddenHTMLAfter: "</section></main>",
   hiddenCSSBefore:
     `main { background-color: #7a7a7a;}` +
     maincss +
