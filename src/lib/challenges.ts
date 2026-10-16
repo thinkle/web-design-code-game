@@ -1,5 +1,6 @@
 import type { ChallengeDefinition } from "../types/challenge";
 import { borderChallenge } from "./box-model/borderChallenge";
+import { boxSizingChallenge } from "./box-model/boxSizingChallenge";
 import { marginChallenge } from "./box-model/marginChallenge";
 import { paddingChallenge } from "./box-model/paddingChallenge";
 import { sidesChallenge } from "./box-model/sideChallenge";
@@ -98,6 +99,7 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
       escapeWaterChallenge,
       advancedWaterChallenge,
       borderChallenge,
+      boxSizingChallenge,
       inlineBlockChallenge,
       sidesChallenge,
       centeringChallenge,
