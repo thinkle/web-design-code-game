@@ -31,7 +31,41 @@
 
   import type { ValidationResult } from "../types/validation";
 
-  $: $studentWork = challenge.starterCode;
+  // Keep each challenge's code in this browser, so it survives Back/Next
+  // and page reloads. (Best effort: storage can be unavailable.)
+  const storageKey = (c: ChallengeDefinition) => `cat-game:work:${c.title}`;
+  let loadedChallenge: ChallengeDefinition | null = null;
+
+  function loadWork(c: ChallengeDefinition) {
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(storageKey(c));
+    } catch (e) {}
+    $studentWork = saved ?? c.starterCode;
+    loadedChallenge = c;
+  }
+
+  function saveWork(c: ChallengeDefinition, work: string) {
+    if (loadedChallenge !== c) return;
+    try {
+      if (work === c.starterCode) {
+        localStorage.removeItem(storageKey(c));
+      } else {
+        localStorage.setItem(storageKey(c), work);
+      }
+    } catch (e) {}
+  }
+
+  $: loadWork(challenge);
+  $: saveWork(challenge, $studentWork);
+
+  function restart() {
+    if (
+      confirm("Start this challenge over? Your code for it will be erased.")
+    ) {
+      $studentWork = challenge.starterCode;
+    }
+  }
 
   let resultWindow: Window;
   function onIframeLoad(w: Window) {
@@ -98,10 +132,16 @@
   // machines (Chromebooks) that work piles up and the preview lags behind.
   let previewWork = "";
   let previewTimeoutId: any;
+  let previewChallenge: ChallengeDefinition | null = null;
   function schedulePreview(work: string) {
     clearTimeout(previewTimeoutId);
-    if (!previewWork || work === challenge.starterCode) {
+    if (
+      !previewWork ||
+      previewChallenge !== challenge ||
+      work === challenge.starterCode
+    ) {
       // New challenge or Restart: show it right away
+      previewChallenge = challenge;
       previewWork = work;
     } else {
       previewTimeoutId = setTimeout(() => (previewWork = work), 150);
@@ -116,14 +156,14 @@
 
 <ThreeColumn scrollReminderLeft={true}>
   <div slot="center" class="code">
-    <div class="editor-label">
-      {challenge.language} editor
+    <div class="editor-bar">
+      <div class="editor-label">
+        {challenge.language} editor
+      </div>
+      {#if edited}
+        <button class="reset" on:click={restart}>Restart</button>
+      {/if}
     </div>
-    {#if edited}
-      <button
-        class="reset"
-        on:click={() => ($studentWork = challenge.starterCode)}>Restart</button
-      >{/if}
     {#key challenge.language}
       <div
         on:focusin={() => (focusInCodingWindow = true)}
@@ -223,10 +263,15 @@
     top: 64px;
     right: 64px;
   }
+  .editor-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
   .reset {
-    position: absolute;
-    right: 8px;
-    top: -3px;
+    font-size: small;
+    padding: 2px 8px;
+    margin-bottom: 4px;
   }
   .code {
     position: relative;
