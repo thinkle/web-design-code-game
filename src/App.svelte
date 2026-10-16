@@ -78,11 +78,10 @@
       //if (["box", "selectors"].includes(possibleId)) {
       if (possibleId in challengeSets) {
         challengeId = possibleId as ChallengeSetId;
-        if (challengeNumber) {
-          // Clamp bad hashes like #box-99 to a real challenge
-          const count = challengeSets[possibleId as ChallengeSetId].challenges.length;
-          idx = Math.min(Math.max(Number(challengeNumber) || 0, 0), count - 1);
-        }
+        // Clamp bad hashes like #box-99. One past the last challenge is
+        // allowed: that's the "You won!" screen.
+        const count = challengeSets[challengeId].challenges.length;
+        idx = Math.min(Math.max(Number(challengeNumber) || 0, 0), count);
       }
     }
 
@@ -120,6 +119,7 @@
             options={challengePopupOptions}
             onSelected={(id) => {
               challengeId = id;
+              idx = 0; // start the new tutorial at step 1
               showChallengeChangePopup = false;
             }}
           />
@@ -183,7 +183,7 @@
               </a>
             </li>
             <li>
-              <a href="https://flukeout.github.io/"> Flexbox Froggy </a>
+              <a href="https://flexboxfroggy.com/"> Flexbox Froggy </a>
             </li>
             <li>
               <a href="https://cssgridgarden.com/"> Grid Garden </a>
@@ -193,7 +193,11 @@
       </ul>
     </section>
   {:else}
-    <Challenge challenge={theChallenge} onNext={nextChallenge} />
+    <Challenge
+      challenge={theChallenge}
+      onNext={nextChallenge}
+      boxModelTool={!!challengeSet.boxModelTool}
+    />
   {/if}
 </main>
 
