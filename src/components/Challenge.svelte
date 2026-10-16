@@ -2,6 +2,8 @@
   export let onNext = () => null;
   import type { ChallengeDefinition } from "../types/challenge";
   export let challenge: ChallengeDefinition;
+  /** Offer the "Show the box model" overlay (box model lessons only) */
+  export let boxModelTool = false;
 
   import { studentWork, showBoxModel } from "../stores";
   import CodeHighlighter from "./CodeHighlighter.svelte";
@@ -197,6 +199,7 @@
     {/if}
   </div>
   <div slot="right">
+    {#if boxModelTool}
     <label class="box-model-toggle">
       <input type="checkbox" bind:checked={$showBoxModel} />
       Show the box model
@@ -210,6 +213,7 @@
     {#if $showBoxModel}
       <p class="box-model-hint">Hover over anything in the pictures below.</p>
     {/if}
+    {/if}
     <div class="target-area">
       <h2>Target</h2>
       <ChallengeResult
@@ -217,6 +221,7 @@
         solution={challenge.solution}
         solved={true}
         model={true}
+        boxModel={boxModelTool && $showBoxModel}
       />
     </div>
     <div class="result-area" class:highlight={studentIsCoding}>
@@ -227,6 +232,7 @@
         {solved}
         onWindowLoaded={onIframeLoad}
         onJsError={handleJsError}
+        boxModel={boxModelTool && $showBoxModel}
       />
       {#if jsError}
         <div class="js-error-box">

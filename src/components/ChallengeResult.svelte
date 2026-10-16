@@ -6,6 +6,7 @@
   export let solved = false;
   import CodeResult from "./CodeResult.svelte";
   export let onWindowLoaded : null | ((w : Window)=>void) = null;
+  export let boxModel = false;
 
   let filledTemplate = '';
   let js = '';
@@ -45,5 +46,5 @@
   {onWindowLoaded}
   {onJsError}
   height={challenge.height||600}
-  {html} {css} {js} {wrapperClass}
+  {html} {css} {js} {wrapperClass} {boxModel}
 />

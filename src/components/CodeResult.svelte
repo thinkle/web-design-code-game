@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
-  import { showBoxModel } from "../stores";
   import { attachBoxModelOverlay } from "../lib/boxModelOverlay";
   import { addLoopGuards, loopGuardRuntime } from "../lib/loopGuard";
   export let onWindowLoaded: ((w: Window) => void) | null;
@@ -9,6 +8,8 @@
   export let css = '';
   export let html = '';
   export let wrapperClass = '';
+  /** Show devtools-style box model highlighting on hover */
+  export let boxModel = false;
   export let height : number;
 
   let iframe: HTMLIFrameElement;
@@ -30,7 +31,7 @@
       detachOverlay = attachBoxModelOverlay(iframe, overlayLayer, tipLayer);
     }
   }
-  $: syncOverlay($showBoxModel);
+  $: syncOverlay(boxModel);
   
   const updateIframe = () => {
     if (!iframe || !iframe.contentWindow) {
@@ -117,7 +118,7 @@
       </html>
     `);
     doc.close();
-    syncOverlay($showBoxModel);
+    syncOverlay(boxModel);
 
     if (onWindowLoaded && iframe && iframe.contentWindow) {
       onWindowLoaded(iframe.contentWindow);

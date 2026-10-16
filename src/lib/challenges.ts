@@ -37,9 +37,17 @@ import { firstLetterAfterHeaderChallenge } from "./selectors/first-letter";
 import { childSelectorChallenge } from "./selectors/nth-child";
 import { finalSelectorsChallenge } from "./selectors/challenge1";
 
-export type ChallengeSetId = "box" | "selectors";
+export type ChallengeSetId = "box" | "selectors" | "vanilla";
 
-export let challengeSets = {
+export type ChallengeSet = {
+  concept: string;
+  name: string;
+  challenges: ChallengeDefinition[];
+  /** Offer the devtools-style "Show the box model" hover overlay */
+  boxModelTool?: boolean;
+};
+
+export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
   vanilla: {
     concept: "VanillaJS",
     name: "Disco Cats",
@@ -83,6 +91,7 @@ export let challengeSets = {
   box: {
     concept: "the Box Model",
     name: "Cats in Boxes",
+    boxModelTool: true,
     challenges: [
       paddingChallenge,
       marginChallenge,
