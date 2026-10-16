@@ -71,13 +71,22 @@ export const escapeWaterChallenge: ChallengeDefinition = {
       ".water"
     ) as HTMLDivElement;
     const cat = contentWindow.document.querySelector(".cat") as HTMLDivElement;
+    const land = contentWindow.document.querySelector(
+      ".land"
+    ) as HTMLDivElement;
+    const catRect = getContentRect(cat);
 
     // Check if the cat is at the bottom of the land
 
     items.push({
       name: "Cat Position",
       message: "The cat should be far away from the water!",
-      isValid: validateSpaceBetweenElementsTB(water, getContentRect(cat), 50),
+      isValid: validateSpaceBetweenElementsTB(water, catRect, 50),
+    });
+    items.push({
+      name: "Still on the beach",
+      message: "Don't push the cat off the bottom of the beach!",
+      isValid: catRect.bottom <= land.getBoundingClientRect().bottom + 1,
     });
     return {
       isSolved: items.every((item) => item.isValid),

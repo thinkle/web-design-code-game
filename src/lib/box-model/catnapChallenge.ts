@@ -172,6 +172,13 @@ export const cozyCatNapChallenge: ChallengeDefinition = {
       isValid: catOffsets.left >= bed.getBoundingClientRect().width / 2,
     });
 
+    const blanketOffsets = calculateOffsets(bed, blanket);
+    items.push({
+      name: "Blanket on the bed",
+      message: "Keep the blanket on the bed - it's hanging off the side!",
+      isValid: blanketOffsets.left >= -1 && blanketOffsets.right >= -1,
+    });
+
     items.push({
       name: "Blanket overlaps pillow",
       message: "The blanket should overlap the pillow.",

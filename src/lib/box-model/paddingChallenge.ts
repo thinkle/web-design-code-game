@@ -10,6 +10,8 @@ const CAT_HEIGHT = 30;
 const PADDING = 20;
 const BOX_SIZE = 70;
 const threshhold = 5;
+// Any visible breathing room counts (the instructions' example uses 8px)
+const MIN_ROOM = 8;
 
 export var paddingChallenge: ChallengeDefinition = {
   title: "Cat in a Corner",
@@ -85,7 +87,7 @@ export var paddingChallenge: ChallengeDefinition = {
     ];
     const sides = ["left", "top", "right", "bottom"];
     offsets.forEach((offset, index) => {
-      if (offset < PADDING - threshhold) {
+      if (offset < MIN_ROOM) {
         items.push({
           name: `Space on ${sides[index]}`,
           isValid: false,
