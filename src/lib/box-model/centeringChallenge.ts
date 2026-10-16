@@ -104,6 +104,7 @@ WORK
           "Your .box element is using something other than the box model",
         isValid: false,
       });
+      isSolved = false;
     }
     if (!isUsingBoxModel(roomElement, contentWindow)) {
       items.push({
@@ -112,6 +113,7 @@ WORK
           "Your .room element is using something other than the box model",
         isValid: false,
       });
+      isSolved = false;
     }
     // Validate box centering
     if (

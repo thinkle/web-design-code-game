@@ -16,7 +16,7 @@ document
   .toggle("spin") // add or remove "spin"
 ```
 
-Now in our even handler, we can target whatever element was
+Now in our event handler, we can target whatever element was
 clicked by using `event.target` in place of `document.querySelector(...)`. Like so:
 
 ```javascript

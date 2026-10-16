@@ -54,15 +54,14 @@ Now you do the same, but with the \`<cat>\` element!
   `,
   hiddenCSSBefore: catcss,
   requireHover: true,
+  interactionPrompt: "Now hold your mouse over the cat in the Result to check your work!",
   css: `   
     WORK
   `,
   starterCode: `
-  /* Switch back to fixme */
     FIXME {
       transition: all 300ms;      
     }
-      /* Switch back to fixme */
     ANDME {
       background-color: black;
       transform: scale(2);

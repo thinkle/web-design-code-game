@@ -21,21 +21,19 @@ Remember, a *space* in a selector selects a descendant, but a *comma* adds a bra
 nav a { /* Select <a> inside <nav> */
   text-decoration: none;
 }
-ul,ol { /* Select <ul> *and* </ol> */
+ul, ol { /* Select <ul> *and* <ol> */
   margin: 0;
   padding: 0;
 }
-nav a,.menu a {
-  /* Select <a> in <nav> AND <a> in <* class="menu> */
+nav a, .menu a {
+  /* Select <a> in <nav> AND <a> in class="menu" */
   text-decoration: none;  
 }
+\`\`\`
 
 # Party Time! Give the Koala and the Tiger party hats
 Cat is throwing a party! The cat and its party guests, the koala
 and the tiger, need to put on pink party hats!
-
-
-\`\`\`
 
 ## About Border-Triangles
 

@@ -4,6 +4,7 @@ import catcss from "./css/cat.css?raw";
 import { PropertyChecker } from "../validation";
 export const function2Challenge: ChallengeDefinition = {
   title: "Event Targets",
+  interactionPrompt: "Now click a cat in the Result to check your work!",
   language: "js",
   instructions,
   height: 150,
@@ -59,7 +60,7 @@ export const function2Challenge: ChallengeDefinition = {
           {
             name: "Click to Spin",
             isValid: e.target.classList.contains("spin"),
-            message: "The container should have the class 'spin' after click",
+            message: "The cat you clicked should have the class 'spin'",
           },
         ];
         setTimeout(() => {

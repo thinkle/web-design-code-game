@@ -1,5 +1,5 @@
 # Stand the cat on a line
-In this challenge, use a combination of padding and margin properties to position the kitten 1/3 of the way across the room, ensuring it stands on a line, just like in the example below.
+In this challenge, use a combination of padding and margin properties to position the kitten 1/3 of the way across the room, ensuring it stands on a line (a bottom border), just like in the Target picture.
 
 ### left, right, top, bottom
 

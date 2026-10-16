@@ -23,7 +23,7 @@ It's time to use **everything you've learned**.
 4. **Style the first line** of each day's **first paragraph** (bold + colored).  
 
 
-You must complete all 6 tasks. There’s more than one way to do it, but the result must look right.
+You must complete all 4 tasks. There’s more than one way to do it, but the result must look right.
   `,
   html: `
   <div class="page">

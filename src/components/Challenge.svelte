@@ -2,6 +2,8 @@
   export let onNext = () => null;
   import type { ChallengeDefinition } from "../types/challenge";
   export let challenge: ChallengeDefinition;
+  /** Offer the "Show the box model" overlay (box model lessons only) */
+  export let boxModelTool = false;
 
   import { studentWork, showBoxModel } from "../stores";
   import CodeHighlighter from "./CodeHighlighter.svelte";
@@ -31,7 +33,41 @@
 
   import type { ValidationResult } from "../types/validation";
 
-  $: $studentWork = challenge.starterCode;
+  // Keep each challenge's code in this browser, so it survives Back/Next
+  // and page reloads. (Best effort: storage can be unavailable.)
+  const storageKey = (c: ChallengeDefinition) => `cat-game:work:${c.title}`;
+  let loadedChallenge: ChallengeDefinition | null = null;
+
+  function loadWork(c: ChallengeDefinition) {
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(storageKey(c));
+    } catch (e) {}
+    $studentWork = saved ?? c.starterCode;
+    loadedChallenge = c;
+  }
+
+  function saveWork(c: ChallengeDefinition, work: string) {
+    if (loadedChallenge !== c) return;
+    try {
+      if (work === c.starterCode) {
+        localStorage.removeItem(storageKey(c));
+      } else {
+        localStorage.setItem(storageKey(c), work);
+      }
+    } catch (e) {}
+  }
+
+  $: loadWork(challenge);
+  $: saveWork(challenge, $studentWork);
+
+  function restart() {
+    if (
+      confirm("Start this challenge over? Your code for it will be erased.")
+    ) {
+      $studentWork = challenge.starterCode;
+    }
+  }
 
   let resultWindow: Window;
   function onIframeLoad(w: Window) {
@@ -45,6 +81,10 @@
   let timeoutId: any; // for debouncing
   let studentIsCoding = false;
   let jsError: string | null = null;
+  // Interactive challenges (click/hover) validate asynchronously: the check
+  // only finishes once the student interacts with the Result.
+  let waitingForInteraction = false;
+  let validationRun = 0;
 
   $: edited =
     $studentWork.replace(/\s/g, "") != challenge.starterCode.replace(/\s/g, "");
@@ -61,10 +101,19 @@
 
     // Set a new timeout
     timeoutId = setTimeout(() => {
+      const run = ++validationRun;
+      waitingForInteraction = false;
       if (contentWindow) {
         let returnValue = challenge.validate(contentWindow, previewWork);
         if (returnValue instanceof Promise) {
+          // The code changed, so any earlier verdict no longer applies.
+          result = null;
+          solved = false;
+          waitingForInteraction = true;
           returnValue.then((r: ValidationResult) => {
+            // Ignore answers from an older version of the student's code
+            if (run !== validationRun) return;
+            waitingForInteraction = false;
             result = r;
             solved = result.isSolved;
           });
@@ -85,10 +134,16 @@
   // machines (Chromebooks) that work piles up and the preview lags behind.
   let previewWork = "";
   let previewTimeoutId: any;
+  let previewChallenge: ChallengeDefinition | null = null;
   function schedulePreview(work: string) {
     clearTimeout(previewTimeoutId);
-    if (!previewWork || work === challenge.starterCode) {
+    if (
+      !previewWork ||
+      previewChallenge !== challenge ||
+      work === challenge.starterCode
+    ) {
       // New challenge or Restart: show it right away
+      previewChallenge = challenge;
       previewWork = work;
     } else {
       previewTimeoutId = setTimeout(() => (previewWork = work), 150);
@@ -103,14 +158,14 @@
 
 <ThreeColumn scrollReminderLeft={true}>
   <div slot="center" class="code">
-    <div class="editor-label">
-      {challenge.language} editor
+    <div class="editor-bar">
+      <div class="editor-label">
+        {challenge.language} editor
+      </div>
+      {#if edited}
+        <button class="reset" on:click={restart}>Restart</button>
+      {/if}
     </div>
-    {#if edited}
-      <button
-        class="reset"
-        on:click={() => ($studentWork = challenge.starterCode)}>Restart</button
-      >{/if}
     {#key challenge.language}
       <div
         on:focusin={() => (focusInCodingWindow = true)}
@@ -119,11 +174,6 @@
         <CodeMirror bind:value={$studentWork} lang={getLanguage(challenge)} />
       </div>
     {/key}
-    {#if edited && challenge.requireHover && !result?.isSolved}
-      <div class="emphasize">
-        Hold your mouse over the target element to complete the challenge!
-      </div>
-    {/if}
 
     <h2>Code</h2>
     {#if challenge.html}
@@ -149,6 +199,7 @@
     {/if}
   </div>
   <div slot="right">
+    {#if boxModelTool}
     <label class="box-model-toggle">
       <input type="checkbox" bind:checked={$showBoxModel} />
       Show the box model
@@ -162,6 +213,7 @@
     {#if $showBoxModel}
       <p class="box-model-hint">Hover over anything in the pictures below.</p>
     {/if}
+    {/if}
     <div class="target-area">
       <h2>Target</h2>
       <ChallengeResult
@@ -169,6 +221,7 @@
         solution={challenge.solution}
         solved={true}
         model={true}
+        boxModel={boxModelTool && $showBoxModel}
       />
     </div>
     <div class="result-area" class:highlight={studentIsCoding}>
@@ -179,6 +232,7 @@
         {solved}
         onWindowLoaded={onIframeLoad}
         onJsError={handleJsError}
+        boxModel={boxModelTool && $showBoxModel}
       />
       {#if jsError}
         <div class="js-error-box">
@@ -186,7 +240,11 @@
           <p>{jsError}</p>
         </div>
       {/if}
-      {#if result && edited}
+      {#if waitingForInteraction && edited && challenge.interactionPrompt}
+        <div class="try-it">
+          👆 {challenge.interactionPrompt}
+        </div>
+      {:else if result && edited}
         <Feedback {result} />
       {/if}
     </div>
@@ -211,10 +269,15 @@
     top: 64px;
     right: 64px;
   }
+  .editor-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
   .reset {
-    position: absolute;
-    right: 8px;
-    top: -3px;
+    font-size: small;
+    padding: 2px 8px;
+    margin-bottom: 4px;
   }
   .code {
     position: relative;
@@ -339,6 +402,16 @@
     font-size: 0.75rem;
     color: #666;
     margin: 0 0 12px 0;
+  }
+
+  .try-it {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #fff8e1;
+    border: 1px solid #ffd54f;
+    font-size: 0.9rem;
+    font-weight: 600;
   }
 
   .js-error-box {

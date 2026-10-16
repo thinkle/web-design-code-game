@@ -1,12 +1,15 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
-  import { showBoxModel } from "../stores";
   import { attachBoxModelOverlay } from "../lib/boxModelOverlay";
+  import { addLoopGuards, loopGuardRuntime } from "../lib/loopGuard";
   export let onWindowLoaded: ((w: Window) => void) | null;
   export let onJsError: ((message: string) => void) | null = null;
   export let js = '';
   export let css = '';
   export let html = '';
+  export let wrapperClass = '';
+  /** Show devtools-style box model highlighting on hover */
+  export let boxModel = false;
   export let height : number;
 
   let iframe: HTMLIFrameElement;
@@ -28,7 +31,7 @@
       detachOverlay = attachBoxModelOverlay(iframe, overlayLayer, tipLayer);
     }
   }
-  $: syncOverlay($showBoxModel);
+  $: syncOverlay(boxModel);
   
   const updateIframe = () => {
     if (!iframe || !iframe.contentWindow) {
@@ -88,7 +91,7 @@
           </style>
       </head>
       <body>
-          ${html}
+          <wrapper class="${wrapperClass}">${html}</wrapper>
           <scr` + `ipt>
             // Forward errors to the parent window
             window.onerror = function (message, source, lineno, colno, error) {
@@ -107,15 +110,15 @@
                 // Swallow any cross-origin or serialization issues
               }
             };
-          </scr` + `ipt>
+          </scr` + `ipt><scr` + `ipt>${loopGuardRuntime}</scr` + `ipt>
           <scr` + `ipt>
-              ${js}
+              ${addLoopGuards(js || "")}
           </scr` + `ipt>
       </body>
       </html>
     `);
     doc.close();
-    syncOverlay($showBoxModel);
+    syncOverlay(boxModel);
 
     if (onWindowLoaded && iframe && iframe.contentWindow) {
       onWindowLoaded(iframe.contentWindow);
@@ -127,7 +130,14 @@
     if (!data || data.type !== "student-js-error") return;
     if (onJsError) {
       const { message, lineno, colno, source } = data;
-      let formatted = String(message ?? "Unknown error");
+      if (event.source && iframe && event.source !== iframe.contentWindow) {
+        return; // from the other preview
+      }
+      // Drop browser-internal wording: student code runs via document.write
+      let formatted = String(message ?? "Unknown error").replace(
+        "Failed to execute 'write' on 'Document': ",
+        ""
+      );
       if (lineno != null) {
         // Adjust for lines we inject before the student's code
         const lineOffset = 2;
@@ -135,16 +145,21 @@
           typeof lineno === "number" && lineno > lineOffset
             ? lineno - lineOffset
             : lineno;
-        formatted = `Line ${adjustedLine}${
-          colno != null ? ":" + colno : ""
-        } — ${formatted}`;
+        // (No column: loop guards inserted into the code would skew it)
+        formatted = `Line ${adjustedLine} — ${formatted}`;
       }
-      if (source) {
+      const pageUrl = window.location.href.split("#")[0];
+      if (source && source.split("#")[0] !== pageUrl) {
         formatted = `${formatted} (${source})`;
       }
       onJsError(formatted);
     }
   };
+
+  $: if (iframe && iframe.contentDocument) {
+    const wrapper = iframe.contentDocument.querySelector("body > wrapper");
+    if (wrapper) wrapper.className = wrapperClass;
+  }
 
   // Recreate the iframe whenever the student's code or markup changes
   $: frameKey = `${html}/*sep*/${css}/*sep*/${js}`;
