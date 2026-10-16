@@ -7,7 +7,7 @@ what a user does. Events have a `target` property which points
 to the HTML Element that "triggered" the event (i.e. the thing
 the user clicked).
 
-So where as before we might have written something like:
+Whereas before we might have written something like:
 
 ```javascript
 document

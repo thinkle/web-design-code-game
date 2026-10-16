@@ -21,7 +21,7 @@ export const inlineBlockChallenge: ChallengeDefinition = {
     <div class="box"><div class="cat"></div></div>
   `,
   hiddenHTMLBefore: "<main><section>",
-  hiddenHTMLAfter: "</main></section>",
+  hiddenHTMLAfter: "</section></main>",
   hiddenCSSBefore: catcss + "\n" + maincss,
   css: `
   .cat {
