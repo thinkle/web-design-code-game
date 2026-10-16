@@ -18,7 +18,7 @@ section > p { color: red }
 
 # Your challenge: Only flip the cats directly on the bed
 
-Make just the cats that are direct children of the <bed> lie on their sides. Cats nested inside boxes should remain standing.
+Make just the cats that are direct children of the \`<bed>\` lie on their sides. Cats nested inside boxes should remain standing.
 
   `,
   html: `
