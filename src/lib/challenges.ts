@@ -46,6 +46,8 @@ export type ChallengeSet = {
   challenges: ChallengeDefinition[];
   /** Offer the devtools-style "Show the box model" hover overlay */
   boxModelTool?: boolean;
+  /** Offer "Show where the cats go" (dashed outlines of the Target's cats) */
+  ghostCatsTool?: boolean;
 };
 
 export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
@@ -93,6 +95,7 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
     concept: "the Box Model",
     name: "Cats in Boxes",
     boxModelTool: true,
+    ghostCatsTool: true,
     challenges: [
       paddingChallenge,
       marginChallenge,

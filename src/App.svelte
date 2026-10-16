@@ -197,6 +197,7 @@
       challenge={theChallenge}
       onNext={nextChallenge}
       boxModelTool={!!challengeSet.boxModelTool}
+      ghostCatsTool={!!challengeSet.ghostCatsTool}
     />
   {/if}
 </main>
