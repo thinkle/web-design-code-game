@@ -5,18 +5,31 @@
   /** Offer the "Show the box model" overlay (box model lessons only) */
   export let boxModelTool = false;
 
-  import { studentWork, showBoxModel, targetView } from "../stores";
-  import type { TargetView } from "../stores";
+  import {
+    studentWork,
+    showBoxModel,
+    targetView,
+    showGhostCats,
+  } from "../stores";
+  import { getContentRect } from "../lib/validation";
+  import type { RectLike } from "../lib/validation";
 
-  const targetViews: { value: TargetView; label: string; title: string }[] = [
-    { value: "small", label: "Small", title: "Show a small Target" },
-    { value: "full", label: "Full", title: "Show the Target full size" },
-    {
-      value: "overlay",
-      label: "Overlay",
-      title: "Lay a faded Target over your Result",
-    },
-  ];
+  // Ghost cats: where the Target's cats are, drawn over the Result. Both
+  // previews are laid out at the same width, so positions line up 1:1.
+  let targetWindow: Window | null = null;
+  let ghostCats: RectLike[] = [];
+  function measureGhostCats(win: Window | null, enabled: boolean) {
+    if (!enabled || !win || !win.document) {
+      ghostCats = [];
+      return;
+    }
+    ghostCats = Array.from(win.document.querySelectorAll(".cat, cat")).map(
+      (cat) => getContentRect(cat)
+    );
+  }
+  $: measureGhostCats(targetWindow, boxModelTool && $showGhostCats);
+  const remeasure = () =>
+    measureGhostCats(targetWindow, boxModelTool && $showGhostCats);
   import CodeHighlighter from "./CodeHighlighter.svelte";
   import ThreeColumn from "./ThreeColumn.svelte";
 
@@ -167,6 +180,8 @@
   }
 </script>
 
+<svelte:window on:resize={remeasure} />
+
 <ThreeColumn scrollReminderLeft={true}>
   <div slot="center" class="code">
     <div class="editor-bar">
@@ -210,49 +225,36 @@
     {/if}
   </div>
   <div slot="right">
-    {#if boxModelTool}
-    <label class="box-model-toggle">
-      <input type="checkbox" bind:checked={$showBoxModel} />
-      Show the box model
-      <span class="legend">
-        <i style="background:rgba(246, 178, 107, 0.66)"></i>margin
-        <i style="background:rgba(255, 229, 153, 0.75)"></i>border
-        <i style="background:rgba(147, 196, 125, 0.6)"></i>padding
-        <i style="background:rgba(111, 168, 220, 0.6)"></i>content
-      </span>
-    </label>
-    {#if $showBoxModel}
-      <p class="box-model-hint">Hover over anything in the pictures below.</p>
-    {/if}
-    {/if}
-    <div class="target-view" role="group" aria-label="How to show the Target">
-      <span>Target:</span>
-      {#each targetViews as view}
-        <button
-          class:selected={$targetView === view.value}
-          aria-pressed={$targetView === view.value}
-          title={view.title}
-          on:click={() => ($targetView = view.value)}>{view.label}</button
-        >
-      {/each}
-    </div>
-    {#if $targetView !== "overlay"}
-      <div class="target-area" class:small={$targetView === "small"}>
+    <div class="target-area" class:small={$targetView === "small"}>
+      <div class="target-header">
         <h2>Target</h2>
-        <div
-          class="target-frame"
-          style:--frame-height={`${challenge.height || 600}px`}
-        >
-          <ChallengeResult
-            {challenge}
-            solution={challenge.solution}
-            solved={true}
-            model={true}
-            boxModel={boxModelTool && $showBoxModel}
-          />
+        <div class="target-view" role="group" aria-label="Target size">
+          <button
+            class:selected={$targetView === "small"}
+            aria-pressed={$targetView === "small"}
+            on:click={() => ($targetView = "small")}>Small</button
+          >
+          <button
+            class:selected={$targetView === "full"}
+            aria-pressed={$targetView === "full"}
+            on:click={() => ($targetView = "full")}>Full size</button
+          >
         </div>
       </div>
-    {/if}
+      <div
+        class="target-frame"
+        style:--frame-height={`${challenge.height || 600}px`}
+      >
+        <ChallengeResult
+          {challenge}
+          solution={challenge.solution}
+          solved={true}
+          model={true}
+          boxModel={boxModelTool && $showBoxModel}
+          onWindowLoaded={(w) => (targetWindow = w)}
+        />
+      </div>
+    </div>
     <div class="result-area" class:highlight={studentIsCoding}>
       <h2>Result</h2>
       <div class="result-frame">
@@ -264,18 +266,16 @@
           onJsError={handleJsError}
           boxModel={boxModelTool && $showBoxModel}
         />
-        {#if $targetView === "overlay"}
-          <!-- Faded Target on top; ignores the mouse so hover/click checks
-               still reach the student's Result underneath -->
-          <div class="target-ghost" aria-hidden="true">
-            <ChallengeResult
-              {challenge}
-              solution={challenge.solution}
-              solved={true}
-              model={true}
-            />
-          </div>
-        {/if}
+        {#each ghostCats as ghost}
+          <div
+            class="ghost-cat"
+            aria-hidden="true"
+            style:left={`${ghost.left}px`}
+            style:top={`${ghost.top}px`}
+            style:width={`${ghost.width}px`}
+            style:height={`${ghost.height}px`}
+          ></div>
+        {/each}
       </div>
       {#if jsError}
         <div class="js-error-box">
@@ -289,6 +289,27 @@
         </div>
       {:else if result && edited}
         <Feedback {result} />
+      {/if}
+      {#if boxModelTool}
+        <div class="preview-tools">
+          <label>
+            <input type="checkbox" bind:checked={$showGhostCats} />
+            Show where the cats go
+          </label>
+          <label>
+            <input type="checkbox" bind:checked={$showBoxModel} />
+            Show the box model
+          </label>
+          {#if $showBoxModel}
+            <span class="legend">
+              Hover the pictures:
+              <i style="background:rgba(246, 178, 107, 0.66)"></i>margin
+              <i style="background:rgba(255, 229, 153, 0.75)"></i>border
+              <i style="background:rgba(147, 196, 125, 0.6)"></i>padding
+              <i style="background:rgba(111, 168, 220, 0.6)"></i>content
+            </span>
+          {/if}
+        </div>
       {/if}
     </div>
   </div>
@@ -421,46 +442,23 @@
     opacity: 0.85;
   }
 
-  .box-model-toggle {
+  .target-header {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    gap: 4px 6px;
-    font-size: 0.85rem;
-    margin-bottom: 4px;
-    cursor: pointer;
+    gap: 8px;
+    margin-bottom: 8px;
   }
-  .box-model-toggle .legend {
-    font-size: 0.75rem;
-    color: #666;
+  .target-header h2 {
+    margin: 0;
   }
-  .box-model-toggle .legend i {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin: 0 3px 0 6px;
-    vertical-align: middle;
-  }
-  .box-model-hint {
-    font-size: 0.75rem;
-    color: #666;
-    margin: 0 0 12px 0;
-  }
-
   .target-view {
     display: flex;
-    align-items: center;
     gap: 4px;
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 12px;
-  }
-  .target-view span {
-    margin-right: 2px;
   }
   .target-view button {
-    font-size: 0.8rem;
-    padding: 2px 10px;
+    font-size: 0.75rem;
+    padding: 2px 8px;
     box-shadow: none;
     border: 1px solid #ccc;
     background: #fff;
@@ -472,9 +470,25 @@
     color: #fff;
   }
 
-  /* Small: lay the Target out at full width (so it matches the Result),
-     then shrink it to half size */
+  /* Small: a true half-size Target, with the header beside it. The frame
+     is laid out at the Result's width (200% of a 50% box) so it matches
+     the Result exactly, then scaled by half in both directions. */
+  .target-area.small {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .target-area.small .target-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .target-area.small .target-view {
+    flex-direction: column;
+  }
   .target-area.small .target-frame {
+    flex: 0 0 50%;
     height: calc(var(--frame-height) / 2);
     overflow: hidden;
   }
@@ -487,17 +501,45 @@
   .result-frame {
     position: relative;
   }
-  .target-ghost {
+  .ghost-cat {
     position: absolute;
-    inset: 0;
-    opacity: 0.5;
-    /* Darken-only blend, so the student's own work stays fully visible
-       instead of being washed out by the Target's backgrounds */
-    mix-blend-mode: multiply;
+    box-sizing: border-box;
+    border: 2px dashed rgba(255, 255, 255, 0.95);
+    outline: 2px dashed rgba(0, 0, 0, 0.55);
+    border-radius: 6px;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .target-ghost :global(iframe) {
-    box-shadow: none;
+  .ghost-cat::after {
+    content: "😺";
+    font-size: 22px;
+    opacity: 0.35;
+  }
+
+  .preview-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 16px;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #444;
+  }
+  .preview-tools label {
+    cursor: pointer;
+  }
+  .preview-tools .legend {
+    font-size: 0.75rem;
+    color: #666;
+  }
+  .preview-tools .legend i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 3px 0 6px;
+    vertical-align: middle;
   }
 
   .try-it {
