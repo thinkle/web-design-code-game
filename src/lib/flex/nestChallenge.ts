@@ -14,7 +14,7 @@ import {
 } from "./flexChecks";
 
 export const nestChallenge: ChallengeDefinition = {
-  title: "Family Photo",
+  title: "Strike a Pose",
   language: "html",
   height: 230,
   instructions,

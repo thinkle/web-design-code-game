@@ -15,7 +15,7 @@ import {
 const SUNBEAM_HALF_WIDTH = 70;
 
 export const centerChallenge: ChallengeDefinition = {
-  title: "Sunbeam",
+  title: "Sun Salutation",
   language: "css",
   height: 140,
   instructions,

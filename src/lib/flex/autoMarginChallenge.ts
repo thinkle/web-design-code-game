@@ -26,7 +26,7 @@ function measure(tree: HTMLElement, cats: HTMLElement[]) {
 }
 
 export const autoMarginChallenge: ChallengeDefinition = {
-  title: "Top and Bottom",
+  title: "The Big Stretch",
   language: "css",
   height: 330,
   instructions,

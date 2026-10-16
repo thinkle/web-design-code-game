@@ -14,7 +14,7 @@ import {
 } from "./flexChecks";
 
 export const spreadChallenge: ChallengeDefinition = {
-  title: "Spread Out",
+  title: "Stretching Room",
   language: "css",
   height: 220,
   instructions,

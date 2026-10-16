@@ -1,6 +1,6 @@
-# Sunbeam
+# Sun Salutation
 
-The sun is shining through the window and making a warm sunbeam in the **middle** of the rug. ☀️ All three cats want to snuggle up in it!
+Every cat yoga class starts with a sun salutation! ☀️ The sun is shining through the window and making a warm sunbeam in the **middle** of the rug, and all three cats want to stretch out in it.
 
 ## justify-content
 

@@ -1,10 +1,10 @@
-# Cats in a Row
+# Warm-Up Stretch
 
-Three cats want to look out the window, but they're stacked on top of each other like a cat tower! 🙀 Help them sit **side by side** on the windowsill.
+Welcome to cat yoga! 🧘 Before class, three cats want to warm up with a stretch on the windowsill, but they're stacked on top of each other like a cat tower! 🙀 Help them sit **side by side** on the windowsill.
 
 ## Meet Flexbox
 
-**Flexbox** is a way to lay out a group of elements. You turn the **parent** element into a *flex container*:
+**Flexbox** is the most *flexible* way to lay out a group of elements in CSS: it can bend a row into a column, stretch things out, and spread them apart. You turn the **parent** element into a *flex container*:
 
 ```css
 .toolbar {

@@ -13,7 +13,7 @@ import {
 } from "./flexChecks";
 
 export const rowChallenge: ChallengeDefinition = {
-  title: "Cats in a Row",
+  title: "Warm-Up Stretch",
   language: "css",
   height: 220,
   instructions,

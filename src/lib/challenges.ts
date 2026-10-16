@@ -123,7 +123,7 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
   },
   flex: {
     concept: "Flexbox",
-    name: "Herding Cats",
+    name: "Flexible Felines",
     ghostCatsTool: true,
     challenges: [
       rowChallenge,

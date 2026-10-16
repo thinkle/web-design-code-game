@@ -1,6 +1,6 @@
-# Family Photo
+# Strike a Pose
 
-Mama Cat 👑 wants a family photo: Mama on the **left**, and her three kittens stacked up in a **column** on the **right**.
+Mama Cat 👑 wants a family photo after yoga class: Mama on the **left**, and her three kittens stacked up in a **column** on the **right**.
 
 This time the CSS is already written. Look at it in the *Code* section: there's a rule for `.photo`, and a rule for a `.kittens` element... but nothing in the HTML has that class yet! Your job is to change the **HTML**.
 

@@ -1,6 +1,6 @@
-# Spread Out
+# Stretching Room
 
-Cats need their own space. 😾
+A good stretch takes space! Cats need room to reach their paws out. 😾
 
 - On the **fence**, the cats want one cat on each fence post: one at each end and one in the middle.
 - On the **floor**, each cat wants its own cushion.

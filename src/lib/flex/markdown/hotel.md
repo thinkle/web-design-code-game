@@ -1,6 +1,6 @@
 # Cat Hotel
 
-Welcome to the Cat Hotel! 🏨 The hotel is full of cats, but nothing is in the right place yet. Use everything you've learned to lay out the whole hotel like the Target.
+Welcome to the Cat Hotel! 🏨 Time to show off your flex. 💪 The hotel is full of cats, but nothing is in the right place yet. Use everything you've learned to lay out the whole hotel like the Target.
 
 The HTML has boxes inside boxes. Each box is a flex container for **its own direct children** only:
 

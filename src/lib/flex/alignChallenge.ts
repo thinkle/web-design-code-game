@@ -14,7 +14,7 @@ import {
 } from "./flexChecks";
 
 export const alignChallenge: ChallengeDefinition = {
-  title: "Floating Cats",
+  title: "Grounding Pose",
   language: "css",
   height: 240,
   instructions,

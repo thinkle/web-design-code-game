@@ -1,6 +1,6 @@
-# Top and Bottom
+# The Big Stretch
 
-Two cats like the top of the cat tree, and the other two want to nap down at the **bottom**. 💤 The tree is already a flex column, but all four cats are crowded at the top.
+This cat tree can stretch taller or shorter. Two cats like to lounge at the top, and the other two want to nap down at the **bottom**. 💤 The tree is already a flex column, but all four cats are crowded at the top.
 
 `justify-content` moves *all* the cats together, so it can't split them up. This time, you'll style one cat instead: the first napper, which has the class `sleepy`.
 
@@ -20,4 +20,4 @@ That's a **row**, so the main axis goes left ↔ right. In a **column**, the mai
 
 ## Goal
 
-Push the sleepy cat, and the cat after it, down to the bottom of the cat tree, like the Target. It should still work if the tree gets taller!
+Push the sleepy cat, and the cat after it, down to the bottom of the cat tree, like the Target. It should still work when the tree stretches taller!

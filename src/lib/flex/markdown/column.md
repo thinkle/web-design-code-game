@@ -1,6 +1,6 @@
 # Cat Tower
 
-This cat tower has three platforms: one at the top, one in the middle and one at the bottom. 🐾 Put one cat on each platform.
+Climbing builds strong cats! 💪 This cat tower has three platforms: one at the top, one in the middle and one at the bottom. 🐾 Put one cat on each platform.
 
 ## Columns: flex-direction
 

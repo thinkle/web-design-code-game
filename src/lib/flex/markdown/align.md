@@ -1,6 +1,6 @@
-# Floating Cats
+# Grounding Pose
 
-Something strange is going on in this room: the cats, the scratching post and the plant are all floating up by the ceiling! 👻 Bring everything down so it stands on the floor.
+Every yoga pose starts with your paws planted firmly on the ground. But something strange is going on in this room: the cats, the scratching post and the plant are all floating up by the ceiling! 👻 Bring everything down so it stands on the floor.
 
 ## The other direction: align-items
 

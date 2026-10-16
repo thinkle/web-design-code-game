@@ -1,4 +1,4 @@
-// Shared checks for the flexbox challenges ("Herding Cats").
+// Shared checks for the flexbox challenges ("Flexible Felines").
 //
 // The challenges check *outcomes* (where things end up, measured with
 // getBoundingClientRect), plus a few guard rails so that the layout comes
