@@ -4,7 +4,7 @@ import type { ValidationItem } from "../../types/validation";
 import instructions from "./markdown/padding-1.md?raw";
 import maincss from "./css/main.css?raw";
 import catcss from "./css/cat.css?raw";
-import { isUsingBoxModel } from "../validation";
+import { getContentRect, isAboutSize, isUsingBoxModel } from "../validation";
 const CAT_WIDTH = 30;
 const CAT_HEIGHT = 30;
 const PADDING = 20;
@@ -55,8 +55,10 @@ export var paddingChallenge: ChallengeDefinition = {
     ) as HTMLDivElement;
     let items: ValidationItem[] = [];
     let isSolved = true;
-    let catRect = catElement.getBoundingClientRect();
-    if (catRect.width !== CAT_WIDTH || catRect.height !== CAT_HEIGHT) {
+    // Content box = where the cat is drawn. Compare sizes with a tolerance:
+    // with browser zoom (common on Chromebooks) a 30px cat can measure 29.99px.
+    let catRect = getContentRect(catElement);
+    if (!isAboutSize(catRect, CAT_WIDTH, CAT_HEIGHT)) {
       items.push({
         name: "Cat left alone",
         isValid: false,
@@ -100,7 +102,7 @@ export var paddingChallenge: ChallengeDefinition = {
     });
 
     // Validate Box Size
-    if (boxRect.width < BOX_SIZE || boxRect.height < BOX_SIZE) {
+    if (boxRect.width < BOX_SIZE - 1 || boxRect.height < BOX_SIZE - 1) {
       items.push({
         name: "Box size",
         isValid: false,

@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
+  import { showBoxModel } from "../stores";
+  import { attachBoxModelOverlay } from "../lib/boxModelOverlay";
   export let onWindowLoaded: ((w: Window) => void) | null;
   export let onJsError: ((message: string) => void) | null = null;
   export let js = '';
@@ -9,6 +11,21 @@
 
   let iframe: HTMLIFrameElement;
   let frameKey: string = "";
+  let overlayLayer: HTMLDivElement;
+  let tipLayer: HTMLDivElement;
+  let detachOverlay: (() => void) | null = null;
+  let loadedDoc: Document | null = null;
+
+  function syncOverlay(enabled: boolean, doc: Document | null) {
+    if (detachOverlay) {
+      detachOverlay();
+      detachOverlay = null;
+    }
+    if (enabled && doc && iframe && overlayLayer) {
+      detachOverlay = attachBoxModelOverlay(iframe, overlayLayer, tipLayer);
+    }
+  }
+  $: syncOverlay($showBoxModel, loadedDoc);
   
   const updateIframe = () => {
     if (!iframe || !iframe.contentWindow) {
@@ -26,6 +43,44 @@
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
+  .frame-wrap {
+    position: relative;
+  }
+  .box-model-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .box-model-tips {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .box-model-tips :global(.box-model-tip) {
+    position: absolute;
+    z-index: 1;
+    background: #242424;
+    color: #f5f5f5;
+    font:
+      11px/1.35 ui-monospace,
+      monospace;
+    padding: 4px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  .box-model-tips :global(.box-model-tip strong) {
+    color: #ffd27f;
+  }
+  .box-model-tips :global(.box-model-tip i) {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 5px;
+    border: 1px solid #fff8;
+  }
               ${css}
           </style>
       </head>
@@ -57,6 +112,7 @@
       </html>
     `);
     doc.close();
+    loadedDoc = doc;
 
     if (onWindowLoaded && iframe && iframe.contentWindow) {
       onWindowLoaded(iframe.contentWindow);
@@ -101,14 +157,57 @@
 
   onDestroy(() => {
     window.removeEventListener("message", handleMessage);
+    if (detachOverlay) detachOverlay();
   });
 </script>
 
-{#key frameKey}
-  <iframe style:--height={`${height}px`} bind:this={iframe}></iframe>
-{/key}
+<div class="frame-wrap">
+  {#key frameKey}
+    <iframe style:--height={`${height}px`} bind:this={iframe}></iframe>
+  {/key}
+  <div class="box-model-layer" bind:this={overlayLayer}></div>
+  <div class="box-model-tips" bind:this={tipLayer}></div>
+</div>
 
 <style>
+  .frame-wrap {
+    position: relative;
+  }
+  .box-model-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .box-model-tips {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .box-model-tips :global(.box-model-tip) {
+    position: absolute;
+    z-index: 1;
+    background: #242424;
+    color: #f5f5f5;
+    font:
+      11px/1.35 ui-monospace,
+      monospace;
+    padding: 4px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  .box-model-tips :global(.box-model-tip strong) {
+    color: #ffd27f;
+  }
+  .box-model-tips :global(.box-model-tip i) {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 5px;
+    border: 1px solid #fff8;
+  }
   iframe {
     width: 100%;
     height: var(--height,400px);
