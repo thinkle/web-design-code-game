@@ -19,4 +19,20 @@ Our cat wants to take a cozy nap, but there are a number of problems.
 - Use `padding` to control the space between the content of the element and its border.
 - A `margin` can be negative, but padding can't be!
 
+## Shortcut: `-block` and `-inline`
+
+Need the same thing on the top *and* bottom? Instead of writing
+`border-top` and `border-bottom`, you can set both at once:
+
+```css
+selector {
+  border-block: 2px dashed green; /* top and bottom */
+  padding-inline: 4px; /* left and right */
+}
+```
+
+`-block` means top and bottom, and `-inline` means left and right (for
+English, where lines of text run left to right and stack top to bottom).
+They work with `margin`, `padding` and `border`.
+
 Let's make it a cozy nap time for the cat!
