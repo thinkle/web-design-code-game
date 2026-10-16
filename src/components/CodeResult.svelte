@@ -14,18 +14,21 @@
   let overlayLayer: HTMLDivElement;
   let tipLayer: HTMLDivElement;
   let detachOverlay: (() => void) | null = null;
-  let loadedDoc: Document | null = null;
 
-  function syncOverlay(enabled: boolean, doc: Document | null) {
+  // Called when the checkbox changes *and* directly after every iframe
+  // (re)write. (A reactive dependency on the loaded document isn't enough:
+  // when the challenge changes, the iframe is replaced after this component's
+  // reactive statements have already run, so the overlay never re-attached.)
+  function syncOverlay(enabled: boolean) {
     if (detachOverlay) {
       detachOverlay();
       detachOverlay = null;
     }
-    if (enabled && doc && iframe && overlayLayer) {
+    if (enabled && iframe && overlayLayer) {
       detachOverlay = attachBoxModelOverlay(iframe, overlayLayer, tipLayer);
     }
   }
-  $: syncOverlay($showBoxModel, loadedDoc);
+  $: syncOverlay($showBoxModel);
   
   const updateIframe = () => {
     if (!iframe || !iframe.contentWindow) {
@@ -112,7 +115,7 @@
       </html>
     `);
     doc.close();
-    loadedDoc = doc;
+    syncOverlay($showBoxModel);
 
     if (onWindowLoaded && iframe && iframe.contentWindow) {
       onWindowLoaded(iframe.contentWindow);
