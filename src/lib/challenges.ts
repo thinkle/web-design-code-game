@@ -46,7 +46,7 @@ import { columnChallenge } from "./flex/columnChallenge";
 import { gapChallenge } from "./flex/gapChallenge";
 import { autoMarginChallenge } from "./flex/autoMarginChallenge";
 import { nestChallenge } from "./flex/nestChallenge";
-import { moveChallenge } from "./flex/moveChallenge";
+import { condoChallenge } from "./flex/condoChallenge";
 import { hotelChallenge } from "./flex/hotelChallenge";
 import { gridChallenge } from "./flex/gridChallenge";
 
@@ -134,7 +134,7 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
       gapChallenge,
       autoMarginChallenge,
       nestChallenge,
-      moveChallenge,
+      condoChallenge,
       hotelChallenge,
       // Optional bonus (CSS Grid's centering shortcut): self-contained, so
       // it can simply be removed from this list.
