@@ -8,11 +8,11 @@ The game currently includes three tracks:
 
 | Track | Theme | Concepts Covered |
 |-------|-------|-----------------|
-| **Cats in Boxes** | Box Model | `padding`, `margin`, `border`, `display: inline-block`, per-side properties, centering |
+| **Cats in Boxes** | Box Model | `padding`, `margin` (including `auto`), `border`, `box-sizing`, `display: inline-block`, per-side and `-block`/`-inline` properties, centering |
 | **Find the Cats!** | CSS Selectors | Element, class, ID, descendant, child (`>`), sibling (`+`, `~`), pseudo-classes (`:hover`, `:nth-child`), pseudo-elements (`::before`, `::first-line`, `::first-letter`), comma-separated selectors |
 | **Disco Cats** | Vanilla JavaScript | `document.querySelector`, DOM manipulation, `let` variables, functions, `event.target`, `addEventListener`, `for...of` loops |
 
-Each track has 6–22 progressive challenges that scaffold from basic concepts to a capstone exercise.
+Each track has 6–22 progressive challenges that scaffold from basic concepts to a capstone exercise. Student work is saved in the browser (localStorage), so it survives Back/Next and page reloads.
 
 ## Getting Started
 
@@ -46,6 +46,8 @@ npm run preview   # preview the production build locally
 npm run check
 ```
 
+`svelte-check` currently reports a number of pre-existing errors; changes shouldn't add new ones.
+
 ## Project Structure
 
 ```
@@ -55,6 +57,8 @@ src/
 │   ├── selectors/        # CSS Selectors challenge definitions
 │   ├── vanilla-js/       # JavaScript challenge definitions & lesson markdown
 │   ├── challenges.ts     # Master list that assembles all three tracks
+│   ├── boxModelOverlay.ts # "Show the box model" hover overlay (box track)
+│   ├── loopGuard.ts      # Stops infinite loops in student JavaScript
 │   └── validation.ts     # Shared validation helpers
 ├── components/           # Svelte UI components (editor, result pane, etc.)
 ├── types/                # TypeScript type definitions

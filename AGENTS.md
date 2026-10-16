@@ -36,6 +36,8 @@ src/
 │   ├── vanilla-js/         # JavaScript challenges (same structure)
 │   ├── challenges.ts       # Master challenge registry
 │   ├── codemirror/         # CodeMirror editor setup
+│   ├── boxModelOverlay.ts  # "Show the box model" hover overlay (box track only)
+│   ├── loopGuard.ts        # Infinite-loop guard for student JavaScript
 │   └── validation.ts       # Shared validation utilities
 ├── components/             # Svelte components
 ├── types/                  # TypeScript interfaces
@@ -50,6 +52,7 @@ src/
 - Use `import type` for type-only imports.
 - Challenge definitions should export a `const` (preferred) or `var` of type `ChallengeDefinition`.
 - Validate functions can return a `ValidationResult` directly or a `Promise<ValidationResult>`.
+- Challenges that are checked by an interaction set `requireHover` and/or an `interactionPrompt` (e.g. "Now click a cat in the Result to check your work!").
 
 ### Challenge Content
 - **Instructions** are written in Markdown and imported via `?raw` suffix.
@@ -81,6 +84,8 @@ src/
 
 - Challenges are designed for high-school beginners learning web design for the first time.
 - Instructions should be concise, friendly, and use examples before asking students to code.
+- Box model lessons teach the syntax with example values and have students read the actual sizes off the Target, rather than giving them the answer's numbers.
+- Write `<cat>`, `<bed>` and other tag names in instructions as inline code (or escaped) so the Markdown renderer doesn't swallow them as HTML.
 - Avoid jargon without explanation; define technical terms on first use.
 - See [PROPOSED_REVISIONS.md](PROPOSED_REVISIONS.md) for detailed pedagogical improvement suggestions.
 
@@ -89,7 +94,8 @@ src/
 Before submitting changes:
 
 - [ ] `npm run build` succeeds with no new errors
-- [ ] `npm run check` passes (Svelte type checking)
+- [ ] `npm run check` reports no *new* errors (there are pre-existing ones)
+- [ ] Each challenge's own `solution` still passes its `validate` function
 - [ ] All markdown code blocks are properly opened and closed
 - [ ] `hiddenHTMLBefore` / `hiddenHTMLAfter` tags are properly nested
 - [ ] Typos have been checked in lesson text and validation messages
