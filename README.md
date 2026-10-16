@@ -4,12 +4,13 @@ An interactive, browser-based coding challenge platform for teaching web design 
 
 ## Challenge Tracks
 
-The game currently includes three tracks:
+The game currently includes four tracks:
 
 | Track | Theme | Concepts Covered |
 |-------|-------|-----------------|
 | **Cats in Boxes** | Box Model | `padding`, `margin` (including `auto`), `border`, `box-sizing`, `display: inline-block`, per-side and `-block`/`-inline` properties, centering |
 | **Find the Cats!** | CSS Selectors | Element, class, ID, descendant, child (`>`), sibling (`+`, `~`), pseudo-classes (`:hover`, `:nth-child`), pseudo-elements (`::before`, `::first-line`, `::first-letter`), comma-separated selectors |
+| **Flexible Felines** | Flexbox | `display: flex`, `justify-content` (`center`, `space-between`, `space-around`), `align-items`, `flex-direction` and the main/cross axes, `gap`, `margin: auto` in flex, nested flex containers (including editing the HTML), plus an optional `display: grid; place-content: center` bonus |
 | **Disco Cats** | Vanilla JavaScript | `document.querySelector`, DOM manipulation, `let` variables, functions, `event.target`, `addEventListener`, `for...of` loops |
 
 Each track has 6–22 progressive challenges that scaffold from basic concepts to a capstone exercise. Student work is saved in the browser (localStorage), so it survives Back/Next and page reloads.
@@ -54,9 +55,10 @@ npm run check
 src/
 ├── lib/
 │   ├── box-model/        # Box Model challenge definitions & lesson markdown
+│   ├── flex/             # Flexbox challenge definitions, shared checks & lesson markdown
 │   ├── selectors/        # CSS Selectors challenge definitions
 │   ├── vanilla-js/       # JavaScript challenge definitions & lesson markdown
-│   ├── challenges.ts     # Master list that assembles all three tracks
+│   ├── challenges.ts     # Master list that assembles all four tracks
 │   ├── boxModelOverlay.ts # "Show the box model" hover overlay (box track)
 │   ├── loopGuard.ts      # Stops infinite loops in student JavaScript
 │   └── validation.ts     # Shared validation helpers

@@ -9,7 +9,7 @@ This is a **Svelte + TypeScript + Vite** application that presents interactive w
 ## Key Concepts
 
 - **ChallengeDefinition** (`src/types/challenge.ts`) — the core type. Each challenge specifies HTML, CSS/JS, starter code, a solution, lesson instructions (markdown), and a `validate` function that programmatically checks student work.
-- **Challenge tracks** are assembled in `src/lib/challenges.ts`, which exports a `challengeSets` object with three tracks: `box` (Box Model), `selectors` (CSS Selectors), and `vanilla` (JavaScript).
+- **Challenge tracks** are assembled in `src/lib/challenges.ts`, which exports a `challengeSets` object with four tracks: `box` (Box Model), `flex` (Flexbox), `selectors` (CSS Selectors), and `vanilla` (JavaScript).
 - **Lesson markdown** lives in `src/lib/<track>/markdown/` and is imported with `?raw` for rendering.
 - **Validation helpers** live in `src/lib/validation.ts` and provide reusable checks (element offsets, CSS property comparison, border detection, pseudo-selector validation, etc.).
 
@@ -32,6 +32,7 @@ src/
 │   │   ├── css/            # Shared CSS for box-model challenges
 │   │   ├── markdown/       # Lesson instructions (*.md)
 │   │   └── *.ts            # Challenge definitions
+│   ├── flex/               # Flexbox challenges (shared checks in flexChecks.ts, scenery in css/scene.css)
 │   ├── selectors/          # CSS Selectors challenges (same structure)
 │   ├── vanilla-js/         # JavaScript challenges (same structure)
 │   ├── challenges.ts       # Master challenge registry
