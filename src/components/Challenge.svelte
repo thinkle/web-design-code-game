@@ -4,6 +4,8 @@
   export let challenge: ChallengeDefinition;
   /** Offer the "Show the box model" overlay (box model lessons only) */
   export let boxModelTool = false;
+  /** Offer "Show where the cats go" (dashed ghost cats on the Result) */
+  export let ghostCatsTool = false;
 
   import {
     studentWork,
@@ -27,9 +29,9 @@
       (cat) => getContentRect(cat)
     );
   }
-  $: measureGhostCats(targetWindow, boxModelTool && $showGhostCats);
+  $: measureGhostCats(targetWindow, ghostCatsTool && $showGhostCats);
   const remeasure = () =>
-    measureGhostCats(targetWindow, boxModelTool && $showGhostCats);
+    measureGhostCats(targetWindow, ghostCatsTool && $showGhostCats);
   import CodeHighlighter from "./CodeHighlighter.svelte";
   import ThreeColumn from "./ThreeColumn.svelte";
 
@@ -290,17 +292,21 @@
       {:else if result && edited}
         <Feedback {result} />
       {/if}
-      {#if boxModelTool}
+      {#if boxModelTool || ghostCatsTool}
         <div class="preview-tools">
-          <label>
-            <input type="checkbox" bind:checked={$showGhostCats} />
-            Show where the cats go
-          </label>
-          <label>
-            <input type="checkbox" bind:checked={$showBoxModel} />
-            Show the box model
-          </label>
-          {#if $showBoxModel}
+          {#if ghostCatsTool}
+            <label>
+              <input type="checkbox" bind:checked={$showGhostCats} />
+              Show where the cats go
+            </label>
+          {/if}
+          {#if boxModelTool}
+            <label>
+              <input type="checkbox" bind:checked={$showBoxModel} />
+              Show the box model
+            </label>
+          {/if}
+          {#if boxModelTool && $showBoxModel}
             <span class="legend">
               Hover the pictures:
               <i style="background:rgba(246, 178, 107, 0.66)"></i>margin

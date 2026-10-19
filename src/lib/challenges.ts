@@ -38,7 +38,22 @@ import { firstLetterAfterHeaderChallenge } from "./selectors/first-letter";
 import { childSelectorChallenge } from "./selectors/nth-child";
 import { finalSelectorsChallenge } from "./selectors/challenge1";
 
-export type ChallengeSetId = "box" | "selectors" | "vanilla";
+import { rowChallenge } from "./flex/rowChallenge";
+import { centerChallenge } from "./flex/centerChallenge";
+import { spreadChallenge } from "./flex/spreadChallenge";
+import { alignChallenge } from "./flex/alignChallenge";
+import { columnChallenge } from "./flex/columnChallenge";
+import { gapChallenge } from "./flex/gapChallenge";
+import { autoMarginChallenge } from "./flex/autoMarginChallenge";
+import { nestChallenge } from "./flex/nestChallenge";
+import { condoChallenge } from "./flex/condoChallenge";
+import { endChallenge } from "./flex/endChallenge";
+import { climbChallenge } from "./flex/climbChallenge";
+import { balanceChallenge } from "./flex/balanceChallenge";
+import { hotelChallenge } from "./flex/hotelChallenge";
+import { findCenterChallenge } from "./flex/findCenterChallenge";
+
+export type ChallengeSetId = "box" | "selectors" | "vanilla" | "flex";
 
 export type ChallengeSet = {
   concept: string;
@@ -46,6 +61,8 @@ export type ChallengeSet = {
   challenges: ChallengeDefinition[];
   /** Offer the devtools-style "Show the box model" hover overlay */
   boxModelTool?: boolean;
+  /** Offer "Show where the cats go" (dashed outlines of the Target's cats) */
+  ghostCatsTool?: boolean;
 };
 
 export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
@@ -93,6 +110,7 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
     concept: "the Box Model",
     name: "Cats in Boxes",
     boxModelTool: true,
+    ghostCatsTool: true,
     challenges: [
       paddingChallenge,
       marginChallenge,
@@ -104,6 +122,27 @@ export let challengeSets: Record<ChallengeSetId, ChallengeSet> = {
       sidesChallenge,
       centeringChallenge,
       cozyCatNapChallenge,
+    ],
+  },
+  flex: {
+    concept: "Flexbox",
+    name: "Flexible Felines",
+    ghostCatsTool: true,
+    challenges: [
+      rowChallenge,
+      centerChallenge,
+      findCenterChallenge,
+      endChallenge,
+      spreadChallenge,
+      alignChallenge,
+      columnChallenge,
+      climbChallenge,
+      balanceChallenge,
+      gapChallenge,
+      autoMarginChallenge,
+      nestChallenge,
+      condoChallenge,
+      hotelChallenge,
     ],
   },
 };
